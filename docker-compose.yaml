@@ -1,0 +1,58 @@
+# @see https://docs.docker.com/compose/compose-file/
+version: '3.8'
+services:
+    # Database Configuration
+    # @see https://hub.docker.com/_/postgres/
+    database:
+        #container_name: database
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_USER: commerce
+            POSTGRES_PASSWORD: kitty
+            POSTGRES_DB: commercekitty
+        #ports:
+        #    - "5432:5432"
+        networks:
+            - database
+        volumes:
+            # This will make sure the database can be persisted
+            - ./var/database/dev:/var/lib/postgresql/data:cached
+
+    # PHP-FPM Configuration
+    php:
+        #container_name: php
+        build: ./config/docker/php-fpm
+        volumes:
+            - .:/app:cached
+        depends_on:
+            - database
+            #- redis
+        networks:
+            - database
+            - php
+    # nginx
+    nginx:
+        #container_name: nginx
+        build: ./config/docker/nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - php
+        networks:
+            - php
+        volumes:
+            - .:/app:cached
+    # Redis Config
+    # @see https://hub.docker.com/_/redis/
+    # @todo (Optional) for caching
+    #redis:
+    #    container_name: redis
+    #    image: redis
+    #    restart: always
+    #    networks:
+    #        - php
+networks:
+    database:
+    php:

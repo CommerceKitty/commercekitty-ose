@@ -1,3 +1,8 @@
+# Commerce Kitty
+/config/docker/nginx/commercekitty.local.crt
+/config/docker/nginx/commercekitty.local.key
+/composer.lock
+/symfony.lock
 
 ###> symfony/framework-bundle ###
 /.env.local
