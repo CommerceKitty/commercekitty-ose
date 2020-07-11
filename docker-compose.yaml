@@ -6,7 +6,7 @@ services:
     database:
         #container_name: database
         image: postgres
-        restart: always
+        restart: unless-stopped
         environment:
             POSTGRES_USER: commerce
             POSTGRES_PASSWORD: kitty
@@ -21,6 +21,7 @@ services:
 
     # PHP-FPM Configuration
     php:
+        restart: unless-stopped
         #container_name: php
         build: ./config/docker/php-fpm
         volumes:
@@ -33,6 +34,7 @@ services:
             - php
     # nginx
     nginx:
+        restart: unless-stopped
         #container_name: nginx
         build: ./config/docker/nginx
         ports:
