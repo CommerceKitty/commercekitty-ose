@@ -1,0 +1,14 @@
+{#
+  This file contains macros for some of the common elements used.
+
+  @see https://getbootstrap.com/docs/4.5/getting-started/introduction/
+#}
+
+{#
+  Creates a button to be used in forms
+
+  @see https://getbootstrap.com/docs/4.5/components/buttons/
+#}
+{% macro btn(name, style = 'primary') %}
+  <button type="submit" class="btn btn-{{style}}">{{name|trans}}</button>
+{% endmacro %}

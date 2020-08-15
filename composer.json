@@ -28,10 +28,13 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
-        "symfony/profiler-pack": "*",
-        "symfony/test-pack": "*"
+        "symfony/stopwatch": "^4.4",
+        "symfony/test-pack": "*",
+        "symfony/twig-bundle": "^4.4",
+        "symfony/web-profiler-bundle": "^4.4"
     },
     "config": {
         "platform": {
@@ -45,7 +48,7 @@
     "autoload": {
         "psr-4": {
             "CommerceKitty\\Bundle\\": "bundles/",
-            "CommerceKitty\\Component": "components/",
+            "CommerceKitty\\Component\\": "components/",
             "App\\": "src/"
         }
     },
