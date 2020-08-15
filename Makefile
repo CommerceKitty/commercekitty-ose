@@ -8,7 +8,22 @@ help:
 	@echo "  coverage  Generates Code Coverage report"
 
 lint:
-	@echo "@todo"
+	@echo
+	@echo "    -=[ container ]=-"
+	@echo
+	@php bin/console lint:container -vv -n
+	@echo
+	@echo "    -=[ twig ]=-"
+	@echo
+	@php bin/console lint:twig -vvv -n templates/
+	@echo
+	@echo "    -=[ xliff ]=-"
+	@echo
+	@php bin/console lint:xliff -vvv -n translations/
+	@echo
+	@echo "    -=[ yaml ]=-"
+	@echo
+	@php bin/console lint:yaml -vvv -n config/
 
 test:
 	@echo "@todo"
