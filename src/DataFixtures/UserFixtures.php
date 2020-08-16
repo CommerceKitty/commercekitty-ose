@@ -1,4 +1,7 @@
 <?php
+/**
+ * @see https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
+ */
 
 namespace App\DataFixtures;
 
