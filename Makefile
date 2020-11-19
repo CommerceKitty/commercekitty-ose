@@ -9,7 +9,7 @@ COLOR_WHITE=\033[37m
 COLOR_RESET=\033[m
 
 help:
-	@echo "Commerce Kitty (https://commercekitty.io)"
+	@echo "Commerce Kitty (https://commercekitty.com)"
 	@echo ""
 	@echo "$(COLOR_YELLOW)Usage:$(COLOR_RESET)"
 	@echo "  make $(COLOR_GREEN)target$(COLOR_RESET)"
