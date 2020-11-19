@@ -1,35 +1,92 @@
-# Variables
-CODE_COVERAGE_DIR=docs/coverage
+COLOR_BLACK=\033[30m
+COLOR_RED=\033[31m
+COLOR_GREEN=\033[32m
+COLOR_YELLOW=\033[33m
+COLOR_BLUE=\033[34m
+COLOR_MAGENTA=\033[35m
+COLOR_CYAN=\033[36m
+COLOR_WHITE=\033[37m
+COLOR_RESET=\033[m
 
 help:
-	@echo "Please run 'make <target>' where <target> is one of:"
-	@echo "  lint      Checks syntax of files and configuration"
-	@echo "  test      Runs the testsuite for both unit and functional tests"
-	@echo "  coverage  Generates Code Coverage report"
+	@echo "Commerce Kitty (https://commercekitty.io)"
+	@echo ""
+	@echo "$(COLOR_YELLOW)Usage:$(COLOR_RESET)"
+	@echo "  make $(COLOR_GREEN)target$(COLOR_RESET)"
+	@echo ""
+	@echo "$(COLOR_YELLOW)Available targets:$(COLOR_RESET)"
+	@echo "  $(COLOR_GREEN)clean$(COLOR_RESET)             Clears cache and temp files"
+	@echo "  $(COLOR_GREEN)compile$(COLOR_RESET)           Compile assets"
+	@echo "  $(COLOR_GREEN)install$(COLOR_RESET)           Install composer and node dependencies"
+	@echo "  $(COLOR_GREEN)up$(COLOR_RESET)                Spins up containers"
+	@echo "  $(COLOR_GREEN)stop$(COLOR_RESET)              Stops containers"
+	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs wokers in the foreground"
+	@echo "  $(COLOR_GREEN)db.fixtures$(COLOR_RESET)       Loads DB Fixtures (destructive)"
+	@echo "  $(COLOR_GREEN)db.migrate$(COLOR_RESET)        Runs database migrations"
+	@echo "  $(COLOR_GREEN)docs.coverage$(COLOR_RESET)     Generates HTML Code Coverage report"
+	@echo " $(COLOR_YELLOW)lint$(COLOR_RESET)              Runs all lint targets"
+	@echo "  $(COLOR_GREEN)lint.container$(COLOR_RESET)    Check container"
+	@echo "  $(COLOR_GREEN)lint.twig$(COLOR_RESET)         Check twig files"
+	@echo "  $(COLOR_GREEN)lint.xliff$(COLOR_RESET)        Check translations"
+	@echo "  $(COLOR_GREEN)lint.php$(COLOR_RESET)          Check php files"
+	@echo " $(COLOR_YELLOW)tests$(COLOR_RESET)             Runs the testsuite for both unit and functional tests"
+	@echo "  $(COLOR_GREEN)tests.unit$(COLOR_RESET)        Runs unit tests"
+	@echo "  $(COLOR_GREEN)tests.functional$(COLOR_RESET)  Runs functional tests"
 
-lint:
-	@echo
-	@echo "    -=[ container ]=-"
-	@echo
-	@php bin/console lint:container -vv -n
-	@echo
-	@echo "    -=[ twig ]=-"
-	@echo
-	@php bin/console lint:twig -vvv -n templates/
-	@echo
-	@echo "    -=[ xliff ]=-"
-	@echo
-	@php bin/console lint:xliff -vvv -n translations/
-	@echo
-	@echo "    -=[ yaml ]=-"
-	@echo
-	@php bin/console lint:yaml -vvv -n config/
+compile:
+	yarn encore production
 
-test:
-	@echo "@todo"
+clean:
+	php bin/console cache:clear -vvv -n --no-warmup
+
+install:
+	composer install
+	yarn install
+
+up:
+	docker-compose up -d --remove-orphans
+
+stop:
+	docker-compose stop
+
+lint: lint.container lint.twig lint.xliff lint.php
+
+lint.container:
+	php bin/console lint:container -vvv -n
+
+lint.twig:
+	php bin/console lint:twig -vvv -n templates/
+
+lint.xliff:
+	php bin/console lint:xliff -vvv -n translations/
+
+lint.yaml:
+	php bin/console lint:yaml -vvv -n config/
+
+lint.php:
+	find bin/ bundles/ components/ config/ migrations/ public/ src/ tests/ -name "*.php" -print0 | xargs -0 -n1 -P0 php -l
+
+.PHONY: tests
+tests: tests.unit tests.functional
+
+tests.unit:
+	find tests/unit -name "*Test.php" | php vendor/bin/fastest -vvv "vendor/bin/phpunit {};"
+
+tests.functional:
+	php bin/console doctrine:database:create -vvv -n --env=test
+	php bin/console doctrine:schema:update -vvv -n --force --env=test
+	find tests/functional -name "*Test.php" | php vendor/bin/fastest -vvv "vendor/bin/phpunit {};"
+	php bin/console doctrine:database:drop -vvv -n --force --env=test
 
 coverage:
-	@echo "@todo"
+	mkdir -vp docs/coverage var/log/build var/build
+	find tests/unit/ -name "*Test.php" | php vendor/bin/fastest -vvv "vendor/bin/phpunit {} --coverage-php var/build/unit-{n}.cov;"
+	php bin/console doctrine:database:create --env=test -vvv -n
+	php bin/console doctrine:schema:update --env=test -vvv -n --force
+	find tests/functional/ -name "*Test.php" | php vendor/bin/fastest -vvv "vendor/bin/phpunit {} --coverage-php var/build/functional-{n}.cov;"
+	php bin/console doctrine:database:drop --env=test -vvv -n --force
+	php vendor/bin/phpcov merge var/log/build/coverage --html docs/coverage
+	rm -rf var/build/*.cov
 
 # --- Hidden ---
 
