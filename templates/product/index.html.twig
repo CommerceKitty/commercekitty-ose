@@ -1,0 +1,38 @@
+{#
+  @var ProductInterface[] pager
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+  {% embed '_bootstrap/grid.html.twig' with {'breakpoint':'fluid'} %}
+    {% block content %}
+      {% import '_bootstrap/grid.html.twig' as grid %}
+      {{grid.row_start()}}
+        {{grid.col_start('sm-12')}}
+          {% embed '_bootstrap/table.html.twig' %}
+            {% block thead %}
+              <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>sku</th>
+                <th>type</th>
+              </tr>
+            {% endblock %}
+            {% block tbody %}
+              {% for entity in pager %}
+                <tr>
+                  <td>{{entity.id}}</td>
+                  <td>{{entity.name}}</td>
+                  <td>{{entity.sku}}</td>
+                  <td>{{entity.type}}</td>
+                </tr>
+              {% endfor %}
+            {% endblock %}
+          {% endembed %}
+        {{grid.col_end()}}
+      {{grid.row_end()}}
+    {% endblock content %}
+  {% endembed %}
+{% endblock %}

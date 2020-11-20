@@ -1,0 +1,32 @@
+{% macro row_start() %}
+{% apply spaceless %}
+  <div class="row">
+{% endapply %}
+{% endmacro row_start %}
+
+{% macro row_end() %}
+{% apply spaceless %}
+  </div>
+{% endapply %}
+{% endmacro row_end %}
+
+{% macro col_start(breakpoint = '') %}
+{% apply spaceless %}
+  <div class="col{% if breakpoint is not empty %}-{{breakpoint}}{% endif %}">
+{% endapply %}
+{% endmacro col_start %}
+
+{% macro col_end() %}
+{% apply spaceless %}
+  </div>
+{% endapply %}
+{% endmacro col_end %}
+
+{#
+  @var string|null breakpoint
+#}
+{% apply spaceless %}
+<div class="container{% if breakpoint is defined and breakpoint is not empty %}-{{breakpoint}}{% endif %}">
+  {% block content %}{% endblock content %}
+</div>
+{% endapply %}

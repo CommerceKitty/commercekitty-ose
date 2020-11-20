@@ -1,0 +1,23 @@
+
+<table class="table table-striped table-hover">
+  {%- if block('caption') -%}
+    <caption>
+      {%- block caption %}{% endblock caption -%}
+    </caption>
+  {%- endif -%}
+  {%- if block('thead') -%}
+    <thead>
+      {%- block thead %}{% endblock thead -%}
+    </thead>
+  {%- endif -%}
+  {%- if block('tbody') -%}
+    <tbody>
+      {%- block tbody %}{% endblock tbody -%}
+    </tbody>
+  {%- endif -%}
+  {%- if block('tfoot') -%}
+    <tfoot>
+      {%- block tfoot %}{% endblock tfoot -%}
+    </tfoot>
+  {%- endif -%}
+</table>

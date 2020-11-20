@@ -1,3 +1,20 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+login:
+    path:       /login
+    controller: App\Controller\SecurityController::login
+
+logout:
+    path:       /logout
+    controller: App\Controller\SecurityController::logout
+
+homepage:
+    path:       /
+    controller: App\Controller\DefaultController::index
+
+product_index:
+    path:       /products.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
