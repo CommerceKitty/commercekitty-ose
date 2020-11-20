@@ -8,6 +8,7 @@
         "knplabs/knp-menu-bundle": "^3.0",
         "knplabs/knp-paginator-bundle": "^5.3",
         "league/csv": "^9.6",
+        "league/flysystem": "^1.1",
         "liip/imagine-bundle": "^2.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.1.*",
