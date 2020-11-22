@@ -16,11 +16,12 @@ help:
 	@echo ""
 	@echo "$(COLOR_YELLOW)Available targets:$(COLOR_RESET)"
 	@echo "  $(COLOR_GREEN)install$(COLOR_RESET)           Install composer and node dependencies"
-	@echo "  $(COLOR_GREEN)compile$(COLOR_RESET)           Compile assets"
 	@echo "  $(COLOR_GREEN)up$(COLOR_RESET)                Spins up containers"
 	@echo "  $(COLOR_GREEN)stop$(COLOR_RESET)              Stops containers"
 	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs wokers in the foreground"
 	@echo "  $(COLOR_GREEN)clean$(COLOR_RESET)             Clears cache and temp files"
+	@echo "  $(COLOR_GREEN)compile.dev$(COLOR_RESET)       Compile assets"
+	@echo "  $(COLOR_GREEN)compile.prod$(COLOR_RESET)      Compile assets"
 	@echo "  $(COLOR_GREEN)db.fixtures$(COLOR_RESET)       Loads DB Fixtures (destructive)"
 	@echo "  $(COLOR_GREEN)db.migrate$(COLOR_RESET)        Runs database migrations"
 	@echo "  $(COLOR_GREEN)docs.coverage$(COLOR_RESET)     Generates HTML Code Coverage report"
@@ -33,7 +34,10 @@ help:
 	@echo "  $(COLOR_GREEN)tests.unit$(COLOR_RESET)        Runs unit tests"
 	@echo "  $(COLOR_GREEN)tests.functional$(COLOR_RESET)  Runs functional tests"
 
-compile:
+compile.dev:
+	yarn encore dev
+
+compile.prod:
 	yarn encore production
 
 clean:
