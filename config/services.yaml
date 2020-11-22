@@ -25,3 +25,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Menu\MenuBuilder:
+        autowire: true
+        tags:
+            - { name: knp_menu.menu_builder, method: createGenericMenu, alias: generic_menu }
+

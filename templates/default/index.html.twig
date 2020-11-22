@@ -3,10 +3,15 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-sm">
-      Hello Commerce Kitty!
-      <i class="fas fa-user"></i>
-    </div>
-  </div>
+  {% embed '_bootstrap/grid.html.twig' %}
+    {% block content %}
+      {% import '_bootstrap/grid.html.twig' as grid %}
+      {{grid.row_start()}}
+        {{grid.col_start('sm')}}
+          Hello Commerce Kitty!
+          <i class="fas fa-user"></i>
+        {{grid.col_end()}}
+      {{grid.row_end()}}
+    {% endblock content %}
+  {% endembed %}
 {% endblock %}

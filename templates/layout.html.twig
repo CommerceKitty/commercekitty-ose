@@ -10,11 +10,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"><i class="fas fa-list fa-fw"></i>&nbsp;{{'products'|trans}}</a>
-        </li>
-      </ul>
+      {{knp_menu_render(knp_menu_get('generic_menu', [], {'event_name':'test'}), {'template':'menu.navbar.html.twig'})}}
       <ul class="navbar-nav my-2 my-lg-0">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
