@@ -28,5 +28,5 @@ services:
     App\Menu\MenuBuilder:
         autowire: true
         tags:
-            - { name: knp_menu.menu_builder, method: createGenericMenu, alias: generic_menu }
+            - { name: knp_menu.menu_builder, method: buildGenericMenu, alias: generic_menu }
 

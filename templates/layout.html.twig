@@ -10,22 +10,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      {{knp_menu_render(knp_menu_get('generic_menu', [], {'event_name':'test'}), {'template':'menu.navbar.html.twig'})}}
-      <ul class="navbar-nav my-2 my-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{app.user}}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {#
-            <a class="dropdown-item" href="#">Settings</a>
-            <a class="dropdown-item" href="#">Account Settings</a>
-            <div class="dropdown-divider"></div>
-            #}
-            <a class="dropdown-item" href="{{path('logout')}}"><i class="fas fa-sign-out-alt fa-fw"></i>&nbsp;{{'logout'|trans}}</a>
-          </div>
-        </li>
-      </ul>
+      {{knp_menu_render(knp_menu_get('generic_menu', [], {'event_name':'topbar'}), {'template':'menu.navbar.html.twig'})}}
+      {{knp_menu_render(knp_menu_get('generic_menu', [], {'event_name':'profile'}), {'template':'menu.profile.html.twig'})}}
     </div>
   </nav>
 

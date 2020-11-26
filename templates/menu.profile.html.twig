@@ -1,0 +1,52 @@
+{#
+  @var ItemInterface    item
+  @var array            options
+  @var MatcherInterface matcher
+
+  @see https://github.com/KnpLabs/KnpMenu/blob/master/src/Knp/Menu/Renderer/TwigRenderer.php
+  @see https://github.com/KnpLabs/KnpMenu/blob/master/src/Knp/Menu/Resources/views/knp_menu_base.html.twig
+  @see https://github.com/KnpLabs/KnpMenu/blob/master/src/Knp/Menu/Resources/views/knp_menu.html.twig
+  @see https://github.com/KnpLabs/KnpMenuBundle/blob/master/src/Resources/views/menu.html.twig
+#}
+{% macro link(item, options, matcher) %}
+  {% set classes = [] %}
+  {% if item.hasChildren %}
+    {% set classes = ['dropdown-toggle']|merge(classes) %}
+  {% endif %}
+  {% if item.level == 1 %}
+    {% set classes = ['nav-link']|merge(classes) %}
+  {% else %}
+    {% set classes = ['dropdown-item']|merge(classes) %}
+  {% endif %}
+
+  {% if item.hasChildren %}
+    <a class="{{classes|join(' ')}}" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{item.label}}</a>
+  {% else %}
+    <a class="{{classes|join(' ')}}" href="{{item.uri}}">{% if item.extras.icon is defined and item.extras.icon is not empty %}<i class="{{item.extras.icon}}"></i>&nbsp;{% endif %}{{item.label}}</a>
+  {% endif %}
+{% endmacro %}
+
+{% macro item(item, options, matcher) %}
+  {% if item.level == 1 %}
+    <li class="nav-item{% if item.hasChildren %} dropdown{% endif %}">
+      {{_self.link(item, options, matcher)}}
+      {% if item.hasChildren %}
+        <div class="dropdown-menu">
+          {{_self.children(item, options, matcher)}}
+        </div>
+      {% endif %}
+    </li>
+  {% else %}
+    {{_self.link(item, options, matcher)}}
+  {% endif %}
+{% endmacro %}
+
+{% macro children(item, options, matcher) %}
+  {% for child in item.children %}
+    {{_self.item(child, options, matcher)}}
+  {% endfor %}
+{% endmacro %}
+
+<ul class="navbar-nav my-2 my-lg-0">
+  {{_self.children(item, options, matcher)}}
+</ul>

@@ -34,18 +34,14 @@ class MenuBuilder
      *
      * @return ItemInterface
      */
-    public function createGenericMenu(array $options): ItemInterface
+    public function buildGenericMenu(array $options): ItemInterface
     {
         if (empty($options['event_name'])) {
             throw new \Exception('Must include "event_name" option.');
         }
 
-        $menu = $this->factory->createItem('root');
+        $menu  = $this->factory->createItem('root');
         $event = $this->dispatcher->dispatch(new GenericEvent($menu, $options), 'menu.'.$options['event_name']);
-
-        //$menu->addChild('home', ['route' => 'homepage']);
-        $menu->addChild('products', ['route' => 'product_index']);
-        //$menu['products']->addChild('view all', ['route' => 'homepage']);
 
         return $menu;
     }
