@@ -1,32 +1,34 @@
-{% macro row_start() %}
-{% apply spaceless %}
-  <div class="row">
-{% endapply %}
+{% macro row_start(classes = []) %}
+  {% if classes is not iterable %}
+    {% set classes = [classes] %}
+  {% endif %}
+  {% set classes = ['row']|merge(classes) %}
+  <div class="{{classes|join(' ')}}">
 {% endmacro row_start %}
 
 {% macro row_end() %}
-{% apply spaceless %}
   </div>
-{% endapply %}
 {% endmacro row_end %}
 
-{% macro col_start(breakpoint = '') %}
-{% apply spaceless %}
-  <div class="col{% if breakpoint is not empty %}-{{breakpoint}}{% endif %}">
-{% endapply %}
+{% macro col_start(breakpoint = '', classes = []) %}
+  {% if classes is not iterable %}
+    {% set classes = [classes] %}
+  {% endif %}
+  {% if breakpoint is empty %}
+    {% set classes = ['col']|merge(classes) %}
+  {% else %}
+    {% set classes = ['col-'~breakpoint]|merge(classes) %}
+  {% endif %}
+  <div class="{{classes|join(' ')}}">
 {% endmacro col_start %}
 
 {% macro col_end() %}
-{% apply spaceless %}
   </div>
-{% endapply %}
 {% endmacro col_end %}
 
 {#
   @var string|null breakpoint
 #}
-{% apply spaceless %}
 <div class="container{% if breakpoint is defined and breakpoint is not empty %}-{{breakpoint}}{% endif %}">
   {% block content %}{% endblock content %}
 </div>
-{% endapply %}

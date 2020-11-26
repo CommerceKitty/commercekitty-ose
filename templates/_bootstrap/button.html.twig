@@ -1,0 +1,21 @@
+{#
+  Helper to create buttons
+#}
+
+{#
+#}
+{% macro btn(type = 'button', icon = null, name, style = 'primary') %}
+  <button type="{{type}}" class="btn btn-{{style}}">{% if icon %}<i class="{{icon}}"></i>&nbsp;{% endif %}{{name|trans}}</button>
+{% endmacro %}
+
+{#
+#}
+{% macro link(icon = null, name, route, route_parameters = {}, style = 'primary') %}
+  <a href="{{path(route, route_parameters)}}" class="btn btn-{{style}}" role="button">{% if icon %}<i class="{{icon}}"></i>&nbsp;{% endif %}{{name|trans}}</a>
+{% endmacro %}
+
+{#
+#}
+{% macro submit(icon = null, name, style = 'primary') %}
+  {{_self.btn('submit', icon, name, style)}}
+{% endmacro %}

@@ -1,0 +1,7 @@
+{% macro alert(content, context = 'primary') %}
+  <div class="alert alert-{{context}}">{{content|trans}}</div>
+{% endmacro %}
+
+{% macro danger(content) %}
+  {{_self.alert(content, 'danger')}}
+{% endmacro %}
