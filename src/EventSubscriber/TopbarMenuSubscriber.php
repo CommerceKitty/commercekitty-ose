@@ -28,7 +28,16 @@ class TopbarMenuSubscriber implements EventSubscriberInterface
     {
         $menu = $event->getSubject();
 
-        $menu->addChild('products');
-        $menu['products']->addChild('view all', ['route' => 'product_index']);
+        $menu->addChild('products', [
+            'extras' => [
+                'icon' => 'fas fa-barcode fa-fw',
+            ],
+        ]);
+        $menu['products']->addChild('view all', [
+            'route'  => 'product_index',
+            'extras' => [
+                'icon' => 'fas fa-list fa-fw',
+            ],
+        ]);
     }
 }

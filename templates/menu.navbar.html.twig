@@ -82,5 +82,6 @@
   {%- if translation_domain is not same as(false) -%}
     {%- set label = label|trans(item.extra('translation_params', {}), translation_domain) -%}
   {%- endif -%}
+  {%- if item.extras.icon is defined and item.extras.icon is not empty %}<i class="{{item.extras.icon}}"></i>&nbsp;{% endif -%}
   {%- if options.allow_safe_labels and item.extra('safe_label', false) %}{{ label|raw }}{% else %}{{ label }}{% endif -%}
 {% endblock label %}
