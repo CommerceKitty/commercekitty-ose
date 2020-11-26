@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Model;
 
@@ -50,4 +50,9 @@ interface ProductInterface
     //public function getCreatedBy(): UserInterface;
     //public function getUpdatedAt(): DateTimeInterface;
     //public function getUpdatedBy(): UserInterface;
+
+    /**
+     * @return VendorInterface[]
+     */
+    //public function getVendors();
 }
