@@ -82,4 +82,13 @@ class Product implements ProductInterface
 
         return $this;
     }
+
+    /**
+     */
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->name = 'Copy of '.$this->name;
+        }
+    }
 }

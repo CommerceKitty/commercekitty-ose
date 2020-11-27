@@ -33,6 +33,12 @@ class TopbarMenuSubscriber implements EventSubscriberInterface
                 'icon' => 'fas fa-barcode fa-fw',
             ],
         ]);
+        $menu['products']->addChild('new', [
+            'route'  => 'product_select_type',
+            'extras' => [
+                'icon' => 'fas fa-plus fa-fw',
+            ],
+        ]);
         $menu['products']->addChild('view all', [
             'route'  => 'product_index',
             'extras' => [

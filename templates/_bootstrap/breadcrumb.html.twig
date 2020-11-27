@@ -1,0 +1,13 @@
+{% macro item(name, route = null, route_parameters = {}) %}
+  {% if route %}
+    <li class="breadcrumb-item"><a href="{{path(route, route_parameters)}}">{{name|trans}}</a></li>
+  {% else %}
+    <li class="breadcrumb-item active" aria-current="page">{{name|trans}}</li>
+  {% endif %}
+{% endmacro %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% block crumbs %}{% endblock crumbs %}
+  </ol>
+</nav>

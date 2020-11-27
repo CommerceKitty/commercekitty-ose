@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+  {% import '_bootstrap/alert.html.twig' as alert %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{path('homepage')}}">
       <img src="{{asset('images/commercekitty/logo.png')}}" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
@@ -14,6 +15,11 @@
       {{knp_menu_render(knp_menu_get('generic_menu', [], {'event_name':'profile'}), {'template':'menu.profile.html.twig'})}}
     </div>
   </nav>
-
-  {% block content %}{% endblock %}
+  {% block breadcrumbs %}{% endblock breadcrumbs %}
+  {% for context, messages in app.flashes %}
+    {% for message in messages %}
+      {{alert.alert(message, context)}}
+    {% endfor %}
+  {% endfor %}
+  {% block content %}{% endblock content %}
 {% endblock %}

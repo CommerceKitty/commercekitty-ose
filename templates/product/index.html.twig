@@ -3,27 +3,59 @@
 #}
 {% extends 'layout.html.twig' %}
 
-{% block title %}Products{% endblock %}
+{% block title %}{{'products'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('products')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
 
 {% block content %}
   {% embed '_bootstrap/grid.html.twig' with {'breakpoint':'fluid'} %}
     {% block content %}
       {% import '_bootstrap/grid.html.twig' as grid %}
       {{grid.row_start()}}
-        {{grid.col_start('sm-12')}}
+        {{grid.col_start('sm-2')}}
+
+          {# @todo make menu event #}
+
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link" href="{{path('product_select_type')}}"><i class="fas fa-plus fa-fw"></i>&nbsp;{{'new'|trans}}</a>
+            <a class="nav-link text-danger" href="{{path('product_purge')}}"><i class="fas fa-trash fa-fw"></i>&nbsp;{{'purge'|trans}}</a>
+          </div>
+
+        {{grid.col_end()}}
+        {{grid.col_start('sm-10')}}
           {% embed '_bootstrap/table.html.twig' %}
             {% block thead %}
               <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>sku</th>
-                <th>type</th>
+                <th>&nbsp;</th>
+                <th>{{'name'|trans}}</th>
+                <th>{{'sku'|trans}}</th>
+                <th>{{'type'|trans}}</th>
               </tr>
             {% endblock %}
             {% block tbody %}
               {% for entity in pager %}
                 <tr>
-                  <td>{{entity.id}}</td>
+                  <td class="col-sm-2">
+                    <div class="btn-group">
+                      <a class="btn btn-secondary" href="{{path('product_show', {'id':entity.id})}}"><i class="fas fa-eye fa-fw"></i>&nbsp;{{'view'|trans}}</a>
+                      <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">{{'toggle dropdown'|trans}}</span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{path('product_edit', {'id':entity.id})}}"><i class="fas fa-fw fa-edit"></i>&nbsp;{{'edit'|trans}}</a>
+                        <a class="dropdown-item" href="{{path('product_clone', {'id':entity.id})}}"><i class="fas fa-fw fa-clone"></i>&nbsp;{{'clone'|trans}}</a>
+                        {#<a class="dropdown-item" href="{{path('product_log', {'id':entity.id})}}"><i class="fas fa-fw fa-terminal"></i>&nbsp;{{'log'|trans}}</a>#}
+                        <a class="dropdown-item text-danger" href="{{path('product_delete', {'id':entity.id})}}"><i class="fas fa-fw fa-trash"></i>&nbsp;{{'delete'|trans}}</a>
+                      </div>
+                    </div>
+                  </td>
                   <td>{{entity.name}}</td>
                   <td>{{entity.sku}}</td>
                   <td>{{entity.type}}</td>

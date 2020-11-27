@@ -4,13 +4,13 @@
 
 {#
 #}
-{% macro btn(type = 'button', icon = null, name, style = 'primary') %}
+{% macro btn(type = 'button', icon = null, name, style = 'secondary') %}
   <button type="{{type}}" class="btn btn-{{style}}">{% if icon %}<i class="{{icon}}"></i>&nbsp;{% endif %}{{name|trans}}</button>
 {% endmacro %}
 
 {#
 #}
-{% macro link(icon = null, name, route, route_parameters = {}, style = 'primary') %}
+{% macro link(icon = null, name, route, route_parameters = {}, style = 'secondary') %}
   <a href="{{path(route, route_parameters)}}" class="btn btn-{{style}}" role="button">{% if icon %}<i class="{{icon}}"></i>&nbsp;{% endif %}{{name|trans}}</a>
 {% endmacro %}
 

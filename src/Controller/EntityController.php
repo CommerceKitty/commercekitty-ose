@@ -172,8 +172,8 @@ class EntityController extends AbstractController
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
         $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
-        $formClassName       = $request->attributes->get('_form_class_name'); // ie ProductType
-        $formFullClassName   = $request->attributes->get('_form_class'); // ie App\Form\Type\ProductType
+        $formClassName       = $request->attributes->get('_form_class_name', $entityClassName.'Type'); // ie ProductType
+        $formFullClassName   = $request->attributes->get('_form_class', 'App\\Form\\Type\\'.$formClassName); // ie App\Form\Type\ProductType
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
         $entity = $this->getDoctrine()->getRepository($entityFullClassName)->find($id);
@@ -364,7 +364,7 @@ class EntityController extends AbstractController
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.'.$entitySnakeName.'.purge.initialize');
+        $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.'.$entitySnakeName.'.purge.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
         }
@@ -388,7 +388,7 @@ class EntityController extends AbstractController
                 '%entity_full_class_name%' => $entityFullClassName,
             ], 'flashes'));
 
-            $responseEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request, 'clone' => $cloneEntity]), 'response.'.$entitySnakeName.'.purged');
+            $responseEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'response.'.$entitySnakeName.'.purged');
             if ($responseEvent->hasArgument('response')) {
                 return $responseEvent->getArgument('response');
             }
@@ -397,8 +397,7 @@ class EntityController extends AbstractController
         }
 
         return $this->render($templatePathPrefix.$entitySnakeName.'/purge.'.$request->getRequestFormat().'.twig', [
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
