@@ -18,6 +18,8 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 * Multilingual
 * Support for multiple vendors
 * Dropship compatible
+* Customer Management
+* Order Management
 
 # Requirements
 
