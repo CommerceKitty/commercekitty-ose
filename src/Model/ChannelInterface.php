@@ -4,7 +4,7 @@ namespace App\Model;
 
 /**
  */
-interface ConnectorInterface
+interface ChannelInterface
 {
     /**
      * @return string

@@ -9,6 +9,12 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 * Multi-channel Inventory Management
 * Multi-channel Listings Management
 * Support for multiple warehouses
+* Support for kits & bundles
+* Integrations with other helpful platforms (Klaviyo, QuickBooks, etc.)
+* Automation
+* Reporting
+* Demand Forecasting
+* Dynamic Repricing
 
 # Requirements
 
@@ -18,19 +24,22 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 
 # Installation
 
+1. Clone repo and change to that directory
+2. Run `make install` to install dependencies
+3. Run `make compile.dev` to compile dev assets
+4. Run `make up` to run docker containers
+
+NOTE: If you would like to load in demo data, run `make db.fixtures`.
+
 # Configuration
+
+All configuration options can be found in `.env`
+
+# Documentation
+
+For documentation, please review the [wiki](https://github.com/CommerceKitty/commercekitty/wiki).
 
 # Sponsors
 
----
-
-# Dev Setup
-
-Development is done using Docker Compose.
-
-1. Edit `/etc/hosts` and add `127.0.0.1 commercekitty.local`
-   * You will need to do this as root
-2. Run `make selfsign` to create self signed SSL certs
-3. Run `docker-compose up -d`
-   * This will spin up php, nginx, and postgres
-4. Open browser to http://commercekitty.local
+If you would like to sponsor this project, please click the "Sponsor" button at
+the top of this page.
