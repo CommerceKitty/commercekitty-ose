@@ -15,6 +15,9 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 * Reporting
 * Demand Forecasting
 * Dynamic Repricing
+* Multilingual
+* Support for multiple vendors
+* Dropship compatible
 
 # Requirements
 
