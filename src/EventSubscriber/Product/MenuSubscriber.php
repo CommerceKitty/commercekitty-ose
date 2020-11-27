@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class TopbarMenuSubscriber implements EventSubscriberInterface
+class MenuSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
