@@ -1,0 +1,7 @@
+{% macro badge(label, context = 'primary') %}
+  <span class="badge badge-{{context}}">{{label|trans}}</span>
+{% endmacro %}
+
+{% macro link(label, route, route_parameters = {}, context = 'primary') %}
+  <a href="{{path(route, route_parameters)}}" class="badge badge-{{context}}">{{label|trans}}</a>
+{% endmacro %}
