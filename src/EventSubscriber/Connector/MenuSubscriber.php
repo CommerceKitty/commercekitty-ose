@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber\Product;
+namespace App\EventSubscriber\Connector;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -14,7 +14,7 @@ class MenuSubscriber implements EventSubscriberInterface
     {
         return [
             'menu.topbar' => [
-                ['buildMenu', -225],
+                ['buildMenu', -255],
             ]
         ];
     }
@@ -28,19 +28,19 @@ class MenuSubscriber implements EventSubscriberInterface
     {
         $menu = $event->getSubject();
 
-        $menu->addChild('products', [
+        $menu->addChild('connectors', [
             'extras' => [
-                'icon' => 'fas fa-barcode fa-fw',
+                'icon' => 'fas fa-store fa-fw',
             ],
         ]);
-        $menu['products']->addChild('new', [
-            'route'  => 'product_select_type',
+        $menu['connectors']->addChild('add', [
+            //'route'  => 'connector_new',
             'extras' => [
                 'icon' => 'fas fa-plus fa-fw',
             ],
         ]);
-        $menu['products']->addChild('view all', [
-            'route'  => 'product_index',
+        $menu['connectors']->addChild('view all', [
+            //'route'  => 'connector_index',
             'extras' => [
                 'icon' => 'fas fa-list fa-fw',
             ],

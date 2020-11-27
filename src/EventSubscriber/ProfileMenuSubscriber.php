@@ -44,6 +44,25 @@ class ProfileMenuSubscriber implements EventSubscriberInterface
         $username = $this->tokenStorage->getToken()->getUser()->__toString();
 
         $menu->addChild($username);
+
+        $menu[$username]->addChild('edit profile', [
+            //'route'  => 'profile_edit',
+            'extras' => [
+                'icon' => 'fas fa-edit fa-fw',
+            ],
+        ]);
+        $menu[$username]->addChild('change password', [
+            //'route'  => 'change_password',
+            'extras' => [
+                'icon' => 'fas fa-key fa-fw',
+            ],
+        ]);
+        $menu[$username]->addChild('settings', [
+            //'route'  => 'settings',
+            'extras' => [
+                'icon' => 'fas fa-cogs fa-fw',
+            ],
+        ]);
         $menu[$username]->addChild('logout', [
             'route'  => 'logout',
             'extras' => [
