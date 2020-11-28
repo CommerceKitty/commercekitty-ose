@@ -36,7 +36,7 @@ class DoctrineLifecycleListener
         $parts = explode('\\', $class);
         $name  = array_pop($parts);
 
-        return u($name)->snake();
+        return (string) u($name)->snake();
     }
 
     /**

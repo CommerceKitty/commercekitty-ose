@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use DateTimeInterface;
+use function Symfony\Component\String\u;
 
 /**
  */
@@ -66,5 +67,16 @@ abstract class AbstractChannel implements ChannelInterface
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    /**
+     */
+    public function getType(): string
+    {
+        $class = get_class($this);
+        $parts = explode('\\', $class);
+        $name  = preg_replace('/Channel/', '', array_pop($parts));
+
+        return (string) u($name)->snake();
     }
 }

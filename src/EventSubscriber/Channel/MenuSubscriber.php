@@ -34,13 +34,13 @@ class MenuSubscriber implements EventSubscriberInterface
             ],
         ]);
         $menu['channels']->addChild('add', [
-            //'route'  => 'channel_new',
+            'route'  => 'channel_select_type',
             'extras' => [
                 'icon' => 'fas fa-plus fa-fw',
             ],
         ]);
         $menu['channels']->addChild('view all', [
-            //'route'  => 'channel_index',
+            'route'  => 'channel_index',
             'extras' => [
                 'icon' => 'fas fa-list fa-fw',
             ],

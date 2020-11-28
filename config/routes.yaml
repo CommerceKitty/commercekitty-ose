@@ -14,6 +14,78 @@ logout:
     controller: App\Controller\SecurityController::logout
 # <-- Security
 
+# --> Channel
+channel_index:
+    methods:    GET
+    path:       /channels.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Channel
+    requirements:
+        _format: html|json
+channel_purge:
+    methods:    GET|DELETE
+    path:       /channels/purge.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Channel
+    requirements:
+        _format: html|json
+channel_select_type:
+    methods:    GET|POST
+    path:       /channels/select-type.{_format}
+    controller: App\Controller\ChannelController::selectType
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_new:
+    methods:    GET|POST
+    path:       /channels/new.{_format}
+    controller: App\Controller\ChannelController::new
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_edit:
+    methods:    GET|POST
+    path:       /channels/{id}/edit.{_format}
+    controller: App\Controller\ChannelController::edit
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_clone:
+    methods:    GET|POST
+    path:       /channels/{id}/clone.{_format}
+    controller: App\Controller\EntityController::clone
+    defaults:
+        _format:            html
+        _entity_class_name: Channel
+    requirements:
+        _format: html|json
+channel_delete:
+    methods:    GET|DELETE
+    path:       /channels/{id}/delete.{_format}
+    controller: App\Controller\EntityController::delete
+    defaults:
+        _format:            html
+        _entity_class_name: Channel
+    requirements:
+        _format: html|json
+channel_show:
+    methods:    GET
+    path:       /channels/{id}.{_format}
+    controller: App\Controller\EntityController::show
+    defaults:
+        _format:            html
+        _entity_class_name: Channel
+    requirements:
+        _format: html|json
+# <-- Channel
+
 # --> Customer
 customer_index:
     methods:    GET
