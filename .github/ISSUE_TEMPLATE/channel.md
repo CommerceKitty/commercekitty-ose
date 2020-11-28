@@ -1,5 +1,5 @@
 ---
-name: Channel
+name: New Channel
 about: Suggest a new sales channel
 title: ''
 labels: ''
