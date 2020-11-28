@@ -11,5 +11,8 @@ interface VendorInterface
      */
     public function getId(): ?string;
 
-    // uses AddressInterface
+    /**
+     * @return string
+     */
+    public function getName(): ?string;
 }

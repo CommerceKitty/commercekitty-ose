@@ -6,5 +6,18 @@ namespace App\Model;
  */
 interface WarehouseInterface
 {
-    // uses AddressInterface
+    /**
+     * @return string
+     */
+    public function getId(): ?string;
+
+    /**
+     * @return string
+     */
+    public function getName(): ?string;
+
+    /**
+     * @return AddressInterface|null
+     */
+    public function getAddress(): ?AddressInterface;
 }
