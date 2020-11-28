@@ -25,6 +25,7 @@ help:
 	@echo "  $(COLOR_GREEN)db.fixtures$(COLOR_RESET)       Loads DB Fixtures (destructive)"
 	@echo "  $(COLOR_GREEN)db.migrate$(COLOR_RESET)        Runs database migrations"
 	@echo "  $(COLOR_GREEN)docs.coverage$(COLOR_RESET)     Generates HTML Code Coverage report"
+	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs workers"
 	@echo " $(COLOR_YELLOW)lint$(COLOR_RESET)              Runs all lint targets"
 	@echo "  $(COLOR_GREEN)lint.container$(COLOR_RESET)    Check container"
 	@echo "  $(COLOR_GREEN)lint.twig$(COLOR_RESET)         Check twig files"
@@ -91,6 +92,9 @@ coverage:
 	php bin/console doctrine:database:drop --env=test -vvv -n --force
 	php vendor/bin/phpcov merge var/log/build/coverage --html docs/coverage
 	rm -rf var/build/*.cov
+
+worker:
+	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360
 
 # --- Hidden ---
 
