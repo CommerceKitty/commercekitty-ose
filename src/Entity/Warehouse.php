@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WarehouseRepository")
- * @ORM\Table(name="wareshouses")
+ * @ORM\Table(name="warehouses")
  */
 class Warehouse extends Model\Warehouse
 {
