@@ -25,8 +25,20 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # @todo Make for various menus?
     App\Menu\MenuBuilder:
         autowire: true
         tags:
             - { name: knp_menu.menu_builder, method: buildGenericMenu, alias: generic_menu }
 
+    # This just fires events that other Listeners/Subscribers will listen to
+    App\EventListener\DoctrineLifecycleListener:
+        autowire: true
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postRemove }
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postUpdate }
