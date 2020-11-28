@@ -12,6 +12,7 @@ homepage:
     path:       /
     controller: App\Controller\DefaultController::index
 
+# --> Product
 product_index:
     methods:    GET
     path:       /products.{_format}
@@ -91,3 +92,70 @@ product_show:
         _entity_class_name: Product
     requirements:
         _format: html|json
+# <-- Product
+
+# --> Customer
+customer_index:
+    methods:    GET
+    path:       /customers.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_purge:
+    methods:    GET|DELETE
+    path:       /customers/purge.{_format}
+    controller: App\Controller\EntityController::purge
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_new:
+    methods:    GET|POST
+    path:       /customers/new.{_format}
+    controller: App\Controller\EntityController::new
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_edit:
+    methods:    GET|POST
+    path:       /customers/{id}/edit.{_format}
+    controller: App\Controller\EntityController::edit
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_delete:
+    methods:    GET|DELETE
+    path:       /customers/{id}/delete.{_format}
+    controller: App\Controller\EntityController::delete
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_clone:
+    methods:    GET|POST
+    path:       /customers/{id}/clone.{_format}
+    controller: App\Controller\EntityController::clone
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+customer_show:
+    methods:    GET
+    path:       /customers/{id}.{_format}
+    controller: App\Controller\EntityController::show
+    defaults:
+        _format:            html
+        _entity_class_name: Customer
+    requirements:
+        _format: html|json
+# <-- Customer

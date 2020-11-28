@@ -1,0 +1,94 @@
+{#
+  @var CustomerInterface entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{entity}} | {{'customers'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('customers', 'customer_index')}}
+      {{breadcrumb.item(entity)}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        {# @todo menu event #}
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link" href="{{path('customer_edit', {'id':entity.id})}}"><i class="fas fa-edit fa-fw"></i>&nbsp;{{'edit'|trans}}</a>
+          <a class="nav-link" href="{{path('customer_clone', {'id':entity.id})}}"><i class="fas fa-clone fa-fw"></i>&nbsp;{{'clone'|trans}}</a>
+          {#<a class="nav-link" href="{{path('customer_log', {'id':entity.id})}}"><i class="fas fa-terminal fa-fw"></i>&nbsp;{{'log'|trans}}</a>#}
+          <a class="nav-link text-danger" href="{{path('customer_delete', {'id':entity.id})}}"><i class="fas fa-trash fa-fw"></i>&nbsp;{{'delete'|trans}}</a>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block tbody %}
+            <tr><th>{{'id'|trans}}</th><td>{{entity.id}}</td></tr>
+            <tr><th>{{'first name'|trans}}</th><td>{{entity.firstName}}</td></tr>
+            <tr><th>{{'last name'|trans}}</th><td>{{entity.lastName}}</td></tr>
+            <tr><th>{{'email'|trans}}</th><td>{{entity.email}}</td></tr>
+            <tr><th>{{'phone'|trans}}</th><td>{{entity.phone}}</td></tr>
+          {% endblock %}
+        {% endembed %}
+      </div>
+      <div class="col-sm-4">
+        <h3>{{'shipping address'|trans}}</h3>
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block tbody %}
+            {% if entity.shippingAddress %}
+              <tr><th>{{'id'|trans}}</th><td>{{entity.shippingAddress.id}}</td></tr>
+              <tr><th>{{'phone'|trans}}</th><td>{{entity.shippingAddress.phone}}</td></tr>
+              <tr><th>{{'first name'|trans}}</th><td>{{entity.shippingAddress.firstName}}</td></tr>
+              <tr><th>{{'last name'|trans}}</th><td>{{entity.shippingAddress.lastName}}</td></tr>
+              <tr><th>{{'company name'|trans}}</th><td>{{entity.shippingAddress.companyName}}</td></tr>
+              <tr><th>{{'address one'|trans}}</th><td>{{entity.shippingAddress.addressOne}}</td></tr>
+              <tr><th>{{'address two'|trans}}</th><td>{{entity.shippingAddress.addressTwo}}</td></tr>
+              <tr><th>{{'state'|trans}}</th><td>{{entity.shippingAddress.state}}</td></tr>
+              <tr><th>{{'city'|trans}}</th><td>{{entity.shippingAddress.city}}</td></tr>
+              <tr><th>{{'county'|trans}}</th><td>{{entity.shippingAddress.county}}</td></tr>
+              <tr><th>{{'postal code'|trans}}</th><td>{{entity.shippingAddress.postalCode}}</td></tr>
+              <tr><th>{{'country'|trans}}</th><td>{{entity.shippingAddress.country}}</td></tr>
+              <tr><th>{{'country code'|trans}}</th><td>{{entity.shippingAddress.countryCode}}</td></tr>
+              <tr><th>{{'latitude'|trans}}</th><td>{{entity.shippingAddress.latitude}}</td></tr>
+              <tr><th>{{'longitude'|trans}}</th><td>{{entity.shippingAddress.longitude}}</td></tr>
+            {% else %}
+              <tr><td>{{'no address found'|trans}}</td></tr>
+            {% endif %}
+          {% endblock %}
+        {% endembed %}
+
+        <h3>{{'billing address'|trans}}</h3>
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block tbody %}
+            {% if entity.billingAddress %}
+              <tr><th>{{'id'|trans}}</th><td>{{entity.billingAddress.id}}</td></tr>
+              <tr><th>{{'phone'|trans}}</th><td>{{entity.billingAddress.phone}}</td></tr>
+              <tr><th>{{'first name'|trans}}</th><td>{{entity.billingAddress.firstName}}</td></tr>
+              <tr><th>{{'last name'|trans}}</th><td>{{entity.billingAddress.lastName}}</td></tr>
+              <tr><th>{{'company name'|trans}}</th><td>{{entity.billingAddress.companyName}}</td></tr>
+              <tr><th>{{'address one'|trans}}</th><td>{{entity.billingAddress.addressOne}}</td></tr>
+              <tr><th>{{'address two'|trans}}</th><td>{{entity.billingAddress.addressTwo}}</td></tr>
+              <tr><th>{{'state'|trans}}</th><td>{{entity.billingAddress.state}}</td></tr>
+              <tr><th>{{'city'|trans}}</th><td>{{entity.billingAddress.city}}</td></tr>
+              <tr><th>{{'county'|trans}}</th><td>{{entity.billingAddress.county}}</td></tr>
+              <tr><th>{{'postal code'|trans}}</th><td>{{entity.billingAddress.postalCode}}</td></tr>
+              <tr><th>{{'country'|trans}}</th><td>{{entity.billingAddress.country}}</td></tr>
+              <tr><th>{{'country code'|trans}}</th><td>{{entity.billingAddress.countryCode}}</td></tr>
+              <tr><th>{{'latitude'|trans}}</th><td>{{entity.billingAddress.latitude}}</td></tr>
+              <tr><th>{{'longitude'|trans}}</th><td>{{entity.billingAddress.longitude}}</td></tr>
+            {% else %}
+              <tr><td>{{'no address found'|trans}}</td></tr>
+            {% endif %}
+          {% endblock %}
+        {% endembed %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

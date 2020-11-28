@@ -1,0 +1,32 @@
+{#
+  @var FormViewInterface form
+  @var CustomerInterface entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'edit'|trans}} | {{entity}} | {{'customers'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('customers', 'customer_index')}}
+      {{breadcrumb.item(entity, 'customer_show', {'id':entity.id})}}
+      {{breadcrumb.item('clone')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        {{form_start(form)}}
+          {{btn.link('fas fa-ban fa-fw', 'cancel', 'customer_show', {'id':entity.id})}}
+          {{btn.submit('fas fa-clone fa-fw', 'clone')}}
+        {{form_end(form)}}
+      </div>
+    </div>
+  </div>
+{% endblock %}

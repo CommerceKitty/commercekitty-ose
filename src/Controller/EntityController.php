@@ -72,12 +72,6 @@ class EntityController extends AbstractController
 
         $entity = new $entityFullClassName();
 
-        if (!$this->isGranted('create', $entity)) {
-            throw $this->createNotFoundException($translator->trans('exceptions.'.$transId.'.create.403', [
-                '%class%' => $entityClass,
-            ]));
-        }
-
         $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.'.$entitySnakeName.'.new.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');

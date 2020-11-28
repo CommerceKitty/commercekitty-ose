@@ -29,6 +29,8 @@ class Product extends Model\Product
     protected $name;
 
     /**
+     * @todo Unique constraint
+     *
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\Length(max=255)

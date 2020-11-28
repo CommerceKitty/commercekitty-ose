@@ -1,0 +1,30 @@
+{#
+  @var FormViewInterface form
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'purge'|trans}} | {{'customers'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('customers', 'customer_index')}}
+      {{breadcrumb.item('purge')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        {{form_start(form)}}
+          {{btn.link('fas fa-ban fa-fw', 'cancel', 'customer_index')}}
+          {{btn.submit('fas fa-trash fa-fw', 'purge', 'danger')}}
+        {{form_end(form)}}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -29,6 +29,7 @@ class ProductTypeChoiceType extends AbstractType
                 'simple' => ProductInterface::TYPE_SIMPLE,
                 //'kit'    => ProductInterface::TYPE_KIT,
             ],
+            'translation_domain' => 'forms'
         ]);
     }
 
