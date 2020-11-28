@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber\Connector;
+namespace App\EventSubscriber\Channel;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -28,19 +28,19 @@ class MenuSubscriber implements EventSubscriberInterface
     {
         $menu = $event->getSubject();
 
-        $menu->addChild('connectors', [
+        $menu->addChild('channels', [
             'extras' => [
                 'icon' => 'fas fa-store fa-fw',
             ],
         ]);
-        $menu['connectors']->addChild('add', [
-            //'route'  => 'connector_new',
+        $menu['channels']->addChild('add', [
+            //'route'  => 'channel_new',
             'extras' => [
                 'icon' => 'fas fa-plus fa-fw',
             ],
         ]);
-        $menu['connectors']->addChild('view all', [
-            //'route'  => 'connector_index',
+        $menu['channels']->addChild('view all', [
+            //'route'  => 'channel_index',
             'extras' => [
                 'icon' => 'fas fa-list fa-fw',
             ],

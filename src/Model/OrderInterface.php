@@ -7,11 +7,11 @@ namespace App\Model;
 interface OrderInterface
 {
     /**
-     * Returns the Marketplace Connector this order is from
+     * Returns the Marketplace Channel this order is from
      *
-     * @return ConnectorInterface
+     * @return ChannelInterface
      */
-    public function getConnector(): ConnectorInterface;
+    public function getChannel(): ChannelInterface;
 
     /**
      * @return OrderItemInterface[]
