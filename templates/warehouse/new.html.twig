@@ -1,0 +1,33 @@
+{#
+  @var FormViewInterface form
+  @var WarehouseInterface  entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'new'|trans}} | {{'warehouses'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('warehouses', 'warehouse_index')}}
+      {{breadcrumb.item('new')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        {{form_start(form)}}
+          {{form_errors(form)}}
+          {{form_rest(form)}}
+          {{btn.link('fas fa-ban fa-fw', 'cancel', 'warehouse_index')}}
+          {{btn.submit('fas fa-save fa-fw', 'save')}}
+        {{form_end(form)}}
+      </div>
+    </div>
+  </div>
+{% endblock %}

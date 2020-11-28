@@ -20,13 +20,13 @@ class Customer extends Model\Customer
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Address", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      */
     protected $shippingAddress;
 
     /**
-     * @ORM\OneToOne(targetEntity="Address", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      */
     protected $billingAddress;
