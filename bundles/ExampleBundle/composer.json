@@ -1,0 +1,11 @@
+{
+    "name": "commercekitty/example-bundle",
+    "description": "Example Bundle for use with Commerce Kitty OSE",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CommerceKitty\\Bundle\\ExampleBundle": "src/"
+        }
+    }
+}
