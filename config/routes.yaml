@@ -1,3 +1,10 @@
+# <-- Generic
+homepage:
+    methods:    GET
+    path:       /
+    controller: App\Controller\DefaultController::index
+# --> Generic
+
 # --> Security
 login:
     path:       /login
@@ -6,93 +13,6 @@ logout:
     path:       /logout
     controller: App\Controller\SecurityController::logout
 # <-- Security
-
-homepage:
-    methods:    GET
-    path:       /
-    controller: App\Controller\DefaultController::index
-
-# --> Product
-product_index:
-    methods:    GET
-    path:       /products.{_format}
-    controller: App\Controller\EntityController::index
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-product_select_type:
-    methods:    GET|POST
-    path:       /products/select-type.{_format}
-    controller: App\Controller\ProductController::selectType
-    defaults:
-        _format: html
-    requirements:
-        _format: html|json
-product_new:
-    methods:    GET|POST
-    path:       /products/new.{_format}
-    controller: App\Controller\ProductController::new
-    defaults:
-        _format: html
-    requirements:
-        _format: html|json
-product_edit:
-    methods:    GET|POST
-    path:       /products/{id}/edit.{_format}
-    controller: App\Controller\EntityController::edit
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-product_delete:
-    methods:    GET|DELETE
-    path:       /products/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-product_clone:
-    methods:    GET|POST
-    path:       /products/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-#product_log:
-#    methods:    GET
-#    path:       /products/{id}/log.{_format}
-#    controller: App\Controller\EntityController::log
-#    defaults:
-#        _format:            html
-#        _entity_class_name: Product
-#    requirements:
-#        _format: html|json
-product_purge:
-    methods:    GET|DELETE
-    path:       /products/purge.{_format}
-    controller: App\Controller\EntityController::purge
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-product_show:
-    methods:    GET
-    path:       /products/{id}.{_format}
-    controller: App\Controller\EntityController::show
-    defaults:
-        _format:            html
-        _entity_class_name: Product
-    requirements:
-        _format: html|json
-# <-- Product
 
 # --> Customer
 customer_index:
@@ -159,3 +79,145 @@ customer_show:
     requirements:
         _format: html|json
 # <-- Customer
+
+# --> Product
+product_index:
+    methods:    GET
+    path:       /products.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+product_select_type:
+    methods:    GET|POST
+    path:       /products/select-type.{_format}
+    controller: App\Controller\ProductController::selectType
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+product_new:
+    methods:    GET|POST
+    path:       /products/new.{_format}
+    controller: App\Controller\ProductController::new
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+product_edit:
+    methods:    GET|POST
+    path:       /products/{id}/edit.{_format}
+    controller: App\Controller\EntityController::edit
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+product_delete:
+    methods:    GET|DELETE
+    path:       /products/{id}/delete.{_format}
+    controller: App\Controller\EntityController::delete
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+product_clone:
+    methods:    GET|POST
+    path:       /products/{id}/clone.{_format}
+    controller: App\Controller\EntityController::clone
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+product_purge:
+    methods:    GET|DELETE
+    path:       /products/purge.{_format}
+    controller: App\Controller\EntityController::purge
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+product_show:
+    methods:    GET
+    path:       /products/{id}.{_format}
+    controller: App\Controller\EntityController::show
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
+# <-- Product
+
+# --> Vendor
+# <-- Vendor
+
+# <-- Warehouse
+warehouse_index:
+    methods:    GET
+    path:       /warehouses.{_format}
+    controller: App\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_purge:
+    methods:    GET|DELETE
+    path:       /warehouses/purge.{_format}
+    controller: App\Controller\EntityController::purge
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_new:
+    methods:    GET|POST
+    path:       /warehouses/new.{_format}
+    controller: App\Controller\EntityController::new
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_edit:
+    methods:    GET|POST
+    path:       /warehouses/{id}/edit.{_format}
+    controller: App\Controller\EntityController::edit
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_clone:
+    methods:    GET|POST
+    path:       /warehouses/{id}/clone.{_format}
+    controller: App\Controller\EntityController::clone
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_delete:
+    methods:    GET|DELETE
+    path:       /warehouses/{id}/delete.{_format}
+    controller: App\Controller\EntityController::delete
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+warehouse_show:
+    methods:    GET
+    path:       /warehouses/{id}.{_format}
+    controller: App\Controller\EntityController::show
+    defaults:
+        _format:            html
+        _entity_class_name: Warehouse
+    requirements:
+        _format: html|json
+# --> Warehouse
