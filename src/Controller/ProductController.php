@@ -76,6 +76,8 @@ class ProductController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
+            $request->getSession()->remove('product_type');
+
             $this->addFlash('success', $translator->trans('flashes.product.created.success', [
                 '%entity_class_name%'      => 'Product',
                 '%entity_full_class_name%' => Product::class,
