@@ -19,7 +19,13 @@ class CommerceKittyExampleExtension extends Extension
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+    }
 
-        return $config;
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'example';
     }
 }

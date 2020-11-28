@@ -12,13 +12,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder('example');
-
+        $builder = new TreeBuilder('commerce_kitty_example');
         $builder->getRootNode()
             ->children()
-                ->arrayNode('example')
+                ->scalarNode('bar')->defaultValue('default')->end()
+                ->arrayNode('foo')
                     ->children()
-                        ->scalarNode('one')->end()
+                        ->scalarNode('one')->defaultValue('default')->end()
                         ->scalarNode('two')->end()
                     ->end()
                 ->end()
