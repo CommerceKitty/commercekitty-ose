@@ -46,7 +46,7 @@ class ProfileMenuSubscriber implements EventSubscriberInterface
         $menu->addChild($username);
 
         $menu[$username]->addChild('edit profile', [
-            //'route'  => 'profile_edit',
+            'route'  => 'profile_edit',
             'extras' => [
                 'icon' => 'fas fa-edit fa-fw',
             ],

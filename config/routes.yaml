@@ -14,6 +14,17 @@ logout:
     controller: App\Controller\SecurityController::logout
 # <-- Security
 
+# <-- Profile
+profile_edit:
+    methods:    GET|POST
+    path:       /profile/edit.{_format}
+    controller: App\Controller\ProfileController::edit
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+# --> Profile
+
 # --> Channel
 channel_index:
     methods:    GET
