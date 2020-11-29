@@ -34,13 +34,13 @@ class MenuSubscriber implements EventSubscriberInterface
             ],
         ]);
         $menu['vendors']->addChild('add', [
-            //'route'  => 'vendor_new',
+            'route'  => 'vendor_new',
             'extras' => [
                 'icon' => 'fas fa-plus fa-fw',
             ],
         ]);
         $menu['vendors']->addChild('view all', [
-            //'route'  => 'vendor_index',
+            'route'  => 'vendor_index',
             'extras' => [
                 'icon' => 'fas fa-list fa-fw',
             ],
