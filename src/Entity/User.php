@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -38,4 +39,12 @@ class User extends Model\User
      * @ORM\Column(type="string")
      */
     protected $password;
+
+    /**
+     * @UserPassword(
+     *   message="Invalid Password",
+     *   groups={"change_password"}
+     * )
+     */
+    protected $currentPassword;
 }

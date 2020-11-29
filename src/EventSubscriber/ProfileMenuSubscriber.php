@@ -52,7 +52,7 @@ class ProfileMenuSubscriber implements EventSubscriberInterface
             ],
         ]);
         $menu[$username]->addChild('change password', [
-            //'route'  => 'change_password',
+            'route'  => 'change_password',
             'extras' => [
                 'icon' => 'fas fa-key fa-fw',
             ],

@@ -26,8 +26,9 @@ class ProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class'         => User::class,
-            'translation_domain' => 'forms'
+            'data_class'          => User::class,
+            'translation_domain'  => 'forms'
+            //'validation_groups' => ['profile'],
         ]);
     }
 }

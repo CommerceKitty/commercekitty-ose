@@ -14,6 +14,17 @@ logout:
     controller: App\Controller\SecurityController::logout
 # <-- Security
 
+# <-- ChangePassword
+change_password:
+    methods:    GET|POST
+    path:       /change-password.{_format}
+    controller: App\Controller\ChangePasswordController::changePassword
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+# --> ChangePassword
+
 # <-- Profile
 profile_edit:
     methods:    GET|POST

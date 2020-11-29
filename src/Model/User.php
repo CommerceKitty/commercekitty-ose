@@ -25,6 +25,16 @@ class User implements UserInterface
     protected $password;
 
     /**
+     * @var string
+     */
+    protected $currentPassword;
+
+    /**
+     * @var string
+     */
+    protected $plainPassword;
+
+    /**
      */
     public function __toString(): string
     {
@@ -116,7 +126,41 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // If you store any temporary, sensitive data on the user, clear it
+        // here
+        $this->plainPassword   = null;
+        $this->currentPassword = null;
+    }
+
+    /**
+     */
+    public function getCurrentPassword(): ?string
+    {
+        return $this->currentPassword;
+    }
+
+    /**
+     */
+    public function setCurrentPassword(string $password): self
+    {
+        $this->currentPassword = $password;
+
+        return $this;
+    }
+
+    /**
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     */
+    public function setPlainPassword(string $password): self
+    {
+        $this->plainPassword = $password;
+
+        return $this;
     }
 }
