@@ -6,12 +6,14 @@ use App\Entity;
 use App\Event\TestConnectionEvent;
 use App\Form\Type\ChannelTypeChoiceType;
 use App\Form\Type\WoocommerceChannelType;
+use App\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ChannelController extends AbstractController
 {
@@ -191,7 +193,8 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $dispatcher->dispatch(new TestConnectionEvent($entity, ['request' => $request]), 'channel.'.$entity->getType().'.test_connection');
+            // @todo Make Better
+            $event = $dispatcher->dispatch(new TestConnectionEvent($entity), 'channel.'.$entity->getType().'.test_connection');
             if ($event->wasSuccessful()) {
                 $this->addFlash('success', 'Connection Successful');
             } else {
@@ -211,47 +214,215 @@ class ChannelController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
+     * @param MessageBusInterface      $bus
      * @param string                   $id
      *
      * @return Response
      */
-    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('channel_import_products', ['id' => $entity->getId()]))
+            ->setMethod('POST')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Factory
+            switch ($entity->getType()) {
+                case('woocommerce'):
+                    $message = new Message\Channel\Woocommerce\ImportProductsMessage();
+                    break;
+                default:
+                    throw new \Exception('Channel Type is unknown');
+            }
+            $message->setChannelId($entity->getId());
+            $bus->dispatch($message);
+
+            $this->addFlash('success', $translator->trans('flashes.channel.import_products.success', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
+            ], 'flashes'));
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/import_products.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
     }
 
     /**
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
+     * @param MessageBusInterface      $bus
      * @param string                   $id
      *
      * @return Response
      */
-    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('channel_import_orders', ['id' => $entity->getId()]))
+            ->setMethod('POST')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Factory
+            switch ($entity->getType()) {
+                case('woocommerce'):
+                    $message = new Message\Channel\Woocommerce\ImportOrdersMessage();
+                    break;
+                default:
+                    throw new \Exception('Channel Type is unknown');
+            }
+            $message->setChannelId($entity->getId());
+            $bus->dispatch($message);
+
+            $this->addFlash('success', $translator->trans('flashes.channel.import_orders.success', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
+            ], 'flashes'));
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/import_orders.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
     }
 
     /**
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
+     * @param MessageBusInterface      $bus
      * @param string                   $id
      *
      * @return Response
      */
-    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('channel_export_inventory', ['id' => $entity->getId()]))
+            ->setMethod('POST')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Factory
+            switch ($entity->getType()) {
+                case('woocommerce'):
+                    $message = new Message\Channel\Woocommerce\ExportInventoryMessage();
+                    break;
+                default:
+                    throw new \Exception('Channel Type is unknown');
+            }
+            $message->setChannelId($entity->getId());
+            $bus->dispatch($message);
+
+            $this->addFlash('success', $translator->trans('flashes.channel.export_inventory.success', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
+            ], 'flashes'));
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/export_inventory.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
     }
 
     /**
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
+     * @param MessageBusInterface      $bus
      * @param string                   $id
      *
      * @return Response
      */
-    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('channel_export_listings', ['id' => $entity->getId()]))
+            ->setMethod('POST')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Factory
+            switch ($entity->getType()) {
+                case('woocommerce'):
+                    $message = new Message\Channel\Woocommerce\ExportListingsMessage();
+                    break;
+                default:
+                    throw new \Exception('Channel Type is unknown');
+            }
+            $message->setChannelId($entity->getId());
+            $bus->dispatch($message);
+
+            $this->addFlash('success', $translator->trans('flashes.channel.export_listings.success', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
+            ], 'flashes'));
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/export_listings.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
     }
 }

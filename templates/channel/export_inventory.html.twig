@@ -1,0 +1,32 @@
+{#
+  @var FormViewInterface form
+  @var ChannelInterface  entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'export inventory'|trans}} | {{entity}} | {{'channels'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('channels', 'channel_index')}}
+      {{breadcrumb.item(entity, 'channel_show', {'id':entity.id})}}
+      {{breadcrumb.item('export inventory')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        {{form_start(form)}}
+          {{btn.link('fas fa-ban fa-fw', 'cancel', 'channel_show', {'id':entity.id})}}
+          {{btn.submit('fas fa-cloud-upload-alt fa-fw', 'export inventory')}}
+        {{form_end(form)}}
+      </div>
+    </div>
+  </div>
+{% endblock %}
