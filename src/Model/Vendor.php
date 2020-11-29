@@ -10,6 +10,13 @@ class Vendor implements VendorInterface
     protected $name;
 
     /**
+     */
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getId(): ?string
