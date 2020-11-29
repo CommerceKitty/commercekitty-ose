@@ -240,6 +240,15 @@ product_new:
         _format: html
     requirements:
         _format: html|json
+product_purge:
+    methods:    GET|DELETE
+    path:       /products/purge.{_format}
+    controller: App\Controller\EntityController::purge
+    defaults:
+        _format:            html
+        _entity_class_name: Product
+    requirements:
+        _format: html|json
 product_edit:
     methods:    GET|POST
     path:       /products/{id}/edit.{_format}
@@ -267,13 +276,12 @@ product_clone:
         _entity_class_name: Product
     requirements:
         _format: html|json
-product_purge:
-    methods:    GET|DELETE
-    path:       /products/purge.{_format}
-    controller: App\Controller\EntityController::purge
+product_inventory:
+    methods:    GET
+    path:       /products/{id}/inventory.{_format}
+    controller: App\Controller\ProductController::inventory
     defaults:
-        _format:            html
-        _entity_class_name: Product
+        _format: html
     requirements:
         _format: html|json
 product_show:

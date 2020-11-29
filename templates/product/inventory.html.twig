@@ -1,0 +1,63 @@
+{#
+  @var ProductInterface[] pager
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'inventory'|trans}} | {{entity.name}} | {{'products'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('products', 'product_index')}}
+      {{breadcrumb.item(entity, 'product_show', {'id':entity.id})}}
+      {{breadcrumb.item('inventory')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        {# @todo menu event #}
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link" href="{{path('product_show', {'id':entity.id})}}"><i class="fas fa-arrow-left fa-fw"></i>&nbsp;{{'back'|trans}}</a>
+          <a class="nav-link disabled" href=""><i class="fas fa-plus fa-fw"></i>&nbsp;{{'add'|trans}}</a>
+        </div>
+      </div>
+      <div class="col-sm-10">
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block thead %}
+            <tr>
+              <th>&nbsp;</th>
+              <th>{{'warehouse'|trans}}</th>
+              <th>{{'quantity'|trans}}</th>
+            </tr>
+          {% endblock thead %}
+          {% block tbody %}
+            {% for inventory in pager %}
+              <tr>
+                <td class="col-sm-2">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-equals"></i>&nbsp;{{'set'|trans}}</a>
+                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-plus-square"></i>&nbsp;{{'increment'|trans}}</a>
+                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-minus-square"></i>&nbsp;{{'decrement'|trans}}</a>
+                      <a class="dropdown-item text-danger" href=""><i class="fas fa-fw fa-trash"></i>&nbsp;{{'delete'|trans}}</a>
+                    </div>
+                  </div>
+                </td>
+                <td>{{inventory.warehouse}}</td>
+                <td>{{inventory.quantity}}</td>
+              </tr>
+            {% endfor %}
+          {% endblock %}
+        {% endembed %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
