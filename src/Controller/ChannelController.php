@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity;
+use App\Event\TestConnectionEvent;
 use App\Form\Type\ChannelTypeChoiceType;
 use App\Form\Type\WoocommerceChannelType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -161,5 +162,96 @@ class ChannelController extends AbstractController
             'entity' => $entity,
             'form'   => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param string                   $id
+     *
+     * @return Response
+     */
+    public function testConnection(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('channel_test_connection', ['id' => $entity->getId()]))
+            ->setMethod('POST')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = $dispatcher->dispatch(new TestConnectionEvent($entity, ['request' => $request]), 'channel.'.$entity->getType().'.test_connection');
+            if ($event->wasSuccessful()) {
+                $this->addFlash('success', 'Connection Successful');
+            } else {
+                $this->addFlash('danger', $event->getMessage());
+            }
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/test_connection.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param string                   $id
+     *
+     * @return Response
+     */
+    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param string                   $id
+     *
+     * @return Response
+     */
+    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param string                   $id
+     *
+     * @return Response
+     */
+    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param string                   $id
+     *
+     * @return Response
+     */
+    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
     }
 }

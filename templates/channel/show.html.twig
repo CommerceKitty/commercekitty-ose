@@ -19,9 +19,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-2">
-        {# @todo menu event #}
+        {# @todo menu event, import channel/_menu.html.twig #}
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link disabled" href="#"><i class="fas fa-plug fa-fw"></i>&nbsp;{{'test connection'|trans}}</a>
+          <a class="nav-link" href="{{path('channel_test_connection', {'id':entity.id})}}"><i class="fas fa-plug fa-fw"></i>&nbsp;{{'test connection'|trans}}</a>
           <a class="nav-link disabled" href="#"><i class="fas fa-cloud-download-alt fa-fw"></i>&nbsp;{{'import products'|trans}}</a>
           <a class="nav-link disabled" href="#"><i class="fas fa-cloud-download-alt fa-fw"></i>&nbsp;{{'import orders'|trans}}</a>
           <a class="nav-link disabled" href="#"><i class="fas fa-cloud-upload-alt fa-fw"></i>&nbsp;{{'export inventory'|trans}}</a>

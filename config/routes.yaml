@@ -97,6 +97,46 @@ channel_delete:
         _entity_class_name: Channel
     requirements:
         _format: html|json
+channel_test_connection:
+    methods:    GET|POST
+    path:       /channels/{id}/test-connection.{_format}
+    controller: App\Controller\ChannelController::testConnection
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_import_products:
+    methods:    GET|POST
+    path:       /channels/{id}/import-products.{_format}
+    controller: App\Controller\ChannelController::importProducts
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_import_orders:
+    methods:    GET|POST
+    path:       /channels/{id}/import-orders.{_format}
+    controller: App\Controller\ChannelController::importOrders
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_export_inventory:
+    methods:    GET|POST
+    path:       /channels/{id}/export-inventory.{_format}
+    controller: App\Controller\ChannelController::exportInventory
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+channel_export_listings:
+    methods:    GET|POST
+    path:       /channels/{id}/export-listings.{_format}
+    controller: App\Controller\ChannelController::exportListings
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
 channel_show:
     methods:    GET
     path:       /channels/{id}.{_format}
