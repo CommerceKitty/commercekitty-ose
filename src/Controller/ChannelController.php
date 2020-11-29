@@ -64,6 +64,11 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('channel_select_type');
         }
 
+        $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.channel.new.initialize');
+        if ($controllerEvent->hasArgument('response')) {
+            return $controllerEvent->getArgument('response');
+        }
+
         // @TODO use Factory
         switch ($request->getSession()->get('channel_type')) {
             case('woocommerce'):
@@ -74,6 +79,7 @@ class ChannelController extends AbstractController
                 throw new \Exception('Channel Type is unknown');
         }
 
+        // @todo Use form event
         $form = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -93,6 +99,65 @@ class ChannelController extends AbstractController
         }
 
         return $this->render('channel/new.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     *
+     * @return Response
+     */
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+
+        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%id%'                     => $id,
+            ]));
+        }
+
+        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.channel.edit.initialize');
+        if ($controllerEvent->hasArgument('response')) {
+            return $controllerEvent->getArgument('response');
+        }
+
+        // @TODO Use Factory
+        switch ($entity->getType()) {
+            case('woocommerce'):
+                $formType = WoocommerceChannelType::class;
+                break;
+            default:
+                throw new \Exception('Channel Type is unknown');
+        }
+
+        // @todo Use form event
+        $form = $this->createForm($formType, $entity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($entity);
+            $manager->flush();
+
+            $request->getSession()->remove('channel_type');
+
+            $this->addFlash('success', $translator->trans('flashes.channel.created.success', [
+                '%entity_class_name%'      => 'Channel',
+                '%entity_full_class_name%' => Entity\Channel::class,
+                '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
+            ], 'flashes'));
+
+            return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('channel/edit.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView(),
         ]);
