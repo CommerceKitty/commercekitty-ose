@@ -23,7 +23,7 @@
         {# @todo menu event #}
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a class="nav-link" href="{{path('product_show', {'id':entity.id})}}"><i class="fas fa-arrow-left fa-fw"></i>&nbsp;{{'back'|trans}}</a>
-          <a class="nav-link disabled" href=""><i class="fas fa-plus fa-fw"></i>&nbsp;{{'add'|trans}}</a>
+          <a class="nav-link" href="{{path('product_inventory_select_warehouse', {'id':entity.id})}}"><i class="fas fa-plus fa-fw"></i>&nbsp;{{'add'|trans}}</a>
         </div>
       </div>
       <div class="col-sm-10">

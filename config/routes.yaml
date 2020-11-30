@@ -295,6 +295,25 @@ product_show:
         _format: html|json
 # <-- Product
 
+# <-- ProductInventory
+product_inventory_select_warehouse:
+    methods:    GET|POST
+    path:       /products/{id}/inventory/select-warehouse.{_format}
+    controller: App\Controller\ProductInventoryController::selectWarehouse
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+product_inventory_new:
+    methods:    GET|POST
+    path:       /products/{id}/inventory/new.{_format}
+    controller: App\Controller\ProductInventoryController::new
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+# --> ProductInventory
+
 # --> Vendor
 vendor_index:
     methods:    GET
