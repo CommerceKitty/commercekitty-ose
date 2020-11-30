@@ -214,6 +214,42 @@ customer_show:
         _format: html|json
 # <-- Customer
 
+# <-- Inventory
+inventory_set:
+    methods:    GET|POST
+    path:       /inventory/{id}/set.{_format}
+    controller: App\Controller\InventoryController::set
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+inventory_increment:
+    methods:    GET|POST
+    path:       /inventory/{id}/increment.{_format}
+    controller: App\Controller\InventoryController::increment
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+inventory_decrement:
+    methods:    GET|POST
+    path:       /inventory/{id}/decrement.{_format}
+    controller: App\Controller\InventoryController::decrement
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+inventory_delete:
+    methods:    GET|DELETE
+    path:       /inventory/{id}/delete.{_format}
+    controller: App\Controller\EntityController::delete
+    defaults:
+        _format:            html
+        _entity_class_name: Inventory
+    requirements:
+        _format: html|json
+# --> Inventory
+
 # --> Product
 product_index:
     methods:    GET

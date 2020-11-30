@@ -1,0 +1,35 @@
+{#
+  @var FormViewInterface  form
+  @var InventoryInterface entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'decrement'|trans}} | {{'inventory'|trans}} | {{entity.product.name}} | {{'products'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('products', 'product_index')}}
+      {{breadcrumb.item(entity.product, 'product_show', {'id':entity.product.id})}}
+      {{breadcrumb.item('inventory', 'product_inventory', {'id':entity.product.id})}}
+      {{breadcrumb.item('decrement')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        {{form_start(form)}}
+          {{form_errors(form)}}
+          {{form_row(form)}}
+          {{btn.link('fas fa-ban fa-fw', 'cancel', 'product_inventory', {'id':entity.product.id})}}
+          {{btn.submit('fas fa-save fa-fw', 'save')}}
+        {{form_end(form)}}
+      </div>
+    </div>
+  </div>
+{% endblock %}

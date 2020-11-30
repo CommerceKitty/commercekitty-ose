@@ -41,13 +41,13 @@
                 <td class="col-sm-2">
                   <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Action
+                      {{'actions'|trans}}
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-equals"></i>&nbsp;{{'set'|trans}}</a>
-                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-plus-square"></i>&nbsp;{{'increment'|trans}}</a>
-                      <a class="dropdown-item" href=""><i class="fas fa-fw fa-minus-square"></i>&nbsp;{{'decrement'|trans}}</a>
-                      <a class="dropdown-item text-danger" href=""><i class="fas fa-fw fa-trash"></i>&nbsp;{{'delete'|trans}}</a>
+                      <a class="dropdown-item" href="{{path('inventory_set', {'id':inventory.id})}}"><i class="fas fa-fw fa-equals"></i>&nbsp;{{'set'|trans}}</a>
+                      <a class="dropdown-item" href="{{path('inventory_increment', {'id':inventory.id})}}"><i class="fas fa-fw fa-plus-square"></i>&nbsp;{{'increment'|trans}}</a>
+                      <a class="dropdown-item" href="{{path('inventory_decrement', {'id':inventory.id})}}"><i class="fas fa-fw fa-minus-square"></i>&nbsp;{{'decrement'|trans}}</a>
+                      <a class="dropdown-item text-danger" href="{{path('inventory_delete', {'id':inventory.id})}}"><i class="fas fa-fw fa-trash"></i>&nbsp;{{'delete'|trans}}</a>
                     </div>
                   </div>
                 </td>

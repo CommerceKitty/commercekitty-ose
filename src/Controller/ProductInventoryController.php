@@ -26,20 +26,6 @@ class ProductInventoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        // @todo Create event listener for this
-        //$warehouseCount = $this->getDoctrine()->getRepository(Entity\Warehouse::class)
-        //    // @todo put in repo class
-        //    ->createQueryBuilder('w')
-        //    ->select('COUNT(w.id)')
-        //    ->getQuery()
-        //    ->getSingleScalarResult()
-        //;
-        //if (0 == $warehouseCount) {
-        //    $this->addFlash('warning', 'You must create at least one warehouse before you can add inventory.');
-
-        //    return $this->redirectToRoute('warehouse_index');
-        //}
-
         $entity = $this->getDoctrine()->getRepository(Entity\Product::class)->find($id);
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.product.404', [
@@ -48,12 +34,6 @@ class ProductInventoryController extends AbstractController
                 '%id%'                     => $id,
             ]));
         }
-
-        // @todo create event listener for this
-        //if (1 == $warehouseCount) {
-        //    $request->getSession()->set('warehouse_id', $warehouse->getId());
-        //    return $this->redirectToRoute('product_inventory_new', ['id' => $entity->getId()]);
-        //}
 
         $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.product_inventory.select_warehouse.initialize');
         if ($controllerEvent->hasArgument('response')) {
@@ -110,7 +90,7 @@ class ProductInventoryController extends AbstractController
             ]));
         }
 
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.product_inventory.select_warehouse.initialize');
+        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request, 'warehouse' => $warehouse]), 'controller.product_inventory.new.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
         }
