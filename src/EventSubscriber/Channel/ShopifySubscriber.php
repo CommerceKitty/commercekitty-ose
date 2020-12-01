@@ -1,15 +1,13 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace App\EventListener\Channel\Woocommerce;
+namespace App\EventSubscriber\Channel;
 
 use App\Event\TestConnectionEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * @todo Make Subscriber
- */
-class TestConnectionListener
+class ShopifySubscriber implements EventSubscriberInterface
 {
     /**
      * @var HttpClientInterface
@@ -25,15 +23,27 @@ class TestConnectionListener
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            'channel.shopify.test_connection' => 'onChannelShopifyTestConnection',
+        ];
+    }
+
+    /**
      * @param TestConnectionEvent $event
      *
      * @return void
      */
-    public function onChannelWoocommerceTestConnection(TestConnectionEvent $event): void
+    public function onChannelShopifyTestConnection(TestConnectionEvent $event): void
     {
         try {
-            // @todo use Consumer Key & Consumer Secret
-            $response = $this->client->request('GET', $event->getChannel()->getHost());
+            // @todo Make API call for shop info
+            $response = $this->client->request('GET', $event->getChannel()->getHost(), [
+                'auth_basic' => [$event->getChannel()->getApiKey(), $event->getChannel()->getPassword()],
+            ]);
 
             // This is here because if not, it will check on __destruct and
             // exception will not be caught

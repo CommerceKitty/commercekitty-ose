@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity;
 use App\Event\TestConnectionEvent;
+use App\Factory\ChannelEntityFactory;
+use App\Factory\ChannelFormFactory;
+use App\Factory\ChannelMessageFactory;
 use App\Form\Type\ChannelTypeChoiceType;
-use App\Form\Type\WoocommerceChannelType;
 use App\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -57,7 +59,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator): Response
+    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelEntityFactory $entityFactory, ChannelFormFactory $formFactory): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -72,18 +74,10 @@ class ChannelController extends AbstractController
             return $controllerEvent->getArgument('response');
         }
 
-        // @TODO use Factory
-        switch ($request->getSession()->get('channel_type')) {
-            case('woocommerce'):
-                $entity   = new Entity\WoocommerceChannel();
-                $formType = WoocommerceChannelType::class;
-                break;
-            default:
-                throw new \Exception('Channel Type is unknown');
-        }
-
-        // @todo Use form event
-        $form = $this->createForm($formType, $entity);
+        $entityFullClassName = $entityFactory->getFullClassName($request->getSession()->get('channel_type'));
+        $entity              = new $entityFullClassName();
+        $formType            = $formFactory->getFullClassName($request->getSession()->get('channel_type'));
+        $form                = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
@@ -114,7 +108,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelFormFactory $formFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -132,17 +126,8 @@ class ChannelController extends AbstractController
             return $controllerEvent->getArgument('response');
         }
 
-        // @TODO Use Factory
-        switch ($entity->getType()) {
-            case('woocommerce'):
-                $formType = WoocommerceChannelType::class;
-                break;
-            default:
-                throw new \Exception('Channel Type is unknown');
-        }
-
-        // @todo Use form event
-        $form = $this->createForm($formType, $entity);
+        $formType = $formFactory->getFullClassName($entity->getType());
+        $form     = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
@@ -193,12 +178,14 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Make Better
+            // @todo Query Bus
             $event = $dispatcher->dispatch(new TestConnectionEvent($entity), 'channel.'.$entity->getType().'.test_connection');
             if ($event->wasSuccessful()) {
                 $this->addFlash('success', 'Connection Successful');
-            } else {
+            } elseif (!$event->wasSuccessful() && $event->getMessage()) {
                 $this->addFlash('danger', $event->getMessage());
+            } else {
+                $this->addFlash('danger', 'Connection Test Failed');
             }
 
             return $this->redirectToRoute('channel_show', ['id' => $entity->getId()]);
@@ -219,7 +206,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
+    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -238,14 +225,7 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Factory
-            switch ($entity->getType()) {
-                case('woocommerce'):
-                    $message = new Message\Channel\Woocommerce\ImportProductsMessage();
-                    break;
-                default:
-                    throw new \Exception('Channel Type is unknown');
-            }
+            $message = $messageFactory->getImportProductsMessage($entity);
             $message->setChannelId($entity->getId());
             $bus->dispatch($message);
 
@@ -273,7 +253,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
+    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -292,14 +272,7 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Factory
-            switch ($entity->getType()) {
-                case('woocommerce'):
-                    $message = new Message\Channel\Woocommerce\ImportOrdersMessage();
-                    break;
-                default:
-                    throw new \Exception('Channel Type is unknown');
-            }
+            $message = $messageFactory->getImportOrdersMessage($entity);
             $message->setChannelId($entity->getId());
             $bus->dispatch($message);
 
@@ -327,7 +300,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
+    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -346,14 +319,7 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Factory
-            switch ($entity->getType()) {
-                case('woocommerce'):
-                    $message = new Message\Channel\Woocommerce\ExportInventoryMessage();
-                    break;
-                default:
-                    throw new \Exception('Channel Type is unknown');
-            }
+            $message = $messageFactory->getExportInventoryMessage($entity);
             $message->setChannelId($entity->getId());
             $bus->dispatch($message);
 
@@ -381,7 +347,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, string $id): Response
+    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $bus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -400,14 +366,7 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Factory
-            switch ($entity->getType()) {
-                case('woocommerce'):
-                    $message = new Message\Channel\Woocommerce\ExportListingsMessage();
-                    break;
-                default:
-                    throw new \Exception('Channel Type is unknown');
-            }
+            $message = $messageFactory->getExportListingsMessage($entity);
             $message->setChannelId($entity->getId());
             $bus->dispatch($message);
 

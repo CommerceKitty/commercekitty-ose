@@ -20,8 +20,9 @@ class ChannelTypeChoiceType extends AbstractType
             'placeholder' => 'Please Select a Channel Type',
             'choices'     => [
                 // Label => Value
-                //'Amazon'      => 'amazon',
-                //'eBay'        => 'ebay',
+                //'Amazon'    => 'amazon',
+                //'eBay'      => 'ebay',
+                'Shopify'     => 'shopify',
                 'Woocommerce' => 'woocommerce',
             ],
             'translation_domain' => 'forms'
