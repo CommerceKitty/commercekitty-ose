@@ -12,3 +12,19 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
+
+        default_bus: command.bus
+        buses:
+            # Type-hint with Symfony\Component\Messenger\MessageBusInterface $commandBus
+            command.bus:
+                middleware:
+                    - validation
+            # Type-hint with Symfony\Component\Messenger\MessageBusInterface $queryBus
+            query.bus:
+                middleware:
+                    - validation
+            # Type-hint with Symfony\Component\Messenger\MessageBusInterface $eventBus
+            event.bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - validation

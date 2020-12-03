@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Channel\Woocommerce;
+namespace App\MessageHandler\Event\Woocommerce;
 
-use App\Message\Channel\Woocommerce\ExportInventoryMessage;
+use App\Message\Event\Woocommerce\ExportInventoryMessage;
+use App\MessageHandler\Event\EventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class ExportInventoryHandler implements MessageHandlerInterface
+class ExportInventoryHandler implements EventHandlerInterface
 {
     /**
      * @var EntityManagerInterface

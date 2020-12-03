@@ -23,6 +23,17 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    _instanceof:
+        App\MessageHandler\Command\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        App\MessageHandler\Query\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+        App\MessageHandler\Event\EventHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: event.bus }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

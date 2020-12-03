@@ -18,9 +18,9 @@ class ChannelMessageFactory
     {
         switch ($channel->getType()) {
             case('shopify'):
-                return new Message\Channel\Shopify\ImportProductsMessage();
+                return new Message\Event\Shopify\ImportProductsMessage();
             case('woocommerce'):
-                return new Message\Channel\Woocommerce\ImportProductsMessage();
+                return new Message\Event\Woocommerce\ImportProductsMessage();
         }
 
         throw new \Exception('Channel Type is Unknown');
@@ -37,9 +37,9 @@ class ChannelMessageFactory
     {
         switch ($channel->getType()) {
             case('shopify'):
-                return new Message\Channel\Shopify\ImportOrdersMessage();
+                return new Message\Event\Shopify\ImportOrdersMessage();
             case('woocommerce'):
-                return new Message\Channel\Woocommerce\ImportOrdersMessage();
+                return new Message\Event\Woocommerce\ImportOrdersMessage();
         }
 
         throw new \Exception('Channel Type is Unknown');
@@ -56,9 +56,9 @@ class ChannelMessageFactory
     {
         switch ($channel->getType()) {
             case('shopify'):
-                return new Message\Channel\Shopify\ExportInventoryMessage();
+                return new Message\Event\Shopify\ExportInventoryMessage();
             case('woocommerce'):
-                return new Message\Channel\Woocommerce\ExportInventoryMessage();
+                return new Message\Event\Woocommerce\ExportInventoryMessage();
         }
 
         throw new \Exception('Channel Type is Unknown');
@@ -75,9 +75,9 @@ class ChannelMessageFactory
     {
         switch ($channel->getType()) {
             case('shopify'):
-                return new Message\Channel\Shopify\ExportListingsMessage();
+                return new Message\Event\Shopify\ExportListingsMessage();
             case('woocommerce'):
-                return new Message\Channel\Woocommerce\ExportListingsMessage();
+                return new Message\Event\Woocommerce\ExportListingsMessage();
         }
 
         throw new \Exception('Channel Type is Unknown');
