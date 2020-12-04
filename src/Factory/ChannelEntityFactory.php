@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Factory;
+namespace CommerceKitty\Factory;
 
-use App\Entity;
+use CommerceKitty\Entity;
 
 class ChannelEntityFactory
 {

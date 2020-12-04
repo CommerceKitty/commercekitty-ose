@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace CommerceKitty\Entity;
 
-use App\Model;
-use App\Repository\ProductRepository;
+use CommerceKitty\Model;
+use CommerceKitty\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Factory;
+namespace CommerceKitty\Factory;
 
-use App\Form\Type;
+use CommerceKitty\Form\Type;
 
 class ChannelFormFactory
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\EventListener;
+namespace CommerceKitty\EventListener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\EventDispatcher\GenericEvent;

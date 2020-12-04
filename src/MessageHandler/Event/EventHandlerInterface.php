@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Event;
+namespace CommerceKitty\MessageHandler\Event;
 
 interface EventHandlerInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
-use App\Entity;
-use App\Form\Type\ProductType;
-use App\Form\Type\ProductTypeChoiceType;
+use CommerceKitty\Entity;
+use CommerceKitty\Form\Type\ProductType;
+use CommerceKitty\Form\Type\ProductTypeChoiceType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;

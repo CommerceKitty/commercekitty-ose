@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Message\Command\Woocommerce;
+namespace CommerceKitty\Message\Command\Woocommerce;
 
-use App\Message\ChannelAwareTrait;
-use App\Message\Command\CommandInterface;
+use CommerceKitty\Message\ChannelAwareTrait;
+use CommerceKitty\Message\Command\CommandInterface;
 
 class ExportListingsCommand implements CommandInterface
 {

@@ -4,9 +4,9 @@
  * @see https://symfony.com/doc/current/form/create_custom_field_type.html
  */
 
-namespace App\Form\Type;
+namespace CommerceKitty\Form\Type;
 
-use App\Entity;
+use CommerceKitty\Entity;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

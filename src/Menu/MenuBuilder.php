@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Menu;
+namespace CommerceKitty\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;

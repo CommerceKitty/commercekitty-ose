@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\EventListener\Channel\Woocommerce;
+namespace CommerceKitty\EventListener\Channel\Woocommerce;
 
-use App\Event\TestConnectionEvent;
+use CommerceKitty\Event\TestConnectionEvent;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 

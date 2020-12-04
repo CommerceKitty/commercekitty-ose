@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber\Channel;
+namespace CommerceKitty\EventSubscriber\Channel;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

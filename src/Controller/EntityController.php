@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +30,7 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
 
         #>
@@ -65,10 +65,10 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $formClassName       = $request->attributes->get('_form_class_name', $entityClassName.'Type'); // ie ProductType
-        $formFullClassName   = $request->attributes->get('_form_class', 'App\\Form\\Type\\'.$formClassName); // ie App\Form\Type\ProductType
+        $formFullClassName   = $request->attributes->get('_form_class', 'CommerceKitty\\Form\\Type\\'.$formClassName); // ie CommerceKitty\Form\Type\ProductType
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
         $entity = new $entityFullClassName();
@@ -125,7 +125,7 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
@@ -163,10 +163,10 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $formClassName       = $request->attributes->get('_form_class_name', $entityClassName.'Type'); // ie ProductType
-        $formFullClassName   = $request->attributes->get('_form_class', 'App\\Form\\Type\\'.$formClassName); // ie App\Form\Type\ProductType
+        $formFullClassName   = $request->attributes->get('_form_class', 'CommerceKitty\\Form\\Type\\'.$formClassName); // ie CommerceKitty\Form\Type\ProductType
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
         #> @todo Query Bus
@@ -232,7 +232,7 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
@@ -297,7 +297,7 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
@@ -362,7 +362,7 @@ class EntityController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
-        $entityFullClassName = $request->attributes->get('_entity_class', 'App\\Entity\\'.$entityClassName); // ie App\Entity\Product
+        $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 

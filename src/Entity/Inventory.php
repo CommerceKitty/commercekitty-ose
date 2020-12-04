@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace CommerceKitty\Entity;
 
-use App\Model;
+use CommerceKitty\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\InventoryRepository")
+ * @ORM\Entity(repositoryClass="CommerceKitty\Repository\InventoryRepository")
  * @ORM\Table(name="inventory")
  */
 class Inventory extends Model\Inventory

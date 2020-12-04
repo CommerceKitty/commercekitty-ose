@@ -13,24 +13,24 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
+    CommerceKitty\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
+    CommerceKitty\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
     _instanceof:
-        App\MessageHandler\Command\CommandHandlerInterface:
+        CommerceKitty\MessageHandler\Command\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
-        App\MessageHandler\Query\QueryHandlerInterface:
+        CommerceKitty\MessageHandler\Query\QueryHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
-        App\MessageHandler\Event\EventHandlerInterface:
+        CommerceKitty\MessageHandler\Event\EventHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: event.bus }
 
@@ -38,13 +38,13 @@ services:
     # please note that last definitions always *replace* previous ones
 
     # @todo Make for various menus?
-    App\Menu\MenuBuilder:
+    CommerceKitty\Menu\MenuBuilder:
         autowire: true
         tags:
             - { name: knp_menu.menu_builder, method: buildGenericMenu, alias: generic_menu }
 
     # This just fires events that other Listeners/Subscribers will listen to
-    App\EventListener\DoctrineLifecycleListener:
+    CommerceKitty\EventListener\DoctrineLifecycleListener:
         autowire: true
         tags:
             - { name: doctrine.event_listener, event: preRemove }
@@ -54,7 +54,7 @@ services:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: postUpdate }
 
-    App\EventListener\Channel\Woocommerce\TestConnectionListener:
+    CommerceKitty\EventListener\Channel\Woocommerce\TestConnectionListener:
         autowire: true
         tags:
             - { name: kernel.event_listener, event: channel.woocommerce.test_connection }

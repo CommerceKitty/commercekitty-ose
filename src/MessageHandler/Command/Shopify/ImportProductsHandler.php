@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Command\Shopify;
+namespace CommerceKitty\MessageHandler\Command\Shopify;
 
-use App\Message\Command\Shopify\ImportProductsCommand;
-use App\MessageHandler\Command\CommandHandlerInterface;
+use CommerceKitty\Message\Command\Shopify\ImportProductsCommand;
+use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -18,16 +18,16 @@ class ImportProductsHandler implements CommandHandlerInterface
     /**
      * @var HttpClientInterface
      */
-    private $client;
+    private $httpClient;
 
     /**
      * @param EntityManagerInterface $manager
-     * @param HttpClientInterface    $client
+     * @param HttpClientInterface    $httpClient
      */
-    public function __construct(EntityManagerInterface $manager, HttpClientInterface $client)
+    public function __construct(EntityManagerInterface $manager, HttpClientInterface $httpClient)
     {
-        $this->manager = $manager;
-        $this->client  = $client;
+        $this->manager    = $manager;
+        $this->httpClient = $httpClient;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Query;
+namespace CommerceKitty\MessageHandler\Query;
 
 interface QueryHandlerInterface
 {

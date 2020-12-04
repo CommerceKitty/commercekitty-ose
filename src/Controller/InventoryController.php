@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
-use App\Entity;
+use CommerceKitty\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

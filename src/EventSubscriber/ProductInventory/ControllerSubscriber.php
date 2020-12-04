@@ -1,8 +1,8 @@
 <?php
 
-namespace App\EventSubscriber\ProductInventory;
+namespace CommerceKitty\EventSubscriber\ProductInventory;
 
-use App\Entity;
+use CommerceKitty\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

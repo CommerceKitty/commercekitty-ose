@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace CommerceKitty\Repository;
 
-use App\Entity\Warehouse;
+use CommerceKitty\Entity\Warehouse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

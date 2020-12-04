@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace CommerceKitty\Entity;
 
-use App\Model;
+use CommerceKitty\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
+ * @ORM\Entity(repositoryClass="CommerceKitty\Repository\AddressRepository")
  * @ORM\Table(name="addresses")
  */
 class Address extends Model\Address

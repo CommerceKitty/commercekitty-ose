@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace CommerceKitty\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 

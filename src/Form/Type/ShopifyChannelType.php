@@ -3,9 +3,9 @@
  * @see https://symfony.com/doc/current/form/inherit_data_option.html
  */
 
-namespace App\Form\Type;
+namespace CommerceKitty\Form\Type;
 
-use App\Entity\ShopifyChannel;
+use CommerceKitty\Entity\ShopifyChannel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;

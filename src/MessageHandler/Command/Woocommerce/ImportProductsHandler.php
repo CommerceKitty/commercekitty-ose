@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Command\Woocommerce;
+namespace CommerceKitty\MessageHandler\Command\Woocommerce;
 
-use App\Message\Command\Woocommerce\ImportProductsCommand;
-use App\MessageHandler\Command\CommandHandlerInterface;
+use CommerceKitty\Message\Command\Woocommerce\ImportProductsCommand;
+use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;

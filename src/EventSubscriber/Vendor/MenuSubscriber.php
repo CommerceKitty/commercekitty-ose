@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber\Vendor;
+namespace CommerceKitty\EventSubscriber\Vendor;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

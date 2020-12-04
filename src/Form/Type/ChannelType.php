@@ -3,7 +3,7 @@
  * @see https://symfony.com/doc/current/form/inherit_data_option.html
  */
 
-namespace App\Form\Type;
+namespace CommerceKitty\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

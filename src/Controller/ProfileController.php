@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
-use App\Entity;
-use App\Form\Type\ProfileType;
+use CommerceKitty\Entity;
+use CommerceKitty\Form\Type\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;

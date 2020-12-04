@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace CommerceKitty\Repository;
 
-use App\Entity\Channel;
+use CommerceKitty\Entity\Channel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

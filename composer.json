@@ -57,12 +57,12 @@
         "psr-4": {
             "CommerceKitty\\Bundle\\": "bundles/",
             "CommerceKitty\\Component\\": "components/",
-            "App\\": "src/"
+            "CommerceKitty\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "CommerceKitty\\Tests\\": "tests/"
         }
     },
     "replace": {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Event;
+namespace CommerceKitty\Event;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

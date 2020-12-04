@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Model;
+namespace CommerceKitty\Model;
 
 /**
- * @see App\Model\ShopifyChannelTrait::class
+ * @see CommerceKitty\Model\ShopifyChannelTrait::class
  */
 interface ShopifyChannelInterface
 {

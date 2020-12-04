@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace CommerceKitty\Model;
 
 /**
  * @TODO Plain Password

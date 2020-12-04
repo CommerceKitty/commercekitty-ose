@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Factory;
+namespace CommerceKitty\Factory;
 
-use App\Message\Command\CommandInterface;
-use App\Model\ChannelInterface;
+use CommerceKitty\Message\Command\CommandInterface;
+use CommerceKitty\Model\ChannelInterface;
 use function Symfony\Component\String\u;
 
 class ChannelMessageFactory
@@ -20,7 +20,7 @@ class ChannelMessageFactory
     {
         $type                 = $channel->getType();
         $commandClassName     = $command.'Command';
-        $commandNamespace     = 'App\\Message\\Command\\'.u($type)->lower()->camel()->title()->toString();
+        $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.u($type)->lower()->camel()->title()->toString();
         $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
 
         if (!class_exists($commandFullClassName)) {

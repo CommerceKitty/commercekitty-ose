@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type;
+namespace CommerceKitty\Form\Type;
 
-use App\Entity\Customer;
+use CommerceKitty\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

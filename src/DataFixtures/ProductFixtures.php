@@ -3,10 +3,10 @@
  * @see https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
  */
 
-namespace App\DataFixtures;
+namespace CommerceKitty\DataFixtures;
 
-use App\Entity;
-use App\Model\ProductInterface;
+use CommerceKitty\Entity;
+use CommerceKitty\Model\ProductInterface;
 use Generator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

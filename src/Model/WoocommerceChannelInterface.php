@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Model;
+namespace CommerceKitty\Model;
 
 /**
- * @see App\Model\WoocommerceChannelTrait::class
+ * @see CommerceKitty\Model\WoocommerceChannelTrait::class
  */
 interface WoocommerceChannelInterface
 {

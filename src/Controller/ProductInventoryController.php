@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
-use App\Entity;
-use App\Form\Type\WarehouseEntityType;
+use CommerceKitty\Entity;
+use CommerceKitty\Form\Type\WarehouseEntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

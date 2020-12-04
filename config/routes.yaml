@@ -2,23 +2,23 @@
 homepage:
     methods:    GET
     path:       /
-    controller: App\Controller\DefaultController::index
+    controller: CommerceKitty\Controller\DefaultController::index
 # --> Generic
 
 # --> Security
 login:
     path:       /login
-    controller: App\Controller\SecurityController::login
+    controller: CommerceKitty\Controller\SecurityController::login
 logout:
     path:       /logout
-    controller: App\Controller\SecurityController::logout
+    controller: CommerceKitty\Controller\SecurityController::logout
 # <-- Security
 
 # <-- ChangePassword
 change_password:
     methods:    GET|POST
     path:       /change-password.{_format}
-    controller: App\Controller\ChangePasswordController::changePassword
+    controller: CommerceKitty\Controller\ChangePasswordController::changePassword
     defaults:
         _format: html
     requirements:
@@ -29,7 +29,7 @@ change_password:
 profile_edit:
     methods:    GET|POST
     path:       /profile/edit.{_format}
-    controller: App\Controller\ProfileController::edit
+    controller: CommerceKitty\Controller\ProfileController::edit
     defaults:
         _format: html
     requirements:
@@ -40,7 +40,7 @@ profile_edit:
 channel_index:
     methods:    GET
     path:       /channels.{_format}
-    controller: App\Controller\EntityController::index
+    controller: CommerceKitty\Controller\EntityController::index
     defaults:
         _format:            html
         _entity_class_name: Channel
@@ -49,7 +49,7 @@ channel_index:
 channel_purge:
     methods:    GET|DELETE
     path:       /channels/purge.{_format}
-    controller: App\Controller\EntityController::purge
+    controller: CommerceKitty\Controller\EntityController::purge
     defaults:
         _format:            html
         _entity_class_name: Channel
@@ -58,7 +58,7 @@ channel_purge:
 channel_select_type:
     methods:    GET|POST
     path:       /channels/select-type.{_format}
-    controller: App\Controller\ChannelController::selectType
+    controller: CommerceKitty\Controller\ChannelController::selectType
     defaults:
         _format: html
     requirements:
@@ -66,7 +66,7 @@ channel_select_type:
 channel_new:
     methods:    GET|POST
     path:       /channels/new.{_format}
-    controller: App\Controller\ChannelController::new
+    controller: CommerceKitty\Controller\ChannelController::new
     defaults:
         _format: html
     requirements:
@@ -74,7 +74,7 @@ channel_new:
 channel_edit:
     methods:    GET|POST
     path:       /channels/{id}/edit.{_format}
-    controller: App\Controller\ChannelController::edit
+    controller: CommerceKitty\Controller\ChannelController::edit
     defaults:
         _format: html
     requirements:
@@ -82,7 +82,7 @@ channel_edit:
 channel_clone:
     methods:    GET|POST
     path:       /channels/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
+    controller: CommerceKitty\Controller\EntityController::clone
     defaults:
         _format:            html
         _entity_class_name: Channel
@@ -91,7 +91,7 @@ channel_clone:
 channel_delete:
     methods:    GET|DELETE
     path:       /channels/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Channel
@@ -100,7 +100,7 @@ channel_delete:
 channel_test_connection:
     methods:    GET|POST
     path:       /channels/{id}/test-connection.{_format}
-    controller: App\Controller\ChannelController::testConnection
+    controller: CommerceKitty\Controller\ChannelController::testConnection
     defaults:
         _format: html
     requirements:
@@ -108,7 +108,7 @@ channel_test_connection:
 channel_import_products:
     methods:    GET|POST
     path:       /channels/{id}/import-products.{_format}
-    controller: App\Controller\ChannelController::importProducts
+    controller: CommerceKitty\Controller\ChannelController::importProducts
     defaults:
         _format: html
     requirements:
@@ -116,7 +116,7 @@ channel_import_products:
 channel_import_orders:
     methods:    GET|POST
     path:       /channels/{id}/import-orders.{_format}
-    controller: App\Controller\ChannelController::importOrders
+    controller: CommerceKitty\Controller\ChannelController::importOrders
     defaults:
         _format: html
     requirements:
@@ -124,7 +124,7 @@ channel_import_orders:
 channel_export_inventory:
     methods:    GET|POST
     path:       /channels/{id}/export-inventory.{_format}
-    controller: App\Controller\ChannelController::exportInventory
+    controller: CommerceKitty\Controller\ChannelController::exportInventory
     defaults:
         _format: html
     requirements:
@@ -132,7 +132,7 @@ channel_export_inventory:
 channel_export_listings:
     methods:    GET|POST
     path:       /channels/{id}/export-listings.{_format}
-    controller: App\Controller\ChannelController::exportListings
+    controller: CommerceKitty\Controller\ChannelController::exportListings
     defaults:
         _format: html
     requirements:
@@ -140,7 +140,7 @@ channel_export_listings:
 channel_show:
     methods:    GET
     path:       /channels/{id}.{_format}
-    controller: App\Controller\EntityController::show
+    controller: CommerceKitty\Controller\EntityController::show
     defaults:
         _format:            html
         _entity_class_name: Channel
@@ -152,7 +152,7 @@ channel_show:
 customer_index:
     methods:    GET
     path:       /customers.{_format}
-    controller: App\Controller\EntityController::index
+    controller: CommerceKitty\Controller\EntityController::index
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -161,7 +161,7 @@ customer_index:
 customer_purge:
     methods:    GET|DELETE
     path:       /customers/purge.{_format}
-    controller: App\Controller\EntityController::purge
+    controller: CommerceKitty\Controller\EntityController::purge
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -170,7 +170,7 @@ customer_purge:
 customer_new:
     methods:    GET|POST
     path:       /customers/new.{_format}
-    controller: App\Controller\EntityController::new
+    controller: CommerceKitty\Controller\EntityController::new
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -179,7 +179,7 @@ customer_new:
 customer_edit:
     methods:    GET|POST
     path:       /customers/{id}/edit.{_format}
-    controller: App\Controller\EntityController::edit
+    controller: CommerceKitty\Controller\EntityController::edit
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -188,7 +188,7 @@ customer_edit:
 customer_delete:
     methods:    GET|DELETE
     path:       /customers/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -197,7 +197,7 @@ customer_delete:
 customer_clone:
     methods:    GET|POST
     path:       /customers/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
+    controller: CommerceKitty\Controller\EntityController::clone
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -206,7 +206,7 @@ customer_clone:
 customer_show:
     methods:    GET
     path:       /customers/{id}.{_format}
-    controller: App\Controller\EntityController::show
+    controller: CommerceKitty\Controller\EntityController::show
     defaults:
         _format:            html
         _entity_class_name: Customer
@@ -218,7 +218,7 @@ customer_show:
 inventory_set:
     methods:    GET|POST
     path:       /inventory/{id}/set.{_format}
-    controller: App\Controller\InventoryController::set
+    controller: CommerceKitty\Controller\InventoryController::set
     defaults:
         _format: html
     requirements:
@@ -226,7 +226,7 @@ inventory_set:
 inventory_increment:
     methods:    GET|POST
     path:       /inventory/{id}/increment.{_format}
-    controller: App\Controller\InventoryController::increment
+    controller: CommerceKitty\Controller\InventoryController::increment
     defaults:
         _format: html
     requirements:
@@ -234,7 +234,7 @@ inventory_increment:
 inventory_decrement:
     methods:    GET|POST
     path:       /inventory/{id}/decrement.{_format}
-    controller: App\Controller\InventoryController::decrement
+    controller: CommerceKitty\Controller\InventoryController::decrement
     defaults:
         _format: html
     requirements:
@@ -242,7 +242,7 @@ inventory_decrement:
 inventory_delete:
     methods:    GET|DELETE
     path:       /inventory/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Inventory
@@ -254,7 +254,7 @@ inventory_delete:
 product_index:
     methods:    GET
     path:       /products.{_format}
-    controller: App\Controller\EntityController::index
+    controller: CommerceKitty\Controller\EntityController::index
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -263,7 +263,7 @@ product_index:
 product_select_type:
     methods:    GET|POST
     path:       /products/select-type.{_format}
-    controller: App\Controller\ProductController::selectType
+    controller: CommerceKitty\Controller\ProductController::selectType
     defaults:
         _format: html
     requirements:
@@ -271,7 +271,7 @@ product_select_type:
 product_new:
     methods:    GET|POST
     path:       /products/new.{_format}
-    controller: App\Controller\ProductController::new
+    controller: CommerceKitty\Controller\ProductController::new
     defaults:
         _format: html
     requirements:
@@ -279,7 +279,7 @@ product_new:
 product_purge:
     methods:    GET|DELETE
     path:       /products/purge.{_format}
-    controller: App\Controller\EntityController::purge
+    controller: CommerceKitty\Controller\EntityController::purge
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -288,7 +288,7 @@ product_purge:
 product_edit:
     methods:    GET|POST
     path:       /products/{id}/edit.{_format}
-    controller: App\Controller\EntityController::edit
+    controller: CommerceKitty\Controller\EntityController::edit
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -297,7 +297,7 @@ product_edit:
 product_delete:
     methods:    GET|DELETE
     path:       /products/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -306,7 +306,7 @@ product_delete:
 product_clone:
     methods:    GET|POST
     path:       /products/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
+    controller: CommerceKitty\Controller\EntityController::clone
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -315,7 +315,7 @@ product_clone:
 product_inventory:
     methods:    GET
     path:       /products/{id}/inventory.{_format}
-    controller: App\Controller\ProductController::inventory
+    controller: CommerceKitty\Controller\ProductController::inventory
     defaults:
         _format: html
     requirements:
@@ -323,7 +323,7 @@ product_inventory:
 product_show:
     methods:    GET
     path:       /products/{id}.{_format}
-    controller: App\Controller\EntityController::show
+    controller: CommerceKitty\Controller\EntityController::show
     defaults:
         _format:            html
         _entity_class_name: Product
@@ -335,7 +335,7 @@ product_show:
 product_inventory_select_warehouse:
     methods:    GET|POST
     path:       /products/{id}/inventory/select-warehouse.{_format}
-    controller: App\Controller\ProductInventoryController::selectWarehouse
+    controller: CommerceKitty\Controller\ProductInventoryController::selectWarehouse
     defaults:
         _format: html
     requirements:
@@ -343,7 +343,7 @@ product_inventory_select_warehouse:
 product_inventory_new:
     methods:    GET|POST
     path:       /products/{id}/inventory/new.{_format}
-    controller: App\Controller\ProductInventoryController::new
+    controller: CommerceKitty\Controller\ProductInventoryController::new
     defaults:
         _format: html
     requirements:
@@ -354,7 +354,7 @@ product_inventory_new:
 vendor_index:
     methods:    GET
     path:       /vendors.{_format}
-    controller: App\Controller\EntityController::index
+    controller: CommerceKitty\Controller\EntityController::index
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -363,7 +363,7 @@ vendor_index:
 vendor_purge:
     methods:    GET|DELETE
     path:       /vendors/purge.{_format}
-    controller: App\Controller\EntityController::purge
+    controller: CommerceKitty\Controller\EntityController::purge
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -372,7 +372,7 @@ vendor_purge:
 vendor_new:
     methods:    GET|POST
     path:       /vendors/new.{_format}
-    controller: App\Controller\EntityController::new
+    controller: CommerceKitty\Controller\EntityController::new
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -381,7 +381,7 @@ vendor_new:
 vendor_edit:
     methods:    GET|POST
     path:       /vendors/{id}/edit.{_format}
-    controller: App\Controller\EntityController::edit
+    controller: CommerceKitty\Controller\EntityController::edit
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -390,7 +390,7 @@ vendor_edit:
 vendor_clone:
     methods:    GET|POST
     path:       /vendors/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
+    controller: CommerceKitty\Controller\EntityController::clone
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -399,7 +399,7 @@ vendor_clone:
 vendor_delete:
     methods:    GET|DELETE
     path:       /vendors/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -408,7 +408,7 @@ vendor_delete:
 vendor_show:
     methods:    GET
     path:       /vendors/{id}.{_format}
-    controller: App\Controller\EntityController::show
+    controller: CommerceKitty\Controller\EntityController::show
     defaults:
         _format:            html
         _entity_class_name: Vendor
@@ -420,7 +420,7 @@ vendor_show:
 warehouse_index:
     methods:    GET
     path:       /warehouses.{_format}
-    controller: App\Controller\EntityController::index
+    controller: CommerceKitty\Controller\EntityController::index
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -429,7 +429,7 @@ warehouse_index:
 warehouse_purge:
     methods:    GET|DELETE
     path:       /warehouses/purge.{_format}
-    controller: App\Controller\EntityController::purge
+    controller: CommerceKitty\Controller\EntityController::purge
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -438,7 +438,7 @@ warehouse_purge:
 warehouse_new:
     methods:    GET|POST
     path:       /warehouses/new.{_format}
-    controller: App\Controller\EntityController::new
+    controller: CommerceKitty\Controller\EntityController::new
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -447,7 +447,7 @@ warehouse_new:
 warehouse_edit:
     methods:    GET|POST
     path:       /warehouses/{id}/edit.{_format}
-    controller: App\Controller\EntityController::edit
+    controller: CommerceKitty\Controller\EntityController::edit
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -456,7 +456,7 @@ warehouse_edit:
 warehouse_clone:
     methods:    GET|POST
     path:       /warehouses/{id}/clone.{_format}
-    controller: App\Controller\EntityController::clone
+    controller: CommerceKitty\Controller\EntityController::clone
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -465,7 +465,7 @@ warehouse_clone:
 warehouse_delete:
     methods:    GET|DELETE
     path:       /warehouses/{id}/delete.{_format}
-    controller: App\Controller\EntityController::delete
+    controller: CommerceKitty\Controller\EntityController::delete
     defaults:
         _format:            html
         _entity_class_name: Warehouse
@@ -474,7 +474,7 @@ warehouse_delete:
 warehouse_show:
     methods:    GET
     path:       /warehouses/{id}.{_format}
-    controller: App\Controller\EntityController::show
+    controller: CommerceKitty\Controller\EntityController::show
     defaults:
         _format:            html
         _entity_class_name: Warehouse

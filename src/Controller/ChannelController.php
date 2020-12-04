@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
-use App\Entity;
-use App\Event\TestConnectionEvent;
-use App\Factory\ChannelEntityFactory;
-use App\Factory\ChannelFormFactory;
-use App\Factory\ChannelMessageFactory;
-use App\Form\Type\ChannelTypeChoiceType;
-use App\Message;
+use CommerceKitty\Entity;
+use CommerceKitty\Event\TestConnectionEvent;
+use CommerceKitty\Factory\ChannelEntityFactory;
+use CommerceKitty\Factory\ChannelFormFactory;
+use CommerceKitty\Factory\ChannelMessageFactory;
+use CommerceKitty\Form\Type\ChannelTypeChoiceType;
+use CommerceKitty\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,9 +3,9 @@
  * @see https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
  */
 
-namespace App\DataFixtures;
+namespace CommerceKitty\DataFixtures;
 
-use App\Entity;
+use CommerceKitty\Entity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

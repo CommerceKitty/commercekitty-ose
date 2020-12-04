@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Type;
+namespace CommerceKitty\Form\Type;
 
-use App\Entity\Address;
+use CommerceKitty\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

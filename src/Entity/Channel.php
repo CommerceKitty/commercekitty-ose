@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace CommerceKitty\Entity;
 
-use App\Model;
+use CommerceKitty\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChannelRepository")
+ * @ORM\Entity(repositoryClass="CommerceKitty\Repository\ChannelRepository")
  * @ORM\Table(name="channels")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")

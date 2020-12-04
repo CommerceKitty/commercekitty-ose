@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace CommerceKitty\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

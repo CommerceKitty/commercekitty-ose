@@ -1,8 +1,8 @@
 <?php
 
-namespace App\EventSubscriber\Channel;
+namespace CommerceKitty\EventSubscriber\Channel;
 
-use App\Event\TestConnectionEvent;
+use CommerceKitty\Event\TestConnectionEvent;
 use CommerceKitty\Component\ShopifyClient\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

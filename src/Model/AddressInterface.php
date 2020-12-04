@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Model;
+namespace CommerceKitty\Model;
 
 /**
  * @see https://en.wikipedia.org/wiki/Address
