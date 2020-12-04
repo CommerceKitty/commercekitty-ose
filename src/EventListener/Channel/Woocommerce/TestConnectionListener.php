@@ -35,19 +35,13 @@ class TestConnectionListener
             // @todo use Consumer Key & Consumer Secret
             $response = $this->client->request('GET', $event->getChannel()->getHost());
 
-            // This is here because if not, it will check on __destruct and
-            // exception will not be caught
-            $response->getStatusCode();
+            $event->setSuccess(200 === $response->getStatusCode());
         } catch (TransportExceptionInterface $e) {
             $response->cancel();
             $event
                 ->setSuccess(false)
                 ->setMessage($e->getMessage())
             ;
-
-            return;
         }
-
-        $event->setSuccess(true);
     }
 }

@@ -4,6 +4,7 @@ namespace App\EventSubscriber\Channel;
 
 use App\Event\TestConnectionEvent;
 use CommerceKitty\Component\ShopifyClient\Client;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -16,12 +17,15 @@ class ShopifySubscriber implements EventSubscriberInterface
      */
     private $httpClient;
 
+    private $logger;
+
     /**
      * @param HttpClientInterface $client
      */
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(HttpClientInterface $httpClient, LoggerInterface $logger)
     {
         $this->httpClient = $httpClient;
+        $this->logger     = $logger;
     }
 
     /**
@@ -48,9 +52,8 @@ class ShopifySubscriber implements EventSubscriberInterface
         ;
 
         try {
-            $response = $client->getShopResponse();
-
-            $event->setSuccess(200 === $response->getStatusCode());
+            $event->setSuccess(200 === $client->getShopResponse()->getStatusCode());
+            return;
         } catch (TransportExceptionInterface $e) {
             $event
                 ->setSuccess(false)
@@ -62,5 +65,13 @@ class ShopifySubscriber implements EventSubscriberInterface
                 ->setMessage($e->getMessage())
             ;
         }
+
+        $this->logger->error('[{channel_id}:{channel_type}] Channel failed to make a successful connection.', [
+            'channel_id'   => $event->getChannel()->getId(),
+            'channel_type' => $event->getChannel()->getType(),
+            'channel_host' => $event->getChannel()->getHost(),
+            '__CLASS__'    => __CLASS__,
+            '__METHOD__'   => __METHOD__,
+        ]);
     }
 }
