@@ -2,8 +2,9 @@
 
 namespace CommerceKitty\EventSubscriber\Channel;
 
-use CommerceKitty\Event\TestConnectionEvent;
 use CommerceKitty\Component\ShopifyClient\Client;
+use CommerceKitty\Event\TestConnectionEvent;
+use CommerceKitty\Factory\ShopifyClientFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
@@ -13,19 +14,19 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class ShopifySubscriber implements EventSubscriberInterface
 {
     /**
-     * @var HttpClientInterface
+     * @var LoggerInterface
      */
-    private $httpClient;
-
     private $logger;
+
+    private $factory;
 
     /**
      * @param HttpClientInterface $client
      */
-    public function __construct(HttpClientInterface $httpClient, LoggerInterface $logger)
+    public function __construct(HttpClientInterface $httpClient, LoggerInterface $logger, ShopifyClientFactory $factory)
     {
-        $this->httpClient = $httpClient;
-        $this->logger     = $logger;
+        $this->logger  = $logger;
+        $this->factory = $factory;
     }
 
     /**
@@ -45,11 +46,7 @@ class ShopifySubscriber implements EventSubscriberInterface
      */
     public function onChannelShopifyTestConnection(TestConnectionEvent $event): void
     {
-        $client = (new Client($this->httpClient))
-            ->withHost($event->getChannel()->getHost())
-            ->withApiKey($event->getChannel()->getApiKey())
-            ->withPassword($event->getChannel()->getPassword())
-        ;
+        $client = $this->factory->createShopifyClient($event->getChannel());
 
         try {
             $event->setSuccess(200 === $client->getShopResponse()->getStatusCode());

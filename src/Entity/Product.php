@@ -5,11 +5,13 @@ namespace CommerceKitty\Entity;
 use CommerceKitty\Model;
 use CommerceKitty\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ORM\Table(name="products")
+ * @UniqueEntity("sku")
  */
 class Product extends Model\Product
 {

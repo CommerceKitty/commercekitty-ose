@@ -2,6 +2,8 @@
 
 namespace CommerceKitty\Message;
 
+use App\Model\ChannelInterface;
+
 trait ChannelAwareTrait
 {
     /**
@@ -25,6 +27,18 @@ trait ChannelAwareTrait
     public function setChannelId(string $id): self
     {
         $this->channelId = $id;
+
+        return $this;
+    }
+
+    /**
+     * @param ChannelInterface $channel
+     *
+     * @return self
+     */
+    public function setChannel(ChannelInterface $channel): self
+    {
+        $this->channelId = $channel->getId();
 
         return $this;
     }

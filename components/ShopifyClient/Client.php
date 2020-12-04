@@ -49,11 +49,19 @@ class Client
     }
 
     /**
+     * ie ->getResource('GET', '/shop.json');
+     */
+    public function getResource(string $method = 'GET', string $uri): ResponseInterface
+    {
+        return $this->httpClient->request('GET', $this->host.'/admin/api/'.self::API_VERSION.$uri, [
+            'auth_basic' => [$this->apiKey, $this->password],
+        ]);
+    }
+
+    /**
      */
     public function getShopResponse(): ResponseInterface
     {
-        return $this->httpClient->request('GET', $this->host.'/admin/api/'.self::API_VERSION.'/shop.json', [
-            'auth_basic' => [$this->apiKey, $this->password],
-        ]);
+        return $this->getResource('GET', '/shop.json');
     }
 }
