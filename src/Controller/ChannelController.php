@@ -84,6 +84,8 @@ class ChannelController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
+            #> @todo Event Bus <#
+
             $request->getSession()->remove('channel_type');
 
             $this->addFlash('success', $translator->trans('flashes.channel.created.success', [
@@ -134,9 +136,9 @@ class ChannelController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
-            $request->getSession()->remove('channel_type');
+            #> @todo Event Bus <#
 
-            $this->addFlash('success', $translator->trans('flashes.channel.created.success', [
+            $this->addFlash('success', $translator->trans('flashes.channel.updated.success', [
                 '%entity_class_name%'      => 'Channel',
                 '%entity_full_class_name%' => Entity\Channel::class,
                 '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',

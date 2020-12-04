@@ -3,7 +3,9 @@
 namespace App\EventSubscriber\Channel;
 
 use App\Event\TestConnectionEvent;
+use CommerceKitty\Component\ShopifyClient\Client;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -12,14 +14,14 @@ class ShopifySubscriber implements EventSubscriberInterface
     /**
      * @var HttpClientInterface
      */
-    private $client;
+    private $httpClient;
 
     /**
      * @param HttpClientInterface $client
      */
-    public function __construct(HttpClientInterface $client)
+    public function __construct(HttpClientInterface $httpClient)
     {
-        $this->client = $client;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -39,25 +41,26 @@ class ShopifySubscriber implements EventSubscriberInterface
      */
     public function onChannelShopifyTestConnection(TestConnectionEvent $event): void
     {
-        try {
-            // @todo Make API call for shop info
-            $response = $this->client->request('GET', $event->getChannel()->getHost(), [
-                'auth_basic' => [$event->getChannel()->getApiKey(), $event->getChannel()->getPassword()],
-            ]);
+        $client = (new Client($this->httpClient))
+            ->withHost($event->getChannel()->getHost())
+            ->withApiKey($event->getChannel()->getApiKey())
+            ->withPassword($event->getChannel()->getPassword())
+        ;
 
-            // This is here because if not, it will check on __destruct and
-            // exception will not be caught
-            $response->getStatusCode();
+        try {
+            $response = $client->getShopResponse();
+
+            $event->setSuccess(200 === $response->getStatusCode());
         } catch (TransportExceptionInterface $e) {
-            $response->cancel();
             $event
                 ->setSuccess(false)
                 ->setMessage($e->getMessage())
             ;
-
-            return;
+        } catch (ClientException $e) {
+            $event
+                ->setSuccess(false)
+                ->setMessage($e->getMessage())
+            ;
         }
-
-        $event->setSuccess(true);
     }
 }
