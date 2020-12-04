@@ -33,8 +33,10 @@
           {% embed '_bootstrap/table.html.twig' %}
             {% block thead %}
               <tr>
-                <th>&nbsp;</th>
-                <th>{{'name'|trans}}</th>
+                <th class="col-sm-1">&nbsp;</th>
+                <th class="col-sm-1">{{'enabled'|trans}}</th>
+                <th class="col-sm-8">{{'name'|trans}}</th>
+                <th class="col-sm-2">{{'type'|trans}}</th>
               </tr>
             {% endblock %}
             {% block tbody %}
@@ -54,7 +56,9 @@
                       </div>
                     </div>
                   </td>
+                  <td>{% if entity.enabled %}<i class="fas fa-fw fa-toggle-on"></i>{% else %}<i class="fas fa-fw fa-toggle-off"></i>{% endif %}</td>
                   <td>{{entity.name}}</td>
+                  <td>{{entity.type}}</td>
                 </tr>
               {% endfor %}
             {% endblock %}
