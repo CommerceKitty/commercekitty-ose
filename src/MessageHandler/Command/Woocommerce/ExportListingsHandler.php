@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Event\Woocommerce;
+namespace App\MessageHandler\Command\Woocommerce;
 
-use App\Message\Event\Woocommerce\ExportInventoryMessage;
-use App\MessageHandler\Event\EventHandlerInterface;
+use App\Message\Command\Woocommerce\ExportListingsCommand;
+use App\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class ExportInventoryHandler implements EventHandlerInterface
+class ExportListingsHandler implements CommandHandlerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -31,11 +31,11 @@ class ExportInventoryHandler implements EventHandlerInterface
     }
 
     /**
-     * @param ExportInventoryMessage $message
+     * @param ExportListingsCommand $message
      *
      * @return void
      */
-    public function __invoke(ExportInventoryMessage $message): void
+    public function __invoke(ExportListingsCommand $message): void
     {
         // @todo
     }

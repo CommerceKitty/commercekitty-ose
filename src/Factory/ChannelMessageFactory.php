@@ -2,11 +2,34 @@
 
 namespace App\Factory;
 
-use App\Message;
+use App\Message\Command\CommandInterface;
 use App\Model\ChannelInterface;
+use function Symfony\Component\String\u;
 
 class ChannelMessageFactory
 {
+    /**
+     * @param string           $command
+     * @param ChannelInterface $channel
+     *
+     * @throws Exception
+     *
+     * @return CommandInterface
+     */
+    public function getCommand(string $command, ChannelInterface $channel): CommandInterface
+    {
+        $type                 = $channel->getType();
+        $commandClassName     = $command.'Command';
+        $commandNamespace     = 'App\\Message\\Command\\'.u($type)->lower()->camel()->title()->toString();
+        $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
+
+        if (!class_exists($commandFullClassName)) {
+            throw new \Exception('Command "'.$commandFullClassName.'" Not Found.');
+        }
+
+        return new $commandFullClassName();
+    }
+
     /**
      * @param ChannelInterface $channel
      *
@@ -16,14 +39,7 @@ class ChannelMessageFactory
      */
     public function getImportProductsMessage(ChannelInterface $channel)
     {
-        switch ($channel->getType()) {
-            case('shopify'):
-                return new Message\Event\Shopify\ImportProductsMessage();
-            case('woocommerce'):
-                return new Message\Event\Woocommerce\ImportProductsMessage();
-        }
-
-        throw new \Exception('Channel Type is Unknown');
+        return $this->getCommand('ImportProducts', $channel);
     }
 
     /**
@@ -35,14 +51,7 @@ class ChannelMessageFactory
      */
     public function getImportOrdersMessage(ChannelInterface $channel)
     {
-        switch ($channel->getType()) {
-            case('shopify'):
-                return new Message\Event\Shopify\ImportOrdersMessage();
-            case('woocommerce'):
-                return new Message\Event\Woocommerce\ImportOrdersMessage();
-        }
-
-        throw new \Exception('Channel Type is Unknown');
+        return $this->getCommand('ImportOrders', $channel);
     }
 
     /**
@@ -54,14 +63,7 @@ class ChannelMessageFactory
      */
     public function getExportInventoryMessage(ChannelInterface $channel)
     {
-        switch ($channel->getType()) {
-            case('shopify'):
-                return new Message\Event\Shopify\ExportInventoryMessage();
-            case('woocommerce'):
-                return new Message\Event\Woocommerce\ExportInventoryMessage();
-        }
-
-        throw new \Exception('Channel Type is Unknown');
+        return $this->getCommand('ExportInventory', $channel);
     }
 
     /**
@@ -73,13 +75,6 @@ class ChannelMessageFactory
      */
     public function getExportListingsMessage(ChannelInterface $channel)
     {
-        switch ($channel->getType()) {
-            case('shopify'):
-                return new Message\Event\Shopify\ExportListingsMessage();
-            case('woocommerce'):
-                return new Message\Event\Woocommerce\ExportListingsMessage();
-        }
-
-        throw new \Exception('Channel Type is Unknown');
+        return $this->getCommand('ExportListings', $channel);
     }
 }

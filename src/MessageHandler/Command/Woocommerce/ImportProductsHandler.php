@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\MessageHandler\Event\Woocommerce;
+namespace App\MessageHandler\Command\Woocommerce;
 
-use App\Message\Event\Woocommerce\ImportProductsMessage;
-use App\MessageHandler\Event\EventHandlerInterface;
+use App\Message\Command\Woocommerce\ImportProductsCommand;
+use App\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class ImportProductsHandler implements EventHandlerInterface
+class ImportProductsHandler implements CommandHandlerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -31,11 +31,11 @@ class ImportProductsHandler implements EventHandlerInterface
     }
 
     /**
-     * @param ImportProductsMessage $message
+     * @param ImportProductsCommand $message
      *
      * @return void
      */
-    public function __invoke(ImportProductsMessage $message): void
+    public function __invoke(ImportProductsCommand $message): void
     {
         // @todo
     }

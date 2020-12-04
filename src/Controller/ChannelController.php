@@ -178,7 +178,7 @@ class ChannelController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Query Bus
+            // @todo Find a better way to do this
             $event = $dispatcher->dispatch(new TestConnectionEvent($entity), 'channel.'.$entity->getType().'.test_connection');
             if ($event->wasSuccessful()) {
                 $this->addFlash('success', 'Connection Successful');
@@ -201,12 +201,12 @@ class ChannelController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param MessageBusInterface      $eventBus
+     * @param MessageBusInterface      $commandBus
      * @param string                   $id
      *
      * @return Response
      */
-    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -227,7 +227,7 @@ class ChannelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message = $messageFactory->getImportProductsMessage($entity);
             $message->setChannelId($entity->getId());
-            $eventBus->dispatch($message);
+            $commandBus->dispatch($message);
 
             $this->addFlash('success', $translator->trans('flashes.channel.import_products.success', [
                 '%entity_class_name%'      => 'Channel',
@@ -248,12 +248,12 @@ class ChannelController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param MessageBusInterface      $eventBus
+     * @param MessageBusInterface      $commandBus
      * @param string                   $id
      *
      * @return Response
      */
-    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -274,7 +274,7 @@ class ChannelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message = $messageFactory->getImportOrdersMessage($entity);
             $message->setChannelId($entity->getId());
-            $eventBus->dispatch($message);
+            $commandBus->dispatch($message);
 
             $this->addFlash('success', $translator->trans('flashes.channel.import_orders.success', [
                 '%entity_class_name%'      => 'Channel',
@@ -295,12 +295,12 @@ class ChannelController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param MessageBusInterface      $eventBus
+     * @param MessageBusInterface      $commandBus
      * @param string                   $id
      *
      * @return Response
      */
-    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -321,7 +321,7 @@ class ChannelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message = $messageFactory->getExportInventoryMessage($entity);
             $message->setChannelId($entity->getId());
-            $eventBus->dispatch($message);
+            $commandBus->dispatch($message);
 
             $this->addFlash('success', $translator->trans('flashes.channel.export_inventory.success', [
                 '%entity_class_name%'      => 'Channel',
@@ -342,12 +342,12 @@ class ChannelController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param MessageBusInterface      $eventBus
+     * @param MessageBusInterface      $commandBus
      * @param string                   $id
      *
      * @return Response
      */
-    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -368,7 +368,7 @@ class ChannelController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message = $messageFactory->getExportListingsMessage($entity);
             $message->setChannelId($entity->getId());
-            $eventBus->dispatch($message);
+            $commandBus->dispatch($message);
 
             $this->addFlash('success', $translator->trans('flashes.channel.export_listings.success', [
                 '%entity_class_name%'      => 'Channel',
