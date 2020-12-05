@@ -9,7 +9,6 @@ use CommerceKitty\Message\Command\Shopify\ImportProductsCommand;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class ImportProductsHandler implements CommandHandlerInterface
 {

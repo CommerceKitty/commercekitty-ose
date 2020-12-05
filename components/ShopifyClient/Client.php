@@ -51,10 +51,11 @@ class Client
     /**
      * ie ->getResource('GET', '/shop.json');
      */
-    public function getResource(string $method = 'GET', string $uri): ResponseInterface
+    public function getResource(string $method = 'GET', string $uri, array $queryParameters = []): ResponseInterface
     {
         return $this->httpClient->request('GET', $this->host.'/admin/api/'.self::API_VERSION.$uri, [
             'auth_basic' => [$this->apiKey, $this->password],
+            'query'      => $queryParameters,
         ]);
     }
 
