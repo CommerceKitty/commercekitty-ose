@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -21,7 +22,7 @@ class InventoryController extends AbstractController
      *
      * @return Response
      */
-    public function set(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function set(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -51,6 +52,15 @@ class InventoryController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'InventoryUpdatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
+
             $this->addFlash('success', $translator->trans('flashes.inventory.set.success', [
                 '%entity_class_name%'      => 'Inventory',
                 '%entity_full_class_name%' => Entity\Inventory::class,
@@ -75,7 +85,7 @@ class InventoryController extends AbstractController
      *
      * @return Response
      */
-    public function increment(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function increment(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -106,6 +116,15 @@ class InventoryController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'InventoryUpdatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
+
             $this->addFlash('success', $translator->trans('flashes.inventory.increment.success', [
                 '%entity_class_name%'      => 'Inventory',
                 '%entity_full_class_name%' => Entity\Inventory::class,
@@ -130,7 +149,7 @@ class InventoryController extends AbstractController
      *
      * @return Response
      */
-    public function decrement(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function decrement(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -160,6 +179,15 @@ class InventoryController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
+
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'InventoryUpdatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.inventory.decrement.success', [
                 '%entity_class_name%'      => 'Inventory',

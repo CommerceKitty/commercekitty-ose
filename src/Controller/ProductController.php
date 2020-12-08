@@ -51,7 +51,7 @@ class ProductController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator): Response
+    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -76,6 +76,15 @@ class ProductController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
+
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'ProductCreatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $request->getSession()->remove('product_type');
 

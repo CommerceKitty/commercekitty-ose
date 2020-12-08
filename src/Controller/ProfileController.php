@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,7 +21,7 @@ class ProfileController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -42,6 +43,15 @@ class ProfileController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
+
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'UserUpdatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.profile.updated.success', [
                 '%entity_class_name%'      => 'User',

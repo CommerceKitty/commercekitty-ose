@@ -13,9 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class ChannelController extends AbstractController
 {
@@ -59,7 +59,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelEntityFactory $entityFactory, ChannelFormFactory $formFactory): Response
+    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelEntityFactory $entityFactory, ChannelFormFactory $formFactory, MessageBusInterface $eventBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -84,7 +84,14 @@ class ChannelController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
-            #> @todo Event Bus <#
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'ChannelCreatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $request->getSession()->remove('channel_type');
 
@@ -110,7 +117,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelFormFactory $formFactory, string $id): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelFormFactory $formFactory, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -136,7 +143,14 @@ class ChannelController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
-            #> @todo Event Bus <#
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'ChannelUpdatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.channel.updated.success', [
                 '%entity_class_name%'      => 'Channel',

@@ -1,0 +1,5 @@
+framework:
+    messenger:
+        transports:
+            sync:  'in-memory://'
+            async: 'in-memory://'

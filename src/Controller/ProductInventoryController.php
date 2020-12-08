@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -62,7 +63,7 @@ class ProductInventoryController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -109,6 +110,15 @@ class ProductInventoryController extends AbstractController
             ;
             $manager->persist($inventory);
             $manager->flush();
+
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = 'InventoryCreatedEvent';
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($inventory));
+            }
+            //< Event Bus
 
             $request->getSession()->remove('warehouse[id]');
 

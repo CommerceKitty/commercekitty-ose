@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function Symfony\Component\String\u;
@@ -33,12 +34,12 @@ class EntityController extends AbstractController
         $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
 
-        #>
+        //> Event Dispatcher
         $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.'.$entitySnakeName.'.index.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
         }
-        #<
+        //< Event Dispatcher
 
         #> @todo Query Bus
         $builder = $this->getDoctrine()->getRepository($entityFullClassName)
@@ -60,7 +61,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator): Response
+    public function new(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -73,24 +74,36 @@ class EntityController extends AbstractController
 
         $entity = new $entityFullClassName();
 
+        //> Event Dispatcher
         $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.'.$entitySnakeName.'.new.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
         }
+        //< Event Dispatcher
 
+        //> Event Dispatcher
         $formEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.form.'.$entitySnakeName.'.initialize');
         if ($formEvent->hasArgument('form')) {
             $form = $formEvent->getArgument('form');
         } else {
             $form = $this->createForm($formFullClassName, $entity);
         }
+        //< Event Dispatcher
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
 
-            #> @todo Event Bus <#
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = $entityClassName.'CreatedEvent'; // ie: ProductCreatedEvent
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.created.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -154,11 +167,11 @@ class EntityController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param int                      $id
+     * @param string                   $id
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $id): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -197,7 +210,14 @@ class EntityController extends AbstractController
             $manager->persist($entity);
             $manager->flush();
 
-            #> @todo Event Bus <#
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = $entityClassName.'UpdatedEvent'; // ie: ProductUpdatedEvent
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.updated.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -223,11 +243,11 @@ class EntityController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param int                      $id
+     * @param string                   $id
      *
      * @return Response
      */
-    public function delete(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $id): Response
+    public function delete(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -260,9 +280,15 @@ class EntityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($entity);
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = $entityClassName.'DeletedEvent'; // ie: ProductDeletedEvent
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($entity));
+            }
+            //< Event Bus
             $manager->flush();
-
-            #> @todo Event Bus <#
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.deleted.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -292,7 +318,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function clone(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $id): Response
+    public function clone(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -328,7 +354,14 @@ class EntityController extends AbstractController
             $manager->persist($cloneEntity);
             $manager->flush();
 
-            #> @todo Event Bus <#
+            //> Event Bus
+            $eventNamespace     = 'App\\Message\\Event';
+            $eventClassName     = $entityClassName.'CreatedEvent'; // ie: ProductCreatedEvent
+            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            if (class_exists($eventFullClassName)) {
+                $eventBus->dispatch(new $eventFullClassName($cloneEntity));
+            }
+            //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.cloned.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -357,7 +390,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function purge(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator): Response
+    public function purge(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -383,6 +416,14 @@ class EntityController extends AbstractController
             $collection = $repository->findAll();
             foreach ($collection as $entity) {
                 $manager->remove($entity);
+                //> Event Bus
+                $eventNamespace     = 'App\\Message\\Event';
+                $eventClassName     = $entityClassName.'DeletedEvent'; // ie: ProductDeletedEvent
+                $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+                if (class_exists($eventFullClassName)) {
+                    $eventBus->dispatch(new $eventFullClassName($cloneEntity));
+                }
+                //< Event Bus
             }
             $manager->flush();
 

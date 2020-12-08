@@ -18,14 +18,13 @@ help:
 	@echo "  $(COLOR_GREEN)install$(COLOR_RESET)           Install composer and node dependencies"
 	@echo "  $(COLOR_GREEN)up$(COLOR_RESET)                Spins up containers"
 	@echo "  $(COLOR_GREEN)stop$(COLOR_RESET)              Stops containers"
-	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs wokers in the foreground"
 	@echo "  $(COLOR_GREEN)clean$(COLOR_RESET)             Clears cache and temp files"
+	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs wokers in the foreground"
 	@echo "  $(COLOR_GREEN)compile.dev$(COLOR_RESET)       Compile assets"
 	@echo "  $(COLOR_GREEN)compile.prod$(COLOR_RESET)      Compile assets"
 	@echo "  $(COLOR_GREEN)db.fixtures$(COLOR_RESET)       Loads DB Fixtures (destructive)"
 	@echo "  $(COLOR_GREEN)db.migrate$(COLOR_RESET)        Runs database migrations"
 	@echo "  $(COLOR_GREEN)docs.coverage$(COLOR_RESET)     Generates HTML Code Coverage report"
-	@echo "  $(COLOR_GREEN)worker$(COLOR_RESET)            Runs workers"
 	@echo " $(COLOR_YELLOW)lint$(COLOR_RESET)              Runs all lint targets"
 	@echo "  $(COLOR_GREEN)lint.container$(COLOR_RESET)    Check container"
 	@echo "  $(COLOR_GREEN)lint.twig$(COLOR_RESET)         Check twig files"
@@ -94,7 +93,7 @@ coverage:
 	rm -rf var/build/*.cov
 
 worker:
-	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360
+	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 async --bus=command.bus --bus=event.bus
 
 # --- Hidden ---
 
