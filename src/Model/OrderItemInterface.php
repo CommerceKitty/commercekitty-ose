@@ -12,12 +12,26 @@ interface OrderItemInterface
     public function getOrder(): OrderInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
     /**
+     * Returns the foreign id for this order item
+     *
+     * @return string|null
+     */
+    public function getFid(): ?string;
+
+    /**
      * @return ProductInterface
      */
-    public function getProduct(): ?ProductInterface;
+    public function getProduct(): ProductInterface;
+
+    /**
+     * Returns the quantity for this order item
+     *
+     * @return integer
+     */
+    public function getQuantity(): int;
 }

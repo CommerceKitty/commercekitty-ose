@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @todo
  */
 interface FormEventInterface
 {
@@ -31,9 +30,4 @@ interface FormEventInterface
      * @return FormInterface
      */
     public function getForm(): ?FormInterface;
-
-    /**
-     * @return Response|null
-     */
-    public function getResponse(): ?Response;
 }

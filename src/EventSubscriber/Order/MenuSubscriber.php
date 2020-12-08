@@ -34,7 +34,7 @@ class MenuSubscriber implements EventSubscriberInterface
             ],
         ]);
         $menu['orders']->addChild('view all', [
-            //'route'  => 'product_index',
+            'route'  => 'order_index',
             'extras' => [
                 'icon' => 'fas fa-list fa-fw',
             ],

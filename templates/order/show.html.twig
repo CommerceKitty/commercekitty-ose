@@ -1,0 +1,57 @@
+{#
+  @var OrderInterface entity
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{entity.channel}} - {{entity.displayId}} | {{'orders'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('orders', 'order_index')}}
+      {{breadcrumb.item(entity.displayId)}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        {# @todo menu event? #}
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          {#<a class="nav-link" href="{{path('order_log', {'id':entity.id})}}"><i class="fas fa-terminal fa-fw"></i>&nbsp;{{'log'|trans}}</a>#}
+        </div>
+      </div>
+      <div class="col-sm-10">
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block tbody %}
+            <tr><th>{{'id'|trans}}</th><td>{{entity.id}}</td></tr>
+            <tr><th>{{'channel'|trans}}</th><td>{{entity.channel}}&nbsp;<a href="{{path('channel_show',{'id':entity.channel.id})}}" target="_new"><i class="fas fa-fw fa-external-link-alt"></i></a></td></tr>
+            <tr><th>{{'display id'|trans}}</th><td>{{entity.displayId}}</td></tr>
+            <tr><th>{{'created at'|trans}}</th><td>{{entity.createdAt|format_datetime}}</td></tr>
+          {% endblock %}
+        {% endembed %}
+
+        <h3 class="mt-5">{{'order items'|trans}}</h3>
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block thead %}
+            <tr>
+              <th>{{'product'|trans}}</th>
+              <th>{{'quantity'|trans}}</th>
+            </tr>
+          {% endblock thead %}
+          {% block tbody %}
+            {% for orderItem in entity.orderItems %}
+              <tr>
+                <td>{{orderItem.product}}&nbsp;<a href="{{path('product_show',{'id':orderItem.product.id})}}" target="_new"><i class="fas fa-fw fa-external-link-alt"></i></a></td>
+                <td>{{orderItem.quantity}}</td>
+              </tr>
+            {% endfor %}
+          {% endblock tbody %}
+        {% endembed %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

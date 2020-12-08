@@ -2,6 +2,8 @@
 
 namespace CommerceKitty\Model;
 
+use DateTimeInterface;
+
 /**
  */
 interface OrderInterface
@@ -16,12 +18,12 @@ interface OrderInterface
     /**
      * @return OrderItemInterface[]
      */
-    public function getOrderItems();
+    public function getOrderItems(): iterable;
 
     /**
      * @return CustomerInterface
      */
-    public function getCustomer(): CustomerInterface;
+    //public function getCustomer(): CustomerInterface;
 
     /**
      * Returns the unique id for use within the app
@@ -44,6 +46,17 @@ interface OrderInterface
      */
     public function getDisplayId(): string;
 
-    // AddressInterface = BillingAddress
-    // AddressInterface = ShippingAddress
+    /**
+     * Timestamp of when the order was created
+     *
+     * @return DateTimeInterface
+     */
+    public function getCreatedAt(): DateTimeInterface;
+
+    /**
+     * Timestamp of when the order was updated
+     *
+     * @return DateTimeInterface
+     */
+    //public function getUpdatedAt(): DateTimeInterface;
 }

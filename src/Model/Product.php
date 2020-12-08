@@ -89,6 +89,7 @@ class Product implements ProductInterface
     {
         if ($this->id) {
             $this->name = 'Copy of '.$this->name;
+            $this->sku  = 'copy-'.$this->sku;
         }
     }
 }

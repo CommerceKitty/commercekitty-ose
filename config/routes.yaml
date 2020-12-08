@@ -248,7 +248,37 @@ inventory_delete:
         _entity_class_name: Inventory
     requirements:
         _format: html|json
-# --> Inventory
+# <-- Inventory
+
+# --> Order
+order_index:
+    methods:    GET
+    path:       /orders.{_format}
+    controller: CommerceKitty\Controller\EntityController::index
+    defaults:
+        _format:            html
+        _entity_class_name: Order
+    requirements:
+        _format: html|json
+order_purge:
+    methods:    GET|DELETE
+    path:       /orders/purge.{_format}
+    controller: CommerceKitty\Controller\EntityController::purge
+    defaults:
+        _format:            html
+        _entity_class_name: Order
+    requirements:
+        _format: html|json
+order_show:
+    methods:    GET
+    path:       /orders/{id}.{_format}
+    controller: CommerceKitty\Controller\EntityController::show
+    defaults:
+        _format:            html
+        _entity_class_name: Order
+    requirements:
+        _format: html|json
+# <-- Order
 
 # --> Product
 product_index:

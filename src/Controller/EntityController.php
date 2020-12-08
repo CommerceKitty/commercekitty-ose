@@ -2,6 +2,7 @@
 
 namespace CommerceKitty\Controller;
 
+use CommerceKitty\Event\ControllerEvent;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -35,17 +36,15 @@ class EntityController extends AbstractController
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
 
         //> Event Dispatcher
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.'.$entitySnakeName.'.index.initialize');
-        if ($controllerEvent->hasArgument('response')) {
-            return $controllerEvent->getArgument('response');
+        $controllerEvent = $dispatcher->dispatch(new ControllerEvent(null, $request), 'controller.'.$entitySnakeName.'.index.initialize');
+        if ($controllerEvent->hasResponse()) {
+            return $controllerEvent->getResponse();
         }
         //< Event Dispatcher
 
-        #> @todo Query Bus
         $builder = $this->getDoctrine()->getRepository($entityFullClassName)
             ->createQueryBuilder('e')
         ;
-        #<
 
         $pager = $paginator->paginate($builder, $request->query->getInt('page', 1), $request->query->getInt('limit', 10));
 

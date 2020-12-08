@@ -1,0 +1,67 @@
+{#
+  @var OrderInterface[] pager
+#}
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'orders'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('orders')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% embed '_bootstrap/grid.html.twig' with {'breakpoint':'fluid'} %}
+    {% block content %}
+      {% import '_bootstrap/grid.html.twig' as grid %}
+      {{grid.row_start()}}
+        {{grid.col_start('sm-2')}}
+
+          {# @todo make menu event #}
+
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link text-danger" href="{{path('order_purge')}}"><i class="fas fa-trash fa-fw"></i>&nbsp;{{'purge'|trans}}</a>
+          </div>
+
+        {{grid.col_end()}}
+        {{grid.col_start('sm-10')}}
+          {% embed '_bootstrap/table.html.twig' %}
+            {% block thead %}
+              <tr>
+                <th>&nbsp;</th>
+                <th>{{'channel'|trans}}</th>
+                <th>{{'display id'|trans}}</th>
+                <th>{{'created at'|trans}}</th>
+              </tr>
+            {% endblock %}
+            {% block tbody %}
+              {% for entity in pager %}
+                <tr>
+                  <td class="col-sm-2">
+                    <div class="btn-group">
+                      <a class="btn btn-secondary" href="{{path('order_show', {'id':entity.id})}}"><i class="fas fa-eye fa-fw"></i>&nbsp;{{'view'|trans}}</a>
+                      <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">{{'toggle dropdown'|trans}}</span>
+                      </button>
+                      <div class="dropdown-menu">
+                        {#<a class="dropdown-item" href="{{path('product_log', {'id':entity.id})}}"><i class="fas fa-fw fa-terminal"></i>&nbsp;{{'log'|trans}}</a>#}
+                        {#<a class="dropdown-item text-danger" href="{{path('product_delete', {'id':entity.id})}}"><i class="fas fa-fw fa-trash"></i>&nbsp;{{'delete'|trans}}</a>#}
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{entity.channel}}</td>
+                  <td>{{entity.displayId}}</td>
+                  <td>{{entity.createdAt|format_datetime}}</td>
+                </tr>
+              {% endfor %}
+            {% endblock %}
+          {% endembed %}
+        {{grid.col_end()}}
+      {{grid.row_end()}}
+    {% endblock content %}
+  {% endembed %}
+{% endblock %}
