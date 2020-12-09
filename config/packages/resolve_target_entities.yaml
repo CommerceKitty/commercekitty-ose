@@ -1,0 +1,15 @@
+doctrine:
+    orm:
+        resolve_target_entities:
+            CommerceKitty\Model\AddressInterface: CommerceKitty\Entity\Address
+            CommerceKitty\Model\ChannelInterface: CommerceKitty\Entity\Channel
+            CommerceKitty\Model\CustomerInterface: CommerceKitty\Entity\Customer
+            CommerceKitty\Model\InventoryInterface: CommerceKitty\Entity\Inventory
+            CommerceKitty\Model\OrderInterface: CommerceKitty\Entity\Order
+            CommerceKitty\Model\OrderItemInterface: CommerceKitty\Entity\OrderItem
+            CommerceKitty\Model\ProductInterface: CommerceKitty\Entity\Product
+            CommerceKitty\Model\ShopifyChannelInterface: CommerceKitty\Entity\ShopifyChannel
+            CommerceKitty\Model\UserInterface: CommerceKitty\Entity\User
+            CommerceKitty\Model\VendorInterface: CommerceKitty\Entity\Vendor
+            CommerceKitty\Model\WarehouseInterface: CommerceKitty\Entity\Warehouse
+            CommerceKitty\Model\WoocommerceChannelInterface: CommerceKitty\Entity\WoocommerceChannel

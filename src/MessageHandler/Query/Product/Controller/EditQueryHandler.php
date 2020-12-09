@@ -2,7 +2,6 @@
 
 namespace CommerceKitty\MessageHandler\Query\Product\Controller;
 
-use CommerceKitty\Entity\Product;
 use CommerceKitty\Model\ProductInterface;
 use CommerceKitty\Message\Query\Product\Controller\EditQuery;
 use CommerceKitty\MessageHandler\Query\QueryHandlerInterface;
@@ -31,6 +30,6 @@ class EditQueryHandler implements QueryHandlerInterface
      */
     public function __invoke(EditQuery $message): ?ProductInterface
     {
-        return $this->manager->getRepository(Product::class)->find($message->getId());
+        return $this->manager->getRepository(ProductInterface::class)->find($message->getId());
     }
 }

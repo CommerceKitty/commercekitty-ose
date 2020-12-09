@@ -2,7 +2,7 @@
 
 namespace CommerceKitty\MessageHandler\Query\Product\Controller;
 
-use CommerceKitty\Entity\Product;
+use CommerceKitty\Model\ProductInterface;
 use CommerceKitty\Message\Query\Product\Controller\IndexQuery;
 use CommerceKitty\MessageHandler\Query\QueryHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,6 +28,6 @@ class IndexQueryHandler implements QueryHandlerInterface
      */
     public function __invoke(IndexQuery $message)
     {
-        return $this->manager->getRepository(Product::class)->createQueryBuilder('e');
+        return $this->manager->getRepository(ProductInterface::class)->createQueryBuilder('e');
     }
 }
