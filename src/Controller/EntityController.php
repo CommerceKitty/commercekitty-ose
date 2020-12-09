@@ -42,6 +42,10 @@ class EntityController extends AbstractController
         }
         //< Event Dispatcher
 
+        //> Query Bus
+        //$query   = CommerceKitty\Message\Query\{EntityClassName}\Controller\{Action}Query($request);
+        //$builder = $queryBus->dispatch($query);
+
         $builder = $this->getDoctrine()->getRepository($entityFullClassName)
             ->createQueryBuilder('e')
         ;
