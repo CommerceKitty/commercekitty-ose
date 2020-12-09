@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function Symfony\Component\String\u;
@@ -43,12 +44,12 @@ class EntityController extends AbstractController
         //< Event Dispatcher
 
         //> Query Bus
-        //$query   = CommerceKitty\Message\Query\{EntityClassName}\Controller\{Action}Query($request);
-        //$builder = $queryBus->dispatch($query);
-
-        $builder = $this->getDoctrine()->getRepository($entityFullClassName)
-            ->createQueryBuilder('e')
-        ;
+        $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Controller\\IndexQuery';
+        $query              = new $queryFullClassName($request);
+        $envelope           = $queryBus->dispatch($query);
+        $stamp              = $envelope->last(HandledStamp::class);
+        $builder            = $stamp->getResult();
+        //< Query Bus
 
         $pager = $paginator->paginate($builder, $request->query->getInt('page', 1), $request->query->getInt('limit', 10));
 
@@ -75,6 +76,7 @@ class EntityController extends AbstractController
         $formFullClassName   = $request->attributes->get('_form_class', 'CommerceKitty\\Form\\Type\\'.$formClassName); // ie CommerceKitty\Form\Type\ProductType
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
+        // @todo Factory
         $entity = new $entityFullClassName();
 
         //> Event Dispatcher
@@ -145,9 +147,14 @@ class EntityController extends AbstractController
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
-        #> @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository($entityFullClassName)->find($id);
-        #<
+        //> Query Bus
+        $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Controller\\ShowQuery';
+        $query              = new $queryFullClassName($id, $request);
+        $envelope           = $queryBus->dispatch($query);
+        $stamp              = $envelope->last(HandledStamp::class);
+        $entity             = $stamp->getResult();
+        //< Query Bus
+
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.'.$entitySnakeName.'.404', [
                 '%entity_class_name%'      => $entityClassName,
@@ -185,9 +192,14 @@ class EntityController extends AbstractController
         $formFullClassName   = $request->attributes->get('_form_class', 'CommerceKitty\\Form\\Type\\'.$formClassName); // ie CommerceKitty\Form\Type\ProductType
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
-        #> @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository($entityFullClassName)->find($id);
-        #<
+        //> Query Bus
+        $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Controller\\EditQuery';
+        $query              = new $queryFullClassName($id, $request);
+        $envelope           = $queryBus->dispatch($query);
+        $stamp              = $envelope->last(HandledStamp::class);
+        $entity             = $stamp->getResult();
+        //< Query Bus
+
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.'.$entitySnakeName.'.404', [
                 '%entity_class_name%'      => $entityClassName,
@@ -259,9 +271,14 @@ class EntityController extends AbstractController
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
-        #> @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository($entityFullClassName)->find($id);
-        #<
+        //> Query Bus
+        $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Controller\\DeleteQuery';
+        $query              = new $queryFullClassName($id, $request);
+        $envelope           = $queryBus->dispatch($query);
+        $stamp              = $envelope->last(HandledStamp::class);
+        $entity             = $stamp->getResult();
+        //< Query Bus
+
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.'.$entitySnakeName.'.404', [
                 '%entity_class_name%'      => $entityClassName,
@@ -330,9 +347,14 @@ class EntityController extends AbstractController
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
         $transId             = $request->attributes->get('_trans_id', $entitySnakeName);
 
-        #> @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository($entityFullClassName)->find($id);
-        #<
+        //> Query Bus
+        $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Controller\\CloneQuery';
+        $query              = new $queryFullClassName($id, $request);
+        $envelope           = $queryBus->dispatch($query);
+        $stamp              = $envelope->last(HandledStamp::class);
+        $entity             = $stamp->getResult();
+        //< Query Bus
+
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.'.$entitySnakeName.'.404', [
                 '%entity_class_name%'      => $entityClassName,
