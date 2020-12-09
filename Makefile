@@ -93,7 +93,7 @@ coverage:
 	rm -rf var/build/*.cov
 
 worker:
-	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 async --bus=command.bus --bus=event.bus
+	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 commands events
 
 # --- Hidden ---
 

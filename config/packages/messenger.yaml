@@ -18,9 +18,9 @@ framework:
                     max_retries: 0
 
         routing:
-            'CommerceKitty\Message\Command\CommandMessageInterface': commands
-            'CommerceKitty\Message\Event\EventMessageInterface': events
-            'CommerceKitty\Message\Query\QueryMessageInterface': sync
+            'CommerceKitty\Message\Command\CommandInterface': commands
+            'CommerceKitty\Message\Event\EventInterface': events
+            'CommerceKitty\Message\Query\QueryInterface': sync
 
         default_bus: command.bus
         buses:
