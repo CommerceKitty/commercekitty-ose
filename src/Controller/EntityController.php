@@ -97,6 +97,7 @@ class EntityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
@@ -221,6 +222,7 @@ class EntityController extends AbstractController
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
@@ -298,8 +300,10 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $manager = $this->getDoctrine()->getManager();
             $manager->remove($entity);
+
             //> Event Bus
             $eventNamespace     = 'App\\Message\\Event';
             $eventClassName     = $entityClassName.'DeletedEvent'; // ie: ProductDeletedEvent
@@ -374,6 +378,7 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $cloneEntity = clone $entity;
             $manager     = $this->getDoctrine()->getManager();
             $manager->persist($cloneEntity);
@@ -435,9 +440,9 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $manager    = $this->getDoctrine()->getManager();
             $repository = $this->getDoctrine()->getRepository($entityFullClassName);
-            #> @todo Command Bus <#
             $collection = $repository->findAll();
             foreach ($collection as $entity) {
                 $manager->remove($entity);
