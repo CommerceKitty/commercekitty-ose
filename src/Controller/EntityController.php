@@ -28,7 +28,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function index(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, PaginatorInterface $paginator): Response
+    public function index(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -134,11 +134,11 @@ class EntityController extends AbstractController
      * @param Request                  $request
      * @param EventDispatcherInterface $dispatcher
      * @param TranslatorInterface      $translator
-     * @param int                      $id
+     * @param string                   $id
      *
      * @return Response
      */
-    public function show(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, $id): Response
+    public function show(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -181,7 +181,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -262,7 +262,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function delete(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
+    public function delete(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
@@ -338,7 +338,7 @@ class EntityController extends AbstractController
      *
      * @return Response
      */
-    public function clone(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $eventBus, string $id): Response
+    public function clone(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, MessageBusInterface $eventBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
