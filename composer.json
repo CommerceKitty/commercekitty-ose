@@ -30,6 +30,7 @@
         "symfony/string": "5.2.*",
         "symfony/translation": "5.2.*",
         "symfony/twig-pack": "*",
+        "symfony/uid": "5.2.*",
         "symfony/validator": "5.2.*",
         "symfony/web-link": "5.2.*",
         "symfony/webpack-encore-bundle": "^1.8",
