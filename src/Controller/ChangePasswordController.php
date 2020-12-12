@@ -3,12 +3,16 @@
 namespace CommerceKitty\Controller;
 
 use CommerceKitty\Entity;
+use CommerceKitty\Event\ControllerEvent;
+use CommerceKitty\Event\FormEvent;
 use CommerceKitty\Form\Type\ChangePasswordType;
+use CommerceKitty\Message\Command\User\ChangePasswordCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
+//use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -18,35 +22,40 @@ class ChangePasswordController extends AbstractController
      * @param Request                      $request
      * @param EventDispatcherInterface     $dispatcher
      * @param TranslatorInterface          $translator
-     * @param UserPasswordEncoderInterface $passwordEncoder
      *
      * @return Response
      */
-    public function changePassword(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function changePassword(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
         $entity = $this->getUser();
 
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.change_password.change_password.initialize');
-        if ($controllerEvent->hasArgument('response')) {
-            return $controllerEvent->getArgument('response');
+        $controllerEvent = $dispatcher->dispatch(new ControllerEvent($entity, $request), 'controller.change_password.change_password.initialize');
+        if ($controllerEvent->hasResponse()) {
+            return $controllerEvent->getResponse();
         }
 
-        $formEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.form.change_password.initialize');
-        if ($formEvent->hasArgument('form')) {
-            $form = $formEvent->getArgument('form');
+        $formEvent = $dispatcher->dispatch(new FormEvent($entity, $request), 'controller.form.change_password.initialize');
+        if ($formEvent->hasForm()) {
+            $form = $formEvent->getForm();
         } else {
             $form = $this->createForm(ChangePasswordType::class, $entity);
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $passwordHash = $passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
-            $entity->setPassword($passwordHash);
+            // @todo encrypt/decrypt pw or send pw hash
+            $commandPayload = [
+                'user_id'        => $entity->getId(),
+                'plain_password' => $entity->getPlainPassword(),
+            ];
+            $commandBus->dispatch(new ChangePasswordCommand($commandPayload));
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($entity);
-            $manager->flush();
+            //$passwordHash = $passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
+            //$entity->setPassword($passwordHash);
+            //$manager = $this->getDoctrine()->getManager();
+            //$manager->persist($entity);
+            //$manager->flush();
 
             $this->addFlash('success', $translator->trans('flashes.change_password.updated.success', [
                 '%entity_class_name%'      => 'User',
@@ -54,9 +63,9 @@ class ChangePasswordController extends AbstractController
                 '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
             ], 'flashes'));
 
-            $responseEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'response.change_password.updated');
-            if ($responseEvent->hasArgument('response')) {
-                return $responseEvent->getArgument('response');
+            $controllerEvent = $dispatcher->dispatch(new ControllerEvent($entity, $request), 'response.change_password.updated');
+            if ($controllerEvent->hasResponse()) {
+                return $controllerEvent->getResponse();
             }
 
             return $this->redirectToRoute('homepage');

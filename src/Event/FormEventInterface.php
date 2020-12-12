@@ -20,6 +20,8 @@ interface FormEventInterface
     /**
      * Returns the Request Object
      *
+     * Does this event really need the request object?
+     *
      * @return Request
      */
     public function getRequest(): Request;
@@ -30,4 +32,16 @@ interface FormEventInterface
      * @return FormInterface
      */
     public function getForm(): ?FormInterface;
+
+    /**
+     * @return boolean
+     */
+    public function hasForm(): bool;
+
+    /**
+     * @param FormInterface $form
+     *
+     * @return void
+     */
+    public function setForm(FormInterface $form): void;
 }

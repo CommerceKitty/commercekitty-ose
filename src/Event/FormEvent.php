@@ -2,32 +2,19 @@
 
 namespace CommerceKitty\Event;
 
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 
-class ControllerEvent extends Event implements ControllerEventInterface
+/**
+ */
+class FormEvent implements FormEventInterface
 {
-    /**
-     * @var object
-     */
     protected $entity;
-
-    /**
-     * @var Request
-     */
     protected $request;
+    protected $form;
 
-    /**
-     * @var Response
-     */
-    protected $response;
-
-    /**
-     * @param object|null $entity
-     * @param Request     $request
-     */
-    public function __construct($entity = null, Request $request)
+    public function __construct($entity, $request)
     {
         $this->entity  = $entity;
         $this->request = $request;
@@ -52,24 +39,24 @@ class ControllerEvent extends Event implements ControllerEventInterface
     /**
      * {@inheritdoc}
      */
-    public function getResponse(): ?Response
+    public function getForm(): ?FormInterface
     {
-        return $this->response;
+        return $this->form;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setResponse(Response $response): void
+    public function hasForm(): bool
     {
-        $this->response = $response;
+        return (null !== $this->form);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasResponse(): bool
+    public function setForm(FormInterface $form): void
     {
-        return (null !== $this->response);
+        $this->form = $form;
     }
 }
