@@ -32,11 +32,13 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
+        // @todo ControllerEvent
         $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.channel.select_type.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
         }
 
+        // @todo FormEvent
         $form = $this->createForm(ChannelTypeChoiceType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,6 +71,7 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('channel_select_type');
         }
 
+        // @todo ControllerEvent
         $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.channel.new.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
@@ -80,13 +83,15 @@ class ChannelController extends AbstractController
         $form                = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo CommandBus
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
 
             //> Event Bus
+            // @todo Move to Command Handler
             $eventNamespace     = 'App\\Message\\Event';
-            $eventClassName     = 'ChannelCreatedEvent';
+            $eventClassName     = 'CreatedChannelEvent';
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
             if (class_exists($eventFullClassName)) {
                 $eventBus->dispatch(new $eventFullClassName($entity));
@@ -121,6 +126,7 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
+        // @todo Query Bus
         $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
@@ -130,6 +136,7 @@ class ChannelController extends AbstractController
             ]));
         }
 
+        // @todo ControllerEvent
         $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.channel.edit.initialize');
         if ($controllerEvent->hasArgument('response')) {
             return $controllerEvent->getArgument('response');
@@ -139,11 +146,13 @@ class ChannelController extends AbstractController
         $form     = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // @todo Command Bus
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($entity);
             $manager->flush();
 
             //> Event Bus
+            // @todo Move to Command Handler
             $eventNamespace     = 'App\\Message\\Event';
             $eventClassName     = 'ChannelUpdatedEvent';
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
@@ -179,6 +188,7 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
+        // @todo Query Bus
         $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
@@ -226,6 +236,7 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
+        // @todo Query Bus
         $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
