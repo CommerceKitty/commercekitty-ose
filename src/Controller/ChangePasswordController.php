@@ -2,26 +2,24 @@
 
 namespace CommerceKitty\Controller;
 
-use CommerceKitty\Entity;
 use CommerceKitty\Event\ControllerEvent;
 use CommerceKitty\Event\FormEvent;
 use CommerceKitty\Form\Type\ChangePasswordType;
 use CommerceKitty\Message\Command\User\ChangePasswordCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-//use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChangePasswordController extends AbstractController
 {
     /**
-     * @param Request                      $request
-     * @param EventDispatcherInterface     $dispatcher
-     * @param TranslatorInterface          $translator
+     * @param Request                  $request
+     * @param EventDispatcherInterface $dispatcher
+     * @param TranslatorInterface      $translator
+     * @param MessageBusInterface      $commandBus
      *
      * @return Response
      */
@@ -50,12 +48,6 @@ class ChangePasswordController extends AbstractController
                 'plain_password' => $entity->getPlainPassword(),
             ];
             $commandBus->dispatch(new ChangePasswordCommand($commandPayload));
-
-            //$passwordHash = $passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
-            //$entity->setPassword($passwordHash);
-            //$manager = $this->getDoctrine()->getManager();
-            //$manager->persist($entity);
-            //$manager->flush();
 
             $this->addFlash('success', $translator->trans('flashes.change_password.updated.success', [
                 '%entity_class_name%'      => 'User',
