@@ -1,0 +1,23 @@
+{#
+  @var int|null previous_page
+  @var int|null next_page
+  @var int      page
+  @var int      total_pages
+  @var int      entity_count
+#}
+{% set _route = app.request.attributes.get('_route') %}
+<nav aria-label="">
+  <ul class="pagination">
+    {% if previous_page %}
+      <li class="page-item"><a class="page-link" href="{{path(_route,{'page':previous_page})}}">{{'previous'|trans}}</a></li>
+    {% else %}
+      <li class="page-item"><a class="page-link disabled" href="#">{{'previous'|trans}}</a></li>
+    {% endif %}
+    {% if next_page %}
+      <li class="page-item"><a class="page-link" href="{{path(_route,{'page':next_page})}}">{{'next'|trans}}</a></li>
+    {% else %}
+      <li class="page-item"><a class="page-link disabled" href="#">{{'next'|trans}}</a></li>
+    {% endif %}
+  </ul>
+  {{'page %page% of %total_pages% (total results: %entity_count%)'|trans({'%page%':page,'%total_pages%':total_pages,'%entity_count%':entity_count})}}
+</nav>

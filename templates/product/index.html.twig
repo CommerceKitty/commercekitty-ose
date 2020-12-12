@@ -63,6 +63,9 @@
               {% endfor %}
             {% endblock %}
           {% endembed %}
+
+          {% include '_pagination.html.twig' %}
+
         {{grid.col_end()}}
       {{grid.row_end()}}
     {% endblock content %}

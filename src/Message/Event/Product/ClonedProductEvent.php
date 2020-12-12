@@ -1,0 +1,18 @@
+<?php declare(strict_types=1);
+
+namespace CommerceKitty\Message\Event\Product;
+
+use CommerceKitty\Message\Event\EventInterface;
+use CommerceKitty\Message\PayloadTrait;
+
+class ClonedProductEvent implements EventInterface
+{
+    use PayloadTrait;
+
+    protected $payload;
+
+    public function __construct(array $payload)
+    {
+        $this->payload = $payload;
+    }
+}

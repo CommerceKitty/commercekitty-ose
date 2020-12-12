@@ -9,11 +9,13 @@ framework:
             # failed: 'doctrine://default?queue_name=failed'
             sync:  'sync://'
             commands:
-                dsn: 'doctrine://default?queue_name=commands'
+                #dsn: 'doctrine://default?queue_name=commands'
+                dsn: 'sync://'
                 retry_strategy:
                     max_retries: 0
             events:
-                dsn: 'doctrine://default?queue_name=events'
+                #dsn: 'doctrine://default?queue_name=events'
+                dsn: 'sync://'
                 retry_strategy:
                     max_retries: 0
 

@@ -31,7 +31,7 @@ class Product extends Model\Product
     protected $name;
 
     /**
-     * @todo Unique constraint
+     * @todo Unique database constraint
      *
      * @Assert\NotBlank
      * @Assert\NotNull

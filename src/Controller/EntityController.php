@@ -45,7 +45,7 @@ class EntityController extends AbstractController
         // @todo Custom Pager Class
         $countQueryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\CountBy'.$entityClassName.'Query';
         $entityCount             = $queryBus->dispatch(new $countQueryFullClassName())->last(HandledStamp::class)->getResult();
-        $limit                   = $request->query->getInt('limit', 10);
+        $limit                   = $request->query->getInt('limit', 100);
         $page                    = $request->query->getInt('page', 1);
         $totalPages              = (int) ceil($entityCount / $limit);
         $page                    = ($page > $totalPages) ? 1 : $page; // if outside range, go back to page 1
@@ -64,6 +64,7 @@ class EntityController extends AbstractController
             'total_pages'   => $totalPages,
             'previous_page' => $previousPage,
             'next_page'     => $nextPage,
+            'entity_count'  => $entityCount,
         ]);
     }
 
@@ -113,10 +114,10 @@ class EntityController extends AbstractController
             $manager->flush();
 
             //> Event Bus
-            $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+            $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
             $eventClassName     = 'Created'.$entityClassName.'Event'; // ie: ProductCreatedEvent
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            $eventBus->dispatch(new $eventFullClassName($entity));
+            $eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
             //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.created.success', [
@@ -234,10 +235,10 @@ class EntityController extends AbstractController
             $manager->flush();
 
             //> Event Bus
-            $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+            $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
             $eventClassName     = 'Updated'.$entityClassName.'Event'; // ie: ProductUpdatedEvent
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            $eventBus->dispatch(new $eventFullClassName($entity));
+            $eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
             //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.updated.success', [
@@ -306,10 +307,10 @@ class EntityController extends AbstractController
             $manager->remove($entity);
 
             //> Event Bus
-            $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+            $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
             $eventClassName     = 'Deleted'.$entityClassName.'Event'; // ie: DeletedProductEvent
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            $eventBus->dispatch(new $eventFullClassName($entity));
+            $eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
             //< Event Bus
             $manager->flush();
 
@@ -381,15 +382,15 @@ class EntityController extends AbstractController
             $manager->flush();
 
             //> Event Bus
-            $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+            $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
             $eventClassName     = 'Cloned'.$entityClassName.'Event'; // ie: ClonedProductEvent
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            $eventBus->dispatch(new $eventFullClassName($entity));
+            $eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
             // ---
-            $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+            $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
             $eventClassName     = 'Created'.$entityClassName.'Event'; // ie: CreatedProductEvent
             $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            $eventBus->dispatch(new $eventFullClassName($cloneEntity));
+            $eventBus->dispatch(new $eventFullClassName(['id' => $cloneEntity->getId()]));
             //< Event Bus
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.cloned.success', [
@@ -446,10 +447,10 @@ class EntityController extends AbstractController
             foreach ($collection as $entity) {
                 $manager->remove($entity);
                 //> Event Bus
-                $eventNamespace     = 'App\\Message\\Event\\'.$entityClassName;
+                $eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
                 $eventClassName     = 'Deleted'.$entityClassName.'Event'; // ie: DeletedProductEvent
                 $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-                $eventBus->dispatch(new $eventFullClassName($cloneEntity));
+                $eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
                 //< Event Bus
             }
             $manager->flush();
