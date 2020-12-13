@@ -61,4 +61,15 @@ trait ShopifyChannelTrait
 
         return $this;
     }
+
+    public function getPayload(): array
+    {
+        $payload = parent::getPayload();
+
+        $payload['host']     = $this->host;
+        $payload['api_key']  = $this->apiKey;
+        $payload['password'] = $this->password;
+
+        return $payload;
+    }
 }

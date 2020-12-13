@@ -61,4 +61,15 @@ trait WoocommerceChannelTrait
 
         return $this;
     }
+
+    public function getPayload(): array
+    {
+        $payload = parent::getPayload();
+
+        $payload['host']            = $this->host;
+        $payload['consumer_key']    = $this->consumerKey;
+        $payload['consumer_secret'] = $this->consumerSecret;
+
+        return $payload;
+    }
 }

@@ -79,4 +79,13 @@ abstract class AbstractChannel implements ChannelInterface
 
         return (string) u($name)->snake();
     }
+
+    public function getPayload(): array
+    {
+        return [
+            'id'      => $this->id,
+            'name'    => $this->name,
+            'enabled' => $this->enabled,
+        ];
+    }
 }

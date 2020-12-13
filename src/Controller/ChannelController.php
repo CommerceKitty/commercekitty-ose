@@ -3,17 +3,21 @@
 namespace CommerceKitty\Controller;
 
 use CommerceKitty\Entity;
+use CommerceKitty\Event\ControllerEvent;
+use CommerceKitty\Event\FormEvent;
 use CommerceKitty\Event\TestConnectionEvent;
 use CommerceKitty\Factory\ChannelEntityFactory;
 use CommerceKitty\Factory\ChannelFormFactory;
 use CommerceKitty\Factory\ChannelMessageFactory;
 use CommerceKitty\Form\Type\ChannelTypeChoiceType;
-use CommerceKitty\Message;
+use CommerceKitty\Message\Command\Channel\UpdateChannelCommand;
+use CommerceKitty\Message\Query\Channel\FindChannelQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -32,13 +36,11 @@ class ChannelController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        // @todo ControllerEvent
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.channel.select_type.initialize');
-        if ($controllerEvent->hasArgument('response')) {
-            return $controllerEvent->getArgument('response');
+        $controllerEvent = $dispatcher->dispatch(new ControllerEvent(null, $request), 'controller.channel.select_type.initialize');
+        if ($controllerEvent->hasResponse()) {
+            return $controllerEvent->getResponse();
         }
 
-        // @todo FormEvent
         $form = $this->createForm(ChannelTypeChoiceType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,10 +73,9 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('channel_select_type');
         }
 
-        // @todo ControllerEvent
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent(null, ['request' => $request]), 'controller.channel.new.initialize');
-        if ($controllerEvent->hasArgument('response')) {
-            return $controllerEvent->getArgument('response');
+        $controllerEvent = $dispatcher->dispatch(new ControllerEvent(null, $request), 'controller.channel.new.initialize');
+        if ($controllerEvent->hasResponse()) {
+            return $controllerEvent->getResponse();
         }
 
         $entityFullClassName = $entityFactory->getFullClassName($request->getSession()->get('channel_type'));
@@ -122,12 +123,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelFormFactory $formFactory, MessageBusInterface $eventBus, string $id): Response
+    public function edit(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, ChannelFormFactory $formFactory, MessageBusInterface $commandBus, MessageBusInterface $eventBus, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        // @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
@@ -136,26 +136,20 @@ class ChannelController extends AbstractController
             ]));
         }
 
-        // @todo ControllerEvent
-        $controllerEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'controller.channel.edit.initialize');
-        if ($controllerEvent->hasArgument('response')) {
-            return $controllerEvent->getArgument('response');
+        $controllerEvent = $dispatcher->dispatch(new ControllerEvent($entity, $request), 'controller.channel.edit.initialize');
+        if ($controllerEvent->hasResponse()) {
+            return $controllerEvent->getResponse();
         }
 
         $formType = $formFactory->getFullClassName($entity->getType());
         $form     = $this->createForm($formType, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Command Bus
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($entity);
-            $manager->flush();
+            $commandBus->dispatch(new UpdateChannelCommand($entity->getPayload()));
 
             //> Event Bus
             // @todo Move to Command Handler
-            $eventNamespace     = 'App\\Message\\Event';
-            $eventClassName     = 'ChannelUpdatedEvent';
-            $eventFullClassName = $eventNamespace.'\\'.$eventClassName;
+            $eventFullClassName = 'App\\Message\\Event\\UpdatedChannelEvent';
             if (class_exists($eventFullClassName)) {
                 $eventBus->dispatch(new $eventFullClassName($entity));
             }

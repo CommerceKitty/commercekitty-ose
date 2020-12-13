@@ -17,6 +17,8 @@ class ChangePasswordCommandHandler implements CommandHandlerInterface
      * @var EntityManagerInterface
      */
     private $manager;
+    private $passwordEncoder;
+    private $queryBus;
 
     /**
      * @param EntityManagerInterface       $manager
