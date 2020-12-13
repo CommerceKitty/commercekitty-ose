@@ -178,12 +178,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function testConnection(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, string $id): Response
+    public function testConnection(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        // @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
@@ -226,12 +225,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function importProducts(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        // @todo Query Bus
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
@@ -274,11 +272,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function importOrders(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
@@ -321,11 +319,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function exportInventory(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
@@ -368,11 +366,11 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, string $id): Response
+    public function exportListings(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $commandBus, ChannelMessageFactory $messageFactory, MessageBusInterface $queryBus, string $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
 
-        $entity = $this->getDoctrine()->getRepository(Entity\Channel::class)->find($id);
+        $entity = $queryBus->dispatch(new FindChannelQuery($id))->last(HandledStamp::class)->getResult();
         if (!$entity) {
             throw $this->createNotFoundException($translator->trans('exceptions.channel.404', [
                 '%entity_class_name%'      => 'Channel',
