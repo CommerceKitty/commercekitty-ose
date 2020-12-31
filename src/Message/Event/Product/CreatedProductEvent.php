@@ -9,8 +9,6 @@ class CreatedProductEvent implements EventInterface
 {
     use PayloadTrait;
 
-    protected $payload;
-
     public function __construct(array $payload)
     {
         $this->payload = $payload;

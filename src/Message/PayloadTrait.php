@@ -4,7 +4,7 @@ namespace CommerceKitty\Message;
 
 trait PayloadTrait
 {
-    protected $payload;
+    protected $payload = [];
 
     public function getPayload(): array
     {
@@ -17,7 +17,7 @@ trait PayloadTrait
             throw new \Exception('Cannot set the payload after it contains data.');
         }
 
-        return $this->payload;
+        return $this;
     }
 
     public function has(string $key): bool
