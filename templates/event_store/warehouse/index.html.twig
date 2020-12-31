@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'event stores'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('event stores', 'event_store_index')}}
+      {{breadcrumb.item('warehouses')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block thead %}
+            <tr>
+              <th>{{'event id'}}</th>
+              <th>{{'event type'}}</th>
+              <th>{{'timestamp'}}</th>
+            </tr>
+          {% endblock thead %}
+          {% block tbody %}
+            {% for entity in pager %}
+              <tr>
+                <td><a href="{{path('event_store_warehouse_show',{'id':entity.eventId})}}">{{entity.eventId}}</a></td>
+                <td>{{entity.eventType}}</td>
+                <td>{{entity.createdAt|format_datetime}}</td>
+              </tr>
+            {% endfor %}
+          {% endblock %}
+        {% endembed %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

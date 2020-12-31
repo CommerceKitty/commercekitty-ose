@@ -17,7 +17,7 @@ class WarehouseType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('address', AddressType::class, [
                 'required' => false,

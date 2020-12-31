@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'event stores'|trans}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('event stores', 'event_store_index')}}
+      {{breadcrumb.item('warehouses', 'event_store_warehouse_index')}}
+      {{breadcrumb.item(entity.eventId)}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+  {% import '_bootstrap/button.html.twig' as btn %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        {% embed '_bootstrap/table.html.twig' %}
+          {% block tbody %}
+            <tr><th>{{'event id'}}</th><td>{{entity.eventId}}</td></tr>
+            <tr><th>{{'event type'}}</th><td>{{entity.eventType}}</td></tr>
+            <tr><th>{{'aggregate root id'}}</th><td>{{entity.aggregateRootId}}</td></tr>
+            <tr><th>{{'aggregate root version'}}</th><td>{{entity.aggregateRootVersion}}</td></tr>
+            <tr><th>{{'created at'}}</th><td>{{entity.createdAt|format_datetime}}</td></tr>
+            <tr><th>{{'payload'}}</th><td><pre><code>{{entity.payload|json_encode(constant('JSON_PRETTY_PRINT'))}}</code></pre></td></tr>
+            <tr><th>{{'metadata'}}</th><td><pre><code>{{entity.metadata|json_encode(constant('JSON_PRETTY_PRINT'))}}</code></pre></td></tr>
+          {% endblock %}
+        {% endembed %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        {{btn.link('fas fa-trash', 'delete', 'event_store_warehouse_delete', {'id':entity.eventId}, 'danger')}}
+      </div>
+    </div>
+  </div>
+{% endblock %}

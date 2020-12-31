@@ -2,7 +2,7 @@
 
 namespace CommerceKitty\Model;
 
-class Address implements AddressInterface
+class Address implements AddressInterface, PayloadableInterface
 {
     protected $id;
     protected $phone;
@@ -274,5 +274,26 @@ class Address implements AddressInterface
         $this->longitude = $long;
 
         return $this;
+    }
+
+    public function toPayload(): array
+    {
+        return [
+            'id'           => $this->id,
+            'phone'        => $this->phone,
+            'first_name'   => $this->firstName,
+            'last_name'    => $this->lastName,
+            'company_name' => $this->companyName,
+            'address_one'  => $this->addressOne,
+            'address_two'  => $this->addressTwo,
+            'state'        => $this->state,
+            'city'         => $this->city,
+            'county'       => $this->county,
+            'postal_code'  => $this->postalCode,
+            'country'      => $this->country,
+            'country_code' => $this->countryCode,
+            'latitude'     => $this->latitude,
+            'longitude'    => $this->longitude,
+        ];
     }
 }

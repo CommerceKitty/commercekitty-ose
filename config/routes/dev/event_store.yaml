@@ -1,0 +1,30 @@
+event_store_index:
+    path:       /_event-stores.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::index
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+
+# ---
+event_store_warehouse_index:
+    path:       /_event-stores/warehouses.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::warehouseIndex
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+event_store_warehouse_delete:
+    path:       /_event-stores/warehouses/{id}/delete.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::warehouseDelete
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
+event_store_warehouse_show:
+    path:       /_event-stores/warehouses/{id}.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::warehouseShow
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
