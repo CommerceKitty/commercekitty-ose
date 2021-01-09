@@ -390,11 +390,11 @@ class EntityController extends AbstractController
             $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.$entityClassName;
             $commandClassName     = 'Clone'.$entityClassName.'Command'; // ie: CloneProductCommand
             $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
-            $payload              = $entity->toPayload();
 
-            if (!is_array($payload)) {
-                throw new \Exception('sort your shit out');
-            }
+            $payload = [
+                'id'       => $entity->getId(),
+                'clone_id' => (string) Uuid::v6(),
+            ];
 
             $this->commandBus->dispatch(new $commandFullClassName($payload, ['user_id' => $this->getUser()->getId()]));
 
@@ -404,12 +404,12 @@ class EntityController extends AbstractController
                 '%string%'                 => method_exists($entity, '__toString') ? $entity->__toString() : '',
             ], 'flashes'));
 
-            $responseEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request, 'clone' => $cloneEntity]), 'response.'.$entitySnakeName.'.cloned');
+            $responseEvent = $dispatcher->dispatch(new GenericEvent($entity, ['request' => $request]), 'response.'.$entitySnakeName.'.cloned');
             if ($responseEvent->hasArgument('response')) {
                 return $responseEvent->getArgument('response');
             }
 
-            return $this->redirectToRoute($entitySnakeName.'_show', ['id' => $cloneEntity->getId()]);
+            return $this->redirectToRoute($entitySnakeName.'_show', ['id' => $payload['clone_id']]);
         }
 
         return $this->render($entitySnakeName.'/clone.'.$request->getRequestFormat().'.twig', [
