@@ -19,17 +19,21 @@
         {% embed '_bootstrap/table.html.twig' %}
           {% block thead %}
             <tr>
+              <th>{{'timestamp'}}</th>
               <th>{{'event id'}}</th>
               <th>{{'event type'}}</th>
-              <th>{{'timestamp'}}</th>
+              <th>{{'aggregate root version'}}</th>
+              <th>{{'aggregate root id'}}</th>
             </tr>
           {% endblock thead %}
           {% block tbody %}
             {% for entity in pager %}
               <tr>
+                <td>{{entity.createdAt|format_datetime}}</td>
                 <td><a href="{{path('event_store_warehouse_show',{'id':entity.eventId})}}">{{entity.eventId}}</a></td>
                 <td>{{entity.eventType}}</td>
-                <td>{{entity.createdAt|format_datetime}}</td>
+                <td>{{entity.aggregateRootVersion}}</td>
+                <td>{{entity.aggregateRootId}}</td>
               </tr>
             {% endfor %}
           {% endblock %}

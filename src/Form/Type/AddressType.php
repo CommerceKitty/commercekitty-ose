@@ -2,7 +2,7 @@
 
 namespace CommerceKitty\Form\Type;
 
-use CommerceKitty\Entity\Address;
+use CommerceKitty\Model\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

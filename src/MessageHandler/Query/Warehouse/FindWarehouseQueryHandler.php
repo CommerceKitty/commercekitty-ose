@@ -27,7 +27,7 @@ class FindWarehouseQueryHandler implements QueryHandlerInterface
         $eventCollection = $this->manager->getRepository(WarehouseEventStore::class)
             ->createQueryBuilder('e')
             ->where('e.aggregateRootId = :aggregateRootId')
-            ->orderBy('e.createdAt', 'DESC')
+            ->orderBy('e.createdAt', 'ASC')
             ->setParameters([
                 'aggregateRootId' => $message->getId(),
             ])

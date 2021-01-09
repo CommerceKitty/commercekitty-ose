@@ -2,7 +2,7 @@
 
 namespace CommerceKitty\Form\Type;
 
-use CommerceKitty\Entity\Warehouse;
+use CommerceKitty\Model\Warehouse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

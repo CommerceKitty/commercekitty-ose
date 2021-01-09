@@ -14,7 +14,6 @@ class Warehouse extends Model\Warehouse
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

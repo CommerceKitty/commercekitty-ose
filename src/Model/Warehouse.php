@@ -2,6 +2,8 @@
 
 namespace CommerceKitty\Model;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 /**
  */
 class Warehouse implements WarehouseInterface, PayloadableInterface
@@ -11,6 +13,13 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
     protected $id;
     protected $name;
     protected $address;
+
+    /**
+     */
+    public function __construct()
+    {
+        $this->address = new Address();
+    }
 
     /**
      */
@@ -32,8 +41,8 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
      */
     public function setId(string $id)
     {
-        if ($this->id) {
-            throw new \Exception('');
+        if ($this->id && $this->id != $id) {
+            throw new \Exception('ID Cannot Be Changed');
         }
 
         $this->id = $id;
@@ -61,7 +70,7 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddress(): ?AddressInterface
+    public function getAddress(): AddressInterface
     {
         return $this->address;
     }
@@ -107,7 +116,7 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function apply($event)
+    public function apply(EventStoreInterface $event): void
     {
         $method = 'apply'.$event->getEventType();
         $this->$method($event);
@@ -116,10 +125,26 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function applyCreatedWarehouseEvent($event)
+    public function applyCreatedWarehouseEvent(EventStoreInterface $event): void
     {
-        $payload    = $event->getPayload();
+        $payload = $event->getPayload();
+
         $this->id   = $payload['id'];
         $this->name = $payload['name'];
+
+        if (!empty($payload['address'])) {
+            $this->address = Address::fromPayload($payload['address']);
+        }
+    }
+
+    /**
+     */
+    public function applyUpdatedWarehouseEvent(EventStoreInterface $event): void
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        foreach ($event->getPayload() as $k => $v) {
+            $propertyAccessor->setValue($this, $k, $v);
+        }
     }
 }

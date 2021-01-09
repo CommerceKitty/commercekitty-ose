@@ -95,6 +95,9 @@ coverage:
 worker:
 	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 commands events
 
+db.fixtures:
+	docker exec -it commercekitty_php_1 bin/console doctrine:fixtures:load -n -vvv
+
 # --- Hidden ---
 
 reset_database:

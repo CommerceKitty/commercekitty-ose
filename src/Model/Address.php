@@ -2,6 +2,8 @@
 
 namespace CommerceKitty\Model;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 class Address implements AddressInterface, PayloadableInterface
 {
     protected $id;
@@ -38,6 +40,17 @@ class Address implements AddressInterface, PayloadableInterface
         return $this->id;
     }
 
+    public function setId(?string $id): self
+    {
+        if ($this->id) {
+            throw new \Exception('Cannot set ID after already set');
+        }
+
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +61,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setPhone(string $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
@@ -65,7 +78,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setFirstName(string $name): self
+    public function setFirstName(?string $name): self
     {
         $this->firstName = $name;
 
@@ -82,7 +95,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setLastName(string $name): self
+    public function setLastName(?string $name): self
     {
         $this->lastName = $name;
 
@@ -99,7 +112,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setCompanyName(string $name): self
+    public function setCompanyName(?string $name): self
     {
         $this->companyName = $name;
 
@@ -116,7 +129,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setAddressOne(string $address): self
+    public function setAddressOne(?string $address): self
     {
         $this->addressOne = $address;
 
@@ -133,7 +146,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setAddressTwo(string $address): self
+    public function setAddressTwo(?string $address): self
     {
         $this->addressTwo = $address;
 
@@ -150,7 +163,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setState(string $state): self
+    public function setState(?string $state): self
     {
         $this->state = $state;
 
@@ -167,7 +180,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -184,7 +197,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setCounty(string $county): self
+    public function setCounty(?string $county): self
     {
         $this->county = $county;
 
@@ -201,7 +214,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setPostalCode(string $postalCode): self
+    public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
 
@@ -218,7 +231,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setCountry(string $country): self
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
 
@@ -235,7 +248,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setCountryCode(string $code): self
+    public function setCountryCode(?string $code): self
     {
         $this->code = $code;
 
@@ -252,7 +265,7 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setLatitude(float $lat): self
+    public function setLatitude(?float $lat): self
     {
         $this->latitude = $lat;
 
@@ -269,13 +282,15 @@ class Address implements AddressInterface, PayloadableInterface
 
     /**
      */
-    public function setLongitude(float $long): self
+    public function setLongitude(?float $long): self
     {
         $this->longitude = $long;
 
         return $this;
     }
 
+    /**
+     */
     public function toPayload(): array
     {
         return [
@@ -295,5 +310,20 @@ class Address implements AddressInterface, PayloadableInterface
             'latitude'     => $this->latitude,
             'longitude'    => $this->longitude,
         ];
+    }
+
+    /**
+     */
+    public static function fromPayload(array $payload): AddressInterface
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        $model = new static();
+
+        foreach ($payload as $k => $v) {
+            $propertyAccessor->setValue($model, $k, $v);
+        }
+
+        return $model;
     }
 }

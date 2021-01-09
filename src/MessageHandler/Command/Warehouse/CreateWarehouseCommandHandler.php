@@ -32,7 +32,8 @@ class CreateWarehouseCommandHandler implements CommandHandlerInterface
         $this->manager->clear();
 
         // Can make a trait or something for this, clears out any values
-        // that are null/empty
+        // that are null/empty, ONLY needed on initial create, update can
+        // have null/empty/false values
         $eventPayload = [];
         foreach ($message->getPayload() as $key => $value) {
             if (!empty($value)) {

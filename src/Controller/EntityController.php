@@ -247,17 +247,16 @@ class EntityController extends AbstractController
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Command Bus
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($entity);
-            $manager->flush();
+            $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.$entityClassName;
+            $commandClassName     = 'Update'.$entityClassName.'Command'; // ie: UpdateProductCommand
+            $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
+            $payload              = $entity->toPayload();
 
-            //> Event Bus
-            //$eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
-            //$eventClassName     = 'Updated'.$entityClassName.'Event'; // ie: ProductUpdatedEvent
-            //$eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            //$eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
-            //< Event Bus
+            if (!is_array($payload)) {
+                throw new \Exception('sort your shit out');
+            }
+
+            $this->commandBus->dispatch(new $commandFullClassName($payload, ['user_id' => $this->getUser()->getId()]));
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.updated.success', [
                 '%entity_class_name%'      => $entityClassName,

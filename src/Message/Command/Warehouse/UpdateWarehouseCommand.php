@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace CommerceKitty\Message\Event\Warehouse;
+namespace CommerceKitty\Message\Command\Warehouse;
 
-use CommerceKitty\Message\Event\EventInterface;
+use CommerceKitty\Message\Command\CommandInterface;
 use CommerceKitty\Message\MetadataTrait;
 use CommerceKitty\Message\PayloadTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-class CreatedWarehouseEvent implements EventInterface
+class UpdateWarehouseCommand implements CommandInterface
 {
     use MetadataTrait;
     use PayloadTrait;
