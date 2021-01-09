@@ -53,6 +53,6 @@ class CreateWarehouseCommandHandler implements CommandHandlerInterface
         $this->manager->persist($eventEntity);
         $this->manager->flush();
 
-        $this->eventBus->dispatch(new CreatedWarehouseEvent($eventPayload));
+        $this->eventBus->dispatch(new CreatedWarehouseEvent($eventPayload, $message->getMetadata()));
     }
 }

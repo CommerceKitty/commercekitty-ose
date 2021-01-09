@@ -22,7 +22,7 @@
           {% block tbody %}
             <tr><th>{{'event id'}}</th><td>{{entity.eventId}}</td></tr>
             <tr><th>{{'event type'}}</th><td>{{entity.eventType}}</td></tr>
-            <tr><th>{{'aggregate root id'}}</th><td>{{entity.aggregateRootId}}</td></tr>
+            <tr><th>{{'aggregate root id'}}</th><td><a href="{{path('warehouse_show',{'id':entity.aggregateRootId})}}">{{entity.aggregateRootId}}</a></td></tr>
             <tr><th>{{'aggregate root version'}}</th><td>{{entity.aggregateRootVersion}}</td></tr>
             <tr><th>{{'created at'}}</th><td>{{entity.createdAt|format_datetime}}</td></tr>
             <tr><th>{{'payload'}}</th><td><pre><code>{{entity.payload|json_encode(constant('JSON_PRETTY_PRINT'))}}</code></pre></td></tr>

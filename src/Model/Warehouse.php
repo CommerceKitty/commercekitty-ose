@@ -147,4 +147,10 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
             $propertyAccessor->setValue($this, $k, $v);
         }
     }
+
+    /**
+     */
+    public function applyDeletedWarehouseEvent(EventStoreInterface $event): void
+    {
+    }
 }

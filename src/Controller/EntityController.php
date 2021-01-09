@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace CommerceKitty\Controller;
 
 use CommerceKitty\Event\ControllerEvent;
-// @todo Custom "HandleTrait" for query bus
+use CommerceKitty\HandleTrait;
 use CommerceKitty\Model\PayloadableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -22,9 +22,10 @@ use function Symfony\Component\String\u;
  */
 class EntityController extends AbstractController
 {
+    use HandleTrait;
+
     private $commandBus;
     private $dispatcher;
-    private $queryBus;
 
     public function __construct(EventDispatcherInterface $dispatcher, MessageBusInterface $commandBus, MessageBusInterface $queryBus)
     {
@@ -319,17 +320,11 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Command Bus
-            $manager = $this->getDoctrine()->getManager();
-            $manager->remove($entity);
+            $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.$entityClassName;
+            $commandClassName     = 'Delete'.$entityClassName.'Command'; // ie: DeleteProductCommand
+            $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
 
-            //> Event Bus
-            //$eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
-            //$eventClassName     = 'Deleted'.$entityClassName.'Event'; // ie: DeletedProductEvent
-            //$eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            //$eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
-            //< Event Bus
-            $manager->flush();
+            $this->commandBus->dispatch(new $commandFullClassName(['id' => $entity->getId()], ['user_id' => $this->getUser()->getId()]));
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.deleted.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -392,23 +387,16 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Command Bus
-            $cloneEntity = clone $entity;
-            $manager     = $this->getDoctrine()->getManager();
-            $manager->persist($cloneEntity);
-            $manager->flush();
+            $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.$entityClassName;
+            $commandClassName     = 'Clone'.$entityClassName.'Command'; // ie: CloneProductCommand
+            $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
+            $payload              = $entity->toPayload();
 
-            //> Event Bus
-            //$eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
-            //$eventClassName     = 'Cloned'.$entityClassName.'Event'; // ie: ClonedProductEvent
-            //$eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            //$eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
-            // ---
-            //$eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
-            //$eventClassName     = 'Created'.$entityClassName.'Event'; // ie: CreatedProductEvent
-            //$eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-            //$eventBus->dispatch(new $eventFullClassName(['id' => $cloneEntity->getId()]));
-            //< Event Bus
+            if (!is_array($payload)) {
+                throw new \Exception('sort your shit out');
+            }
+
+            $this->commandBus->dispatch(new $commandFullClassName($payload, ['user_id' => $this->getUser()->getId()]));
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.cloned.success', [
                 '%entity_class_name%'      => $entityClassName,
@@ -457,20 +445,11 @@ class EntityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // @todo Command Bus
-            $manager    = $this->getDoctrine()->getManager();
-            $repository = $this->getDoctrine()->getRepository($entityFullClassName);
-            $collection = $repository->findAll();
-            foreach ($collection as $entity) {
-                $manager->remove($entity);
-                //> Event Bus
-                //$eventNamespace     = 'CommerceKitty\\Message\\Event\\'.$entityClassName;
-                //$eventClassName     = 'Deleted'.$entityClassName.'Event'; // ie: DeletedProductEvent
-                //$eventFullClassName = $eventNamespace.'\\'.$eventClassName;
-                //$eventBus->dispatch(new $eventFullClassName(['id' => $entity->getId()]));
-                //< Event Bus
-            }
-            $manager->flush();
+            $commandNamespace     = 'CommerceKitty\\Message\\Command\\'.$entityClassName;
+            $commandClassName     = 'Purge'.$entityClassName.'Command'; // ie: PurgeProductCommand
+            $commandFullClassName = $commandNamespace.'\\'.$commandClassName;
+
+            $this->commandBus->dispatch(new $commandFullClassName([], ['user_id' => $this->getUser()->getId()]));
 
             $this->addFlash('success', $translator->trans('flashes.'.$transId.'.purged.success', [
                 '%entity_class_name%'      => $entityClassName,

@@ -19,12 +19,6 @@ class Warehouse extends Model\Warehouse
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Address", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
-     */
-    protected $address;
-
-    /**
      * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
