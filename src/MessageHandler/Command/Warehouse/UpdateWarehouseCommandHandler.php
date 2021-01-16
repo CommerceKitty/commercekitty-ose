@@ -4,31 +4,37 @@ namespace CommerceKitty\MessageHandler\Command\Warehouse;
 
 use CommerceKitty\Entity\Warehouse\WarehouseEventStore;
 use CommerceKitty\HandleTrait;
+use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseAddressCommand;
 use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseCommand;
+use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseNameCommand;
 use CommerceKitty\Message\Event\Warehouse\UpdatedWarehouseEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UpdateWarehouseCommandHandler implements CommandHandlerInterface
 {
     use HandleTrait;
 
     private $manager;
+    private $commandBus;
     private $eventBus;
     private $propertyAccessor;
 
     /**
      */
-    public function __construct(EntityManagerInterface $manager, MessageBusInterface $eventBus, MessageBusInterface $queryBus)
+    public function __construct(EntityManagerInterface $manager, MessageBusInterface $commandBus, MessageBusInterface $eventBus, MessageBusInterface $queryBus)
     {
-        $this->manager  = $manager;
-        $this->eventBus = $eventBus;
-        $this->queryBus = $queryBus;
+        $this->manager    = $manager;
+        $this->eventBus   = $eventBus;
+        $this->queryBus   = $queryBus;
+        $this->commandBus = $commandBus;
 
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
@@ -69,19 +75,27 @@ class UpdateWarehouseCommandHandler implements CommandHandlerInterface
             return;
         }
 
-        $eventEntity = (new WarehouseEventStore())
-            ->setEventId((string) new Ulid())
-            ->setEventType('UpdatedWarehouseEvent')
-            ->setAggregateRootId($message->get('id'))
-            ->setAggregateRootVersion($model->getAggregateRootVersion())
-            ->setCreatedAt(new \DateTime())
-            ->setPayload($eventPayload)
-            ->setMetadata($message->getMetadata())
-        ;
-        $this->manager->persist($eventEntity);
-        $this->manager->flush();
+        if (isset($eventPayload['name'])) {
+            $this->commandBus->dispatch(new UpdateWarehouseNameCommand($message->get('id'), $eventPayload['name'], $message->getMetadata()));
+        }
 
-        $eventPayload['id'] = $message->get('id'); // Must have
-        $this->eventBus->dispatch(new UpdatedWarehouseEvent($eventPayload, $message->getMetadata()));
+        if (isset($eventPayload['address'])) {
+            //$this->commandBus->dispatch(new UpdateWarehouseAddressCommand($message->get('id'), $eventPayload['address'], $message->getMetadata()));
+        }
+
+        //$eventEntity = (new WarehouseEventStore())
+        //    ->setEventId((string) new Ulid())
+        //    ->setEventType('UpdatedWarehouseEvent')
+        //    ->setAggregateRootId($message->get('id'))
+        //    ->setAggregateRootVersion($model->getAggregateRootVersion())
+        //    ->setCreatedAt(new \DateTime())
+        //    ->setPayload($eventPayload)
+        //    ->setMetadata($message->getMetadata())
+        //;
+        //$this->manager->persist($eventEntity);
+        //$this->manager->flush();
+
+        //$eventPayload['id'] = $message->get('id'); // Must have
+        //$this->eventBus->dispatch(new UpdatedWarehouseEvent($eventPayload, $message->getMetadata()));
     }
 }

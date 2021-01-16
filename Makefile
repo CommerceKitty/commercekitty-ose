@@ -15,6 +15,7 @@ help:
 	@echo "  make $(COLOR_GREEN)target$(COLOR_RESET)"
 	@echo ""
 	@echo "$(COLOR_YELLOW)Available targets:$(COLOR_RESET)"
+	@echo "  $(COLOR_GREEN)init$(COLOR_RESET)              Installs deps, compiles assets, spins up docker, and configures database (destructive)"
 	@echo "  $(COLOR_GREEN)install$(COLOR_RESET)           Install composer and node dependencies"
 	@echo "  $(COLOR_GREEN)up$(COLOR_RESET)                Spins up containers"
 	@echo "  $(COLOR_GREEN)stop$(COLOR_RESET)              Stops containers"
@@ -34,8 +35,23 @@ help:
 	@echo "  $(COLOR_GREEN)tests.unit$(COLOR_RESET)        Runs unit tests"
 	@echo "  $(COLOR_GREEN)tests.functional$(COLOR_RESET)  Runs functional tests"
 
+init: install compile.dev up db.fixtures
+	@echo "To access the app, please open your browser to ${COLOR_BLUE}https://127.0.0.1${COLOR_RESET}"
+	@echo ""
+	@echo "Default Login Credentials"
+	@echo "      Email:    ${COLOR_BLUE}kitty@commercekitty.com${COLOR_RESET}"
+	@echo "      Password: ${COLOR_BLUE}password123${COLOR_RESET}"
+	@echo ""
+	@echo "Run '${COLOR_GREEN}make stop${COLOR_RESET}' to spin everything down"
+	@echo ""
+
 compile.dev:
+	@echo " -=[ ${COLOR_BLUE}Compiling Assets${COLOR_RESET} ]=-"
+	@echo ""
 	yarn encore dev
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
 
 compile.prod:
 	yarn encore production
@@ -44,11 +60,27 @@ clean:
 	php bin/console cache:clear -vvv -n --no-warmup
 
 install:
+	@echo " -=[ ${COLOR_BLUE}Install deps using 'composer'${COLOR_RESET} ]=-"
+	@echo ""
 	composer install
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
+	@echo ""
+	@echo " -=[ ${COLOR_BLUE}Install deps using 'yarn'${COLOR_RESET} ]=-"
+	@echo ""
 	yarn install
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
 
 up:
+	@echo " -=[ ${COLOR_BLUE}Spinning up containers${COLOR_RESET} ]=-"
+	@echo ""
 	docker-compose up -d --remove-orphans
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
 
 stop:
 	docker-compose stop
@@ -96,25 +128,17 @@ worker:
 	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 commands events
 
 db.fixtures:
+	@echo " -=[ ${COLOR_BLUE}Loading data into database${COLOR_RESET} ]=-"
+	@echo ""
 	docker exec -it commercekitty_php_1 bin/console doctrine:fixtures:load -n -vvv
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
 
-# --- Hidden ---
+db.migrate:
+	docker exec -it commercekitty_php_1 bin/console doctrine:migrations:migrate -n -vvv
 
-reset_database:
-	docker exec -it commercekitty_php_1 bin/console doctrine:database:drop -n -vvv --force
-	@echo
-	docker exec -it commercekitty_php_1 bin/console doctrine:database:create -n -vvv
-	@echo
-	docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --dump-sql
-	@echo
-	docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --force
-	@echo
-	docker exec -it commercekitty_php_1 bin/console doctrine:query:sql "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
-	@echo
-	docker exec -it commercekitty_php_1 bin/console doctrine:fixtures:load -n -vvv
-	@echo
-	@echo
-
+# ---
 
 selfsigned:
 	# Need to use a conf file with some defaults

@@ -8,7 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class Warehouse implements WarehouseInterface, PayloadableInterface
 {
-    private $aggregateRootVersion = 0;
+    use AggregateTrait;
 
     protected $id;
     protected $name;
@@ -112,19 +112,6 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function getAggregateRootVersion() { return $this->aggregateRootVersion; }
-
-    /**
-     */
-    public function apply(EventStoreInterface $event): void
-    {
-        $method = 'apply'.$event->getEventType();
-        $this->$method($event);
-        ++$this->aggregateRootVersion;
-    }
-
-    /**
-     */
     public function applyCreatedWarehouseEvent(EventStoreInterface $event): void
     {
         $payload = $event->getPayload();
@@ -152,5 +139,14 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
      */
     public function applyDeletedWarehouseEvent(EventStoreInterface $event): void
     {
+    }
+
+    /**
+     */
+    public function applyUpdatedWarehouseNameEvent(EventStoreInterface $event): void
+    {
+        $payload = $event->getPayload();
+
+        $this->name = $payload['name'];
     }
 }

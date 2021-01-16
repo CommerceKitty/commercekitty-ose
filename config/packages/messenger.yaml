@@ -8,20 +8,23 @@ framework:
             # async: '%env(MESSENGER_TRANSPORT_DSN)%'
             # failed: 'doctrine://default?queue_name=failed'
             sync:  'sync://'
-            commands:
-                #dsn: 'doctrine://default?queue_name=commands'
-                dsn: 'sync://'
+
+            commands_sync: 'sync://'
+            commands_async:
+                dsn: 'doctrine://default?queue_name=events'
                 retry_strategy:
                     max_retries: 0
-            events:
-                #dsn: 'doctrine://default?queue_name=events'
-                dsn: 'sync://'
+
+            events_sync: 'sync://'
+            events_async:
+                dsn: 'doctrine://default?queue_name=events'
                 retry_strategy:
                     max_retries: 0
 
         routing:
-            'CommerceKitty\Message\Command\CommandInterface': commands
-            'CommerceKitty\Message\Event\EventInterface': events
+            # Defaults
+            'CommerceKitty\Message\Command\CommandInterface': commands_sync
+            'CommerceKitty\Message\Event\EventInterface': events_sync
             'CommerceKitty\Message\Query\QueryInterface': sync
 
         default_bus: command.bus

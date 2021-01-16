@@ -2,5 +2,5 @@ framework:
     messenger:
         transports:
             sync: 'in-memory://'
-            commands: 'in-memory://'
-            events: 'in-memory://'
+            commands_async: 'in-memory://'
+            events_async: 'in-memory://'
