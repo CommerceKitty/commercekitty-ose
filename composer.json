@@ -1,4 +1,6 @@
 {
+    "name": "commercekitty/commercekitty-ose",
+    "description": "Commerce Kitty Open Source Edition",
     "type": "project",
     "license": "proprietary",
     "require": {
