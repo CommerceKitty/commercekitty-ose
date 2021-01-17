@@ -44,5 +44,8 @@ jobs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --no-progress
 
-    - name: Run test suite
-      run: make
+    - name: lint checking
+      run: make lint
+
+    #- name: Run Full Test Suite
+    #  run: make tests
