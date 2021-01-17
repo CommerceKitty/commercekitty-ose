@@ -8,7 +8,7 @@ use CommerceKitty\Message\PayloadTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-class DeletedWarehouseEvent implements EventInterface
+class CreatedEvent implements EventInterface
 {
     use MetadataTrait;
     use PayloadTrait;

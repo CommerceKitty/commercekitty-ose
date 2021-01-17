@@ -4,7 +4,7 @@ namespace CommerceKitty\MessageHandler\Command\Warehouse;
 
 use CommerceKitty\Entity\Warehouse\WarehouseEventStore;
 use CommerceKitty\Message\Command\Warehouse\CreateWarehouseCommand;
-use CommerceKitty\Message\Event\Warehouse\CreatedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\CreatedEvent;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -60,7 +60,7 @@ class CreateWarehouseCommandHandler implements CommandHandlerInterface
         $this->manager->flush();
 
         // Dispatch the event to the bus
-        $this->eventBus->dispatch(new CreatedWarehouseEvent($eventPayload, $message->getMetadata()));
+        $this->eventBus->dispatch(new CreatedEvent($eventPayload, $message->getMetadata()));
 
         // This is here because there will be times when we need to do things that if an event
         // is re-played, we also do not want to do. Think sending emails.

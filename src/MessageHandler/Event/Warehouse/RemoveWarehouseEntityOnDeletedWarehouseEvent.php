@@ -4,7 +4,7 @@ namespace CommerceKitty\MessageHandler\Event\Warehouse;
 
 use CommerceKitty\Entity\Warehouse;
 use CommerceKitty\HandleTrait;
-use CommerceKitty\Message\Event\Warehouse\DeletedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\DeletedEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Event\EventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Uid\Ulid;
 
-class RemoveWarehouseEntityOnDeletedWarehouseEvent implements EventHandlerInterface
+class RemoveWarehouseEntityOnDeletedEvent implements EventHandlerInterface
 {
     use HandleTrait;
 
@@ -29,7 +29,7 @@ class RemoveWarehouseEntityOnDeletedWarehouseEvent implements EventHandlerInterf
     /**
      * @return void
      */
-    public function __invoke(DeletedWarehouseEvent $message): void
+    public function __invoke(DeletedEvent $message): void
     {
         $this->manager->clear();
 

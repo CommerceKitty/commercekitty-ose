@@ -5,7 +5,7 @@ namespace CommerceKitty\MessageHandler\Command\Warehouse;
 use CommerceKitty\Entity\Warehouse\WarehouseEventStore;
 use CommerceKitty\HandleTrait;
 use CommerceKitty\Message\Command\Warehouse\DeleteWarehouseCommand;
-use CommerceKitty\Message\Event\Warehouse\DeletedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\DeletedEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,6 +52,6 @@ class DeleteWarehouseCommandHandler implements CommandHandlerInterface
         $this->manager->persist($eventEntity);
         $this->manager->flush();
 
-        $this->eventBus->dispatch(new DeletedWarehouseEvent($message->getPayload(), $message->getMetadata()));
+        $this->eventBus->dispatch(new DeletedEvent($message->getPayload(), $message->getMetadata()));
     }
 }

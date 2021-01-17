@@ -4,7 +4,7 @@ namespace CommerceKitty\MessageHandler\Event\Warehouse;
 
 use CommerceKitty\Entity\Warehouse;
 use CommerceKitty\HandleTrait;
-use CommerceKitty\Message\Event\Warehouse\UpdatedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\UpdatedNameEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Event\EventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Uid\Ulid;
 
-class UpdateWarehouseEntityOnUpdatedWarehouseEvent implements EventHandlerInterface
+class UpdateWarehouseEntityOnUpdatedNameEvent implements EventHandlerInterface
 {
     use HandleTrait;
 
@@ -29,7 +29,7 @@ class UpdateWarehouseEntityOnUpdatedWarehouseEvent implements EventHandlerInterf
     /**
      * @return void
      */
-    public function __invoke(UpdatedWarehouseEvent $message): void
+    public function __invoke(UpdatedNameEvent $message): void
     {
         $this->manager->clear();
 

@@ -7,7 +7,7 @@ use CommerceKitty\HandleTrait;
 use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseAddressCommand;
 use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseCommand;
 use CommerceKitty\Message\Command\Warehouse\UpdateWarehouseNameCommand;
-use CommerceKitty\Message\Event\Warehouse\UpdatedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\UpdatedNameEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,6 +68,9 @@ class UpdateWarehouseNameCommandHandler implements CommandHandlerInterface
         $this->manager->persist($eventEntity);
         $this->manager->flush();
 
-        //$this->eventBus->dispatch(new UpdatedWarehouseNameEvent(['name' => $message->getName()], $message->getMetadata()));
+        $this->eventBus->dispatch(new UpdatedNameEvent([
+            'id'   => $message->getId(),
+            'name' => $message->getName(),
+        ], $message->getMetadata()));
     }
 }

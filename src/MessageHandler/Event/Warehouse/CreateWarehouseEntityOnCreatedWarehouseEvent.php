@@ -4,7 +4,7 @@ namespace CommerceKitty\MessageHandler\Event\Warehouse;
 
 use CommerceKitty\Entity\Warehouse;
 use CommerceKitty\HandleTrait;
-use CommerceKitty\Message\Event\Warehouse\CreatedWarehouseEvent;
+use CommerceKitty\Message\Event\Warehouse\CreatedEvent;
 use CommerceKitty\Message\Query\Warehouse\FindWarehouseQuery;
 use CommerceKitty\MessageHandler\Event\EventHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +29,7 @@ class CreateWarehouseEntityOnCreatedWarehouseEvent implements EventHandlerInterf
     /**
      * @return void
      */
-    public function __invoke(CreatedWarehouseEvent $message): void
+    public function __invoke(CreatedEvent $message): void
     {
         $this->manager->clear();
 
