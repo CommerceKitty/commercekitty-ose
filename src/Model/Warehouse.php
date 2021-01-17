@@ -101,9 +101,9 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
             'name' => $this->name,
         ];
 
-        if ($this->hasAddress()) {
-            $payload['address'] = $this->address->toPayload();
-        }
+        //if ($this->hasAddress()) {
+        //    $payload['address'] = $this->address->toPayload();
+        //}
 
         return $payload;
     }
@@ -112,7 +112,7 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function applyCreatedWarehouseEvent(EventStoreInterface $event): void
+    public function applyCreated(EventStoreInterface $event): void
     {
         $payload = $event->getPayload();
 
@@ -126,7 +126,7 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function applyUpdatedWarehouseEvent(EventStoreInterface $event): void
+    public function applyUpdated(EventStoreInterface $event): void
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -137,13 +137,13 @@ class Warehouse implements WarehouseInterface, PayloadableInterface
 
     /**
      */
-    public function applyDeletedWarehouseEvent(EventStoreInterface $event): void
+    public function applyDeleted(EventStoreInterface $event): void
     {
     }
 
     /**
      */
-    public function applyUpdatedWarehouseNameEvent(EventStoreInterface $event): void
+    public function applyUpdatedName(EventStoreInterface $event): void
     {
         $payload = $event->getPayload();
 

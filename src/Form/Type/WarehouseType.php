@@ -19,9 +19,9 @@ class WarehouseType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
             ])
-            ->add('address', AddressType::class, [
-                'required' => false,
-            ])
+            //->add('address', AddressType::class, [
+            //    'required' => false,
+            //])
         ;
     }
 
