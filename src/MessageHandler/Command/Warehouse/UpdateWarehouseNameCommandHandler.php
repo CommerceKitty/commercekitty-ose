@@ -53,6 +53,7 @@ class UpdateWarehouseNameCommandHandler implements CommandHandlerInterface
         }
 
         $payload = [
+            'id'   => $message->getId(),
             'name' => $message->getName(),
         ];
 
@@ -68,9 +69,6 @@ class UpdateWarehouseNameCommandHandler implements CommandHandlerInterface
         $this->manager->persist($eventEntity);
         $this->manager->flush();
 
-        $this->eventBus->dispatch(new UpdatedNameEvent([
-            'id'   => $message->getId(),
-            'name' => $message->getName(),
-        ], $message->getMetadata()));
+        $this->eventBus->dispatch(new UpdatedNameEvent($payload, $message->getMetadata()));
     }
 }
