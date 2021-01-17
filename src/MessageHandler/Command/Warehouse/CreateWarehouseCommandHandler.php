@@ -49,7 +49,7 @@ class CreateWarehouseCommandHandler implements CommandHandlerInterface
         // @todo Generic Builder?
         $eventEntity = (new WarehouseEventStore())
             ->setEventId((string) new Ulid())
-            ->setEventType('CreatedWarehouseEvent')
+            ->setEventType('Created')
             ->setAggregateRootId($message->get('id'))
             ->setAggregateRootVersion(0)
             ->setCreatedAt(new \DateTime())

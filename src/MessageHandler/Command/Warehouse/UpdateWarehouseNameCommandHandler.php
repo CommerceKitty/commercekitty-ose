@@ -58,7 +58,7 @@ class UpdateWarehouseNameCommandHandler implements CommandHandlerInterface
 
         $eventEntity = (new WarehouseEventStore())
             ->setEventId((string) new Ulid())
-            ->setEventType('UpdatedWarehouseNameEvent')
+            ->setEventType('UpdatedName')
             ->setAggregateRootId($message->getId())
             ->setAggregateRootVersion($model->getAggregateRootVersion())
             ->setCreatedAt(new \DateTime())

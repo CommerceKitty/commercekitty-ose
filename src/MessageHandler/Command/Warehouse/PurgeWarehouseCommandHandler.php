@@ -51,7 +51,7 @@ class PurgeWarehouseCommandHandler implements CommandHandlerInterface
 
         $eventEntity = (new WarehouseEventStore())
             ->setEventId((string) new Ulid())
-            ->setEventType('PurgedWarehouseEvent')
+            ->setEventType('Purged')
             //->setAggregateRootId($message->get('id'))
             ->setAggregateRootVersion(0)
             ->setCreatedAt(new \DateTime())

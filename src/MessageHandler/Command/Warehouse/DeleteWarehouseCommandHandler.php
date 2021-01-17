@@ -42,7 +42,7 @@ class DeleteWarehouseCommandHandler implements CommandHandlerInterface
 
         $eventEntity = (new WarehouseEventStore())
             ->setEventId((string) new Ulid())
-            ->setEventType('DeletedWarehouseEvent')
+            ->setEventType('Deleted')
             ->setAggregateRootId($message->get('id'))
             ->setAggregateRootVersion($model->getAggregateRootVersion())
             ->setCreatedAt(new \DateTime())
