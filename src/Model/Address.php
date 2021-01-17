@@ -250,7 +250,7 @@ class Address implements AddressInterface, PayloadableInterface
      */
     public function setCountryCode(?string $code): self
     {
-        $this->code = $code;
+        $this->countryCode = $code;
 
         return $this;
     }

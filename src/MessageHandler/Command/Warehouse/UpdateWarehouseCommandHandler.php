@@ -80,22 +80,7 @@ class UpdateWarehouseCommandHandler implements CommandHandlerInterface
         }
 
         if (isset($eventPayload['address'])) {
-            //$this->commandBus->dispatch(new UpdateWarehouseAddressCommand($message->get('id'), $eventPayload['address'], $message->getMetadata()));
+            $this->commandBus->dispatch(new UpdateWarehouseAddressCommand($message->get('id'), $eventPayload['address'], $message->getMetadata()));
         }
-
-        //$eventEntity = (new WarehouseEventStore())
-        //    ->setEventId((string) new Ulid())
-        //    ->setEventType('UpdatedWarehouseEvent')
-        //    ->setAggregateRootId($message->get('id'))
-        //    ->setAggregateRootVersion($model->getAggregateRootVersion())
-        //    ->setCreatedAt(new \DateTime())
-        //    ->setPayload($eventPayload)
-        //    ->setMetadata($message->getMetadata())
-        //;
-        //$this->manager->persist($eventEntity);
-        //$this->manager->flush();
-
-        //$eventPayload['id'] = $message->get('id'); // Must have
-        //$this->eventBus->dispatch(new UpdatedWarehouseEvent($eventPayload, $message->getMetadata()));
     }
 }
