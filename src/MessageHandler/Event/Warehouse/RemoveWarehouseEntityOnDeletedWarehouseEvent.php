@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Uid\Ulid;
 
-class RemoveWarehouseEntityOnDeletedEvent implements EventHandlerInterface
+class RemoveWarehouseEntityOnDeletedWarehouseEvent implements EventHandlerInterface
 {
     use HandleTrait;
 
