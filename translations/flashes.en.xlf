@@ -4,7 +4,11 @@
         <body>
             <trans-unit id="flashes.warehouse.created.success">
                 <source>flashes.warehouse.created.success</source>
-                <target>Warehouse Created</target>
+                <target>Warehouse "%string%" Created</target>
+            </trans-unit>
+            <trans-unit id="flashes.warehouse.updated.success">
+                <source>flashes.warehouse.updated.success</source>
+                <target>Warehouse "%string%" Updated</target>
             </trans-unit>
         </body>
     </file>

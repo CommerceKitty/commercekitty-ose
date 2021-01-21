@@ -5,6 +5,7 @@ namespace CommerceKitty\Controller;
 use CommerceKitty\Event\ControllerEvent;
 use CommerceKitty\HandleTrait;
 use CommerceKitty\Model\PayloadableInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,31 +27,31 @@ class EntityController extends AbstractController
 
     private $commandBus;
     private $dispatcher;
+    private $translator;
 
-    public function __construct(EventDispatcherInterface $dispatcher, MessageBusInterface $commandBus, MessageBusInterface $queryBus)
+    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $dispatcher, MessageBusInterface $commandBus, MessageBusInterface $queryBus)
     {
+        $this->translator = $translator;
         $this->commandBus = $commandBus;
         $this->dispatcher = $dispatcher;
         $this->queryBus   = $queryBus;
     }
 
     /**
-     * @param Request                  $request
-     * @param EventDispatcherInterface $dispatcher
-     * @param TranslatorInterface      $translator
+     * @param Request $request
      *
      * @return Response
      */
-    public function index(Request $request, EventDispatcherInterface $dispatcher, TranslatorInterface $translator, MessageBusInterface $queryBus): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, $translator->trans('exceptions.403'));
+        $this->denyAccessUnlessGranted('ROLE_USER', null, $this->translator->trans('exceptions.403'));
 
         $entityClassName     = $request->attributes->get('_entity_class_name'); // ie Product
         $entityFullClassName = $request->attributes->get('_entity_class', 'CommerceKitty\\Entity\\'.$entityClassName); // ie CommerceKitty\Entity\Product
         $entitySnakeName     = u($entityClassName)->snake(); // ie product
 
         //> Event Dispatcher
-        $controllerEvent = $dispatcher->dispatch(new ControllerEvent(null, $request), 'controller.'.$entitySnakeName.'.index.initialize');
+        $controllerEvent = $this->dispatcher->dispatch(new ControllerEvent(null, $request), 'controller.'.$entitySnakeName.'.index.initialize');
         if ($controllerEvent->hasResponse()) {
             return $controllerEvent->getResponse();
         }
@@ -59,7 +60,7 @@ class EntityController extends AbstractController
         //> Query Bus
         // @todo Custom Pager Class
         $countQueryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\CountBy'.$entityClassName.'Query';
-        $entityCount             = $queryBus->dispatch(new $countQueryFullClassName())->last(HandledStamp::class)->getResult();
+        $entityCount             = $this->queryBus->dispatch(new $countQueryFullClassName())->last(HandledStamp::class)->getResult();
         $limit                   = $request->query->getInt('limit', 100);
         $page                    = $request->query->getInt('page', 1);
         $totalPages              = (int) ceil($entityCount / $limit);
@@ -68,7 +69,7 @@ class EntityController extends AbstractController
         $previousPage            = ($page > 1) ? ($page - 1) : null;
         $nextPage                = ($page < $totalPages) ? ($page + 1) : null;
         $queryFullClassName      = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\FindBy'.$entityClassName.'Query';
-        $result                  = $queryBus->dispatch(new $queryFullClassName([], null, $limit, $offset))->last(HandledStamp::class)->getResult();
+        $result                  = $this->queryBus->dispatch(new $queryFullClassName([], null, $limit, $offset))->last(HandledStamp::class)->getResult();
         //< Query Bus
 
         return $this->render($entitySnakeName.'/index.'.$request->getRequestFormat().'.twig', [

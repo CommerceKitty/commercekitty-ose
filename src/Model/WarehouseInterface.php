@@ -7,6 +7,8 @@ namespace CommerceKitty\Model;
 interface WarehouseInterface
 {
     /**
+     * Returns the Unique ID of this warehouse
+     *
      * @return string
      */
     public function getId(): ?string;
@@ -21,12 +23,16 @@ interface WarehouseInterface
     public function setId(string $id);
 
     /**
+     * Returns the Warehouse Name
+     *
      * @return string
      */
     public function getName(): ?string;
 
     /**
+     * @todo
+     *
      * @return AddressInterface|null
      */
-    public function getAddress(): ?AddressInterface;
+    //public function getAddress(): ?AddressInterface;
 }

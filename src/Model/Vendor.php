@@ -6,6 +6,8 @@ namespace CommerceKitty\Model;
  */
 class Vendor implements VendorInterface
 {
+    use AggregateTrait;
+
     protected $id;
     protected $name;
 
@@ -22,6 +24,20 @@ class Vendor implements VendorInterface
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setId(string $id)
+    {
+        if ($this->id && $this->id != $id) {
+            throw new \Exception('ID Cannot Be Changed');
+        }
+
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

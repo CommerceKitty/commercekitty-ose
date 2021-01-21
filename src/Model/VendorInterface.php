@@ -12,6 +12,15 @@ interface VendorInterface
     public function getId(): ?string;
 
     /**
+     * @param string $id
+     *
+     * @throws Exception
+     *
+     * @return self
+     */
+    public function setId(string $id);
+
+    /**
      * @return string
      */
     public function getName(): ?string;
