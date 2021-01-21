@@ -30,11 +30,9 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 # Installation
 
 1. Clone repo and change to that directory
-2. Run `make install` to install dependencies
-3. Run `make compile.dev` to compile dev assets
-4. Run `make up` to run docker containers
+2. Run `make init` to get everything setup
 
-NOTE: If you would like to load in demo data, run `make db.fixtures`.
+Login using kitty@commercekitty.com / password123
 
 # Configuration
 

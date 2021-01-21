@@ -9,6 +9,7 @@ use CommerceKitty\Entity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @TODO Add References
@@ -34,6 +35,7 @@ class UserFixtures extends Fixture
     {
         foreach ($this->getTemplates() as $tmpl) {
             $entity = (new Entity\User())
+                ->setId((string) Uuid::v6())
                 ->setEmail($tmpl['email'])
                 ->setRoles($tmpl['roles'])
             ;

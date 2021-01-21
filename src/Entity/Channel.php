@@ -16,7 +16,6 @@ class Channel extends Model\AbstractChannel
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

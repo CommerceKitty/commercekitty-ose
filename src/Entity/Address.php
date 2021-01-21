@@ -14,7 +14,6 @@ class Address extends Model\Address
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

@@ -14,7 +14,6 @@ class Inventory extends Model\Inventory
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

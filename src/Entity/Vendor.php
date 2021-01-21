@@ -14,7 +14,6 @@ class Vendor extends Model\Vendor
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

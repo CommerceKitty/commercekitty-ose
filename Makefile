@@ -35,7 +35,7 @@ help:
 	@echo "  $(COLOR_GREEN)tests.unit$(COLOR_RESET)        Runs unit tests"
 	@echo "  $(COLOR_GREEN)tests.functional$(COLOR_RESET)  Runs functional tests"
 
-init: install compile.dev up db.fixtures
+init: install compile.dev up db.init db.fixtures
 	@echo "To access the app, please open your browser to ${COLOR_BLUE}https://127.0.0.1${COLOR_RESET}"
 	@echo ""
 	@echo "Default Login Credentials"
@@ -126,6 +126,17 @@ coverage:
 
 worker:
 	docker exec -it commercekitty_php_1 bin/console messenger:consume -n -vvv --limit=100 --time-limit=360 commands events
+
+db.init:
+	@echo " -=[ ${COLOR_BLUE}Initializing database${COLOR_RESET} ]=-"
+	@echo ""
+	docker exec -it commercekitty_php_1 bin/console doctrine:database:drop -n -vvv --force --if-exists
+	docker exec -it commercekitty_php_1 bin/console doctrine:database:create -n -vvv --if-not-exists
+	@# @todo Make this run migrations
+	docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --dump-sql --force
+	@echo ""
+	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
+	@echo ""
 
 db.fixtures:
 	@echo " -=[ ${COLOR_BLUE}Loading data into database${COLOR_RESET} ]=-"

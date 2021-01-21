@@ -11,6 +11,7 @@ use Generator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Uid\Uuid;
 
 class ProductFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -29,6 +30,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
     {
         foreach ($this->getTemplates() as $tmpl) {
             $entity = (new Entity\Product())
+                ->setId((string) Uuid::v6())
                 ->setName($tmpl['name'])
                 ->setSku($tmpl['sku'])
                 ->setType($tmpl['type'])

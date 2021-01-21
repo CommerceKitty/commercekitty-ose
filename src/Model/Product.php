@@ -33,6 +33,19 @@ class Product implements ProductInterface
     }
 
     /**
+     */
+    public function setId(string $id): self
+    {
+        if ($this->id) {
+            throw new \Exception('ID has already been set and cannot be modified');
+        }
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName(): ?string

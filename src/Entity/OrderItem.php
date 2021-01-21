@@ -14,7 +14,6 @@ class OrderItem extends Model\OrderItem
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string")
      */
     protected $id;

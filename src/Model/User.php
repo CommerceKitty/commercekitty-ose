@@ -51,6 +51,19 @@ class User implements UserInterface
 
     /**
      */
+    public function setId(string $id): self
+    {
+        if ($this->id) {
+            throw new \Exception('ID has already been set and cannot be modified');
+        }
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     */
     public function getEmail(): ?string
     {
         return $this->email;
