@@ -21,7 +21,7 @@ supports things like Inventory Management, Listings, Order Manager, and more.
 * Customer Management
 * Order Management
 
-[Click Here](https://github.com/CommerceKitty/commercekitty-ose/milestones?direction=desc&sort=title&state=open)
+[Click Here](https://github.com/CommerceKitty/commercekitty-ose/projects)
 to view product roadmap.
 
 # Requirements
