@@ -4,7 +4,7 @@ namespace CommerceKitty\Model;
 
 /**
  */
-class Vendor implements VendorInterface
+class Vendor implements VendorInterface, PayloadableInterface
 {
     use AggregateTrait;
 
@@ -55,5 +55,46 @@ class Vendor implements VendorInterface
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     */
+    public function toPayload(): array
+    {
+        return [
+            'id'   => $this->id,
+            'name' => $this->name,
+        ];
+    }
+
+    // ---
+
+    /**
+     */
+    public function applyCreated(EventStoreInterface $event): void
+    {
+        $payload = $event->getPayload();
+
+        $this
+            ->setId($payload['id'])
+            ->setName($payload['name'])
+        ;
+    }
+
+    /**
+     */
+    public function applyUpdatedName(EventStoreInterface $event): void
+    {
+        $payload = $event->getPayload();
+
+        $this
+            ->setName($payload['name'])
+        ;
+    }
+
+    /**
+     */
+    public function applyDeleted(EventStoreInterface $event): void
+    {
     }
 }

@@ -5,25 +5,23 @@ event_store_index:
         _format: html
     requirements:
         _format: html|json
-
-# ---
-event_store_warehouse_index:
-    path:       /_event-stores/warehouses.{_format}
-    controller: CommerceKitty\Controller\EventStoreController::warehouseIndex
+event_store_aggregate_index:
+    path:       /_event-stores/{aggregate}.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::aggregateIndex
     defaults:
         _format: html
     requirements:
         _format: html|json
-event_store_warehouse_delete:
-    path:       /_event-stores/warehouses/{id}/delete.{_format}
-    controller: CommerceKitty\Controller\EventStoreController::warehouseDelete
+event_store_aggregate_delete:
+    path:       /_event-stores/{aggregate}/{id}/delete.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::aggregateDelete
     defaults:
         _format: html
     requirements:
         _format: html|json
-event_store_warehouse_show:
-    path:       /_event-stores/warehouses/{id}.{_format}
-    controller: CommerceKitty\Controller\EventStoreController::warehouseShow
+event_store_aggregate_show:
+    path:       /_event-stores/{aggregate}/{id}.{_format}
+    controller: CommerceKitty\Controller\EventStoreController::aggregateShow
     defaults:
         _format: html
     requirements:

@@ -1,0 +1,17 @@
+{#
+  @var VendorInterface[] pager
+  @var string            aggregate
+#}
+{% extends 'event_store/aggregate/index.html.twig' %}
+
+{% block title %}{{'vendors'|trans}} | {{parent()}}{% endblock %}
+
+{% block breadcrumbs %}
+  {% embed '_bootstrap/breadcrumb.html.twig' %}
+    {% block crumbs %}
+      {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
+      {{breadcrumb.item('event stores', 'event_store_index')}}
+      {{breadcrumb.item('vendors')}}
+    {% endblock %}
+  {% endembed %}
+{% endblock breadcrumbs %}

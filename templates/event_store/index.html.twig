@@ -16,7 +16,8 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link" href="{{path('event_store_warehouse_index')}}">{{'warehouses'|trans}}</a>
+          <a class="nav-link" href="{{path('event_store_aggregate_index',{'aggregate':'vendor'})}}">{{'vendors'|trans}}</a>
+          <a class="nav-link" href="{{path('event_store_aggregate_index',{'aggregate':'warehouse'})}}">{{'warehouses'|trans}}</a>
         </div>
       </div>
     </div>

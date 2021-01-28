@@ -2,6 +2,22 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="flashes.vendor.created.success">
+                <source>flashes.vendor.created.success</source>
+                <target>Vendor "%string%" Created</target>
+            </trans-unit>
+            <trans-unit id="flashes.vendor.deleted.success">
+                <source>flashes.vendor.deleted.success</source>
+                <target>Vendor "%string%" Deleted</target>
+            </trans-unit>
+            <trans-unit id="flashes.vendor.purged.success">
+                <source>flashes.vendor.purged.success</source>
+                <target>Vendors Purged</target>
+            </trans-unit>
+            <trans-unit id="flashes.vendor.updated.success">
+                <source>flashes.vendor.updated.success</source>
+                <target>Vendor "%string%" Updated</target>
+            </trans-unit>
             <trans-unit id="flashes.warehouse.created.success">
                 <source>flashes.warehouse.created.success</source>
                 <target>Warehouse "%string%" Created</target>

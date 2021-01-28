@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace CommerceKitty\MessageHandler\Command\Warehouse;
+namespace CommerceKitty\MessageHandler\Command\Vendor;
 
-use CommerceKitty\Entity\Warehouse\WarehouseEventStore;
+use CommerceKitty\Entity\Vendor\VendorEventStore;
 use CommerceKitty\HandleTrait;
-use CommerceKitty\Message\Command\Warehouse\DeleteWarehouseCommand;
-use CommerceKitty\Message\Command\Warehouse\PurgeWarehouseCommand;
-use CommerceKitty\Message\Event\Warehouse\PurgedWarehouseEvent;
-use CommerceKitty\Message\Query\Warehouse\FindByWarehouseQuery;
+use CommerceKitty\Message\Command\Vendor\DeleteVendorCommand;
+use CommerceKitty\Message\Command\Vendor\PurgeVendorCommand;
+use CommerceKitty\Message\Event\Vendor\PurgedEvent;
+use CommerceKitty\Message\Query\Vendor\FindByVendorQuery;
 use CommerceKitty\MessageHandler\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Uid\Ulid;
 
-class PurgeWarehouseCommandHandler implements CommandHandlerInterface
+class PurgeVendorCommandHandler implements CommandHandlerInterface
 {
     use HandleTrait;
 
@@ -36,20 +36,16 @@ class PurgeWarehouseCommandHandler implements CommandHandlerInterface
     /**
      * @return void
      */
-    public function __invoke(PurgeWarehouseCommand $message): void
+    public function __invoke(PurgeVendorCommand $message): void
     {
         $this->manager->clear();
 
-        $collection = $this->handle(new FindByWarehouseQuery());
+        $collection = $this->handle(new FindByVendorQuery());
         if (empty($collection)) {
             return;
         }
 
-        foreach ($collection as $entity) {
-            $this->commandBus->dispatch(new DeleteWarehouseCommand(['id' => $entity->getId()], $message->getMetadata()));
-        }
-
-        $eventEntity = (new WarehouseEventStore())
+        $eventEntity = (new VendorEventStore())
             ->setEventId((string) new Ulid())
             ->setEventType('Purged')
             //->setAggregateRootId($message->get('id'))
@@ -61,6 +57,10 @@ class PurgeWarehouseCommandHandler implements CommandHandlerInterface
         $this->manager->persist($eventEntity);
         $this->manager->flush();
 
-        $this->eventBus->dispatch(new PurgedWarehouseEvent($message->getPayload(), $message->getMetadata()));
+        foreach ($collection as $entity) {
+            $this->commandBus->dispatch(new DeleteVendorCommand(['id' => $entity->getId()], $message->getMetadata()));
+        }
+
+        $this->eventBus->dispatch(new PurgedEvent($message->getPayload(), $message->getMetadata()));
     }
 }

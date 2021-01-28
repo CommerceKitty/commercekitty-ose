@@ -3,6 +3,7 @@
 namespace CommerceKitty\Controller;
 
 use CommerceKitty\Event\ControllerEvent;
+use CommerceKitty\Event\QueryBuilderEvent;
 use CommerceKitty\HandleTrait;
 use CommerceKitty\Model\PayloadableInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -57,30 +58,25 @@ class EntityController extends AbstractController
         }
         //< Event Dispatcher
 
-        //> Query Bus
-        // @todo Custom Pager Class
-        $countQueryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\CountBy'.$entityClassName.'Query';
-        $entityCount             = $this->queryBus->dispatch(new $countQueryFullClassName())->last(HandledStamp::class)->getResult();
-        $limit                   = $request->query->getInt('limit', 100);
-        $page                    = $request->query->getInt('page', 1);
-        $totalPages              = (int) ceil($entityCount / $limit);
-        $page                    = ($page > $totalPages) ? 1 : $page; // if outside range, go back to page 1
-        $offset                  = max(0, ($limit * $page) - $limit - 1);
-        $previousPage            = ($page > 1) ? ($page - 1) : null;
-        $nextPage                = ($page < $totalPages) ? ($page + 1) : null;
-        $queryFullClassName      = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\FindBy'.$entityClassName.'Query';
-        $result                  = $this->queryBus->dispatch(new $queryFullClassName([], null, $limit, $offset))->last(HandledStamp::class)->getResult();
-        //< Query Bus
+        //> Event Dispatcher
+        // @todo Use the Entity Repository method "getQueryBuilderWithRequest"; check if method exists
+        $builder = $this->getDoctrine()->getRepository($entityFullClassName)
+            ->createQueryBuilder('e')
+        ;
+        $qBuilder = $this->dispatcher
+            ->dispatch(new QueryBuilderEvent($request, $builder), 'query_builder.'.$entitySnakeName.'.build')
+            ->getQueryBuilder()
+        ;
+        //< Event Dispatcher
+
+        $pager = $paginator->paginate(
+            $qBuilder,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 100),
+        );
 
         return $this->render($entitySnakeName.'/index.'.$request->getRequestFormat().'.twig', [
-            'pager'         => $result,
-            'limit'         => $limit,
-            'page'          => $page,
-            'offset'        => $offset,
-            'total_pages'   => $totalPages,
-            'previous_page' => $previousPage,
-            'next_page'     => $nextPage,
-            'entity_count'  => $entityCount,
+            'pager' => $pager,
         ]);
     }
 
@@ -225,7 +221,7 @@ class EntityController extends AbstractController
 
         //> Query Bus
         $queryFullClassName = 'CommerceKitty\\Message\\Query\\'.$entityClassName.'\\Find'.$entityClassName.'Query';
-        $entity             = $queryBus->dispatch(new $queryFullClassName($id))->last(HandledStamp::class)->getResult();
+        $entity             = $this->handle(new $queryFullClassName($id));
         //< Query Bus
 
         if (!$entity) {

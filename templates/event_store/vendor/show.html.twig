@@ -1,13 +1,13 @@
-{% extends 'layout.html.twig' %}
+{% extends 'event_store/aggregate/show.html.twig' %}
 
-{% block title %}{{'event stores'|trans}}{% endblock %}
+{% block title %}{{entity.eventId}} | {{'vendors'|trans}} | {{'event stores'|trans}}{% endblock %}
 
 {% block breadcrumbs %}
   {% embed '_bootstrap/breadcrumb.html.twig' %}
     {% block crumbs %}
       {% import '_bootstrap/breadcrumb.html.twig' as breadcrumb %}
       {{breadcrumb.item('event stores', 'event_store_index')}}
-      {{breadcrumb.item('warehouses', 'event_store_aggregate_index', {'aggregate':'warehouse'})}}
+      {{breadcrumb.item('vendors', 'event_store_aggregate_index', {'aggregate':'vendor'})}}
       {{breadcrumb.item(entity.eventId)}}
     {% endblock %}
   {% endembed %}
@@ -22,7 +22,7 @@
           {% block tbody %}
             <tr><th>{{'event id'}}</th><td>{{entity.eventId}}</td></tr>
             <tr><th>{{'event type'}}</th><td>{{entity.eventType}}</td></tr>
-            <tr><th>{{'aggregate root id'}}</th><td><a href="{{path('warehouse_show',{'id':entity.aggregateRootId})}}">{{entity.aggregateRootId}}</a></td></tr>
+            <tr><th>{{'aggregate root id'}}</th><td>{% if entity.aggregateRootId %}<a href="{{path('vendor_show',{'id':entity.aggregateRootId})}}">{{entity.aggregateRootId}}</a>{% endif %}</td></tr>
             <tr><th>{{'aggregate root version'}}</th><td>{{entity.aggregateRootVersion}}</td></tr>
             <tr><th>{{'created at'}}</th><td>{{entity.createdAt|format_datetime}}</td></tr>
             <tr><th>{{'payload'}}</th><td><pre><code>{{entity.payload|json_encode(constant('JSON_PRETTY_PRINT'))}}</code></pre></td></tr>
@@ -33,7 +33,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        {{btn.link('fas fa-trash', 'delete', 'event_store_aggregate_delete', {'aggregate':'warehouse', 'id':entity.eventId}, 'danger')}}
+        {{btn.link('fas fa-trash', 'delete', 'event_store_aggregate_delete', {'aggregate':aggregate, 'id':entity.eventId}, 'danger')}}
       </div>
     </div>
   </div>

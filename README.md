@@ -1,5 +1,5 @@
-Commerce Kitty
-==============
+Commerce Kitty OSE
+==================
 
 Commerce Kitty is an open-source tool designed to help online retailers. It
 supports things like Inventory Management, Listings, Order Manager, and more.

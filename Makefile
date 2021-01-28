@@ -133,10 +133,14 @@ db.init:
 	docker exec -it commercekitty_php_1 bin/console doctrine:database:drop -n -vvv --force --if-exists
 	docker exec -it commercekitty_php_1 bin/console doctrine:database:create -n -vvv --if-not-exists
 	@# @todo Make this run migrations
-	docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --dump-sql --force
+	#docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --dump-sql --force
+	make db.schema.update
 	@echo ""
 	@echo " -=[ ${COLOR_GREEN}Complete${COLOR_RESET} ]=-"
 	@echo ""
+
+db.schema.update:
+	docker exec -it commercekitty_php_1 bin/console doctrine:schema:update -n -vvv --dump-sql --force
 
 db.fixtures:
 	@echo " -=[ ${COLOR_BLUE}Loading data into database${COLOR_RESET} ]=-"

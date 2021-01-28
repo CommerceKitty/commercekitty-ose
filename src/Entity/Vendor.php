@@ -20,6 +20,7 @@ class Vendor extends Model\Vendor
 
     /**
      * @Assert\Length(max=255)
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $name;
