@@ -40,7 +40,9 @@ All configuration options can be found in `.env`
 
 # Documentation
 
-For documentation, please review the [wiki](https://github.com/CommerceKitty/commercekitty/wiki).
+For documentation, please review the [wiki](https://github.com/CommerceKitty/commercekitty-ose/wiki).
+
+Need the halps? Check out the [discussions](https://github.com/CommerceKitty/commercekitty-ose/discussions)
 
 # Sponsors
 
