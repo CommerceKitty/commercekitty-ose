@@ -63,11 +63,13 @@
               {% endfor %}
             {% endblock %}
           {% endembed %}
-
-          {% include '_pagination.html.twig' %}
-
         {{grid.col_end()}}
       {{grid.row_end()}}
+      <div class="row">
+        <div class="col-sm-12">
+          {{knp_pagination_render(pager)}}
+        </div>
+      </div>
     {% endblock content %}
   {% endembed %}
 {% endblock %}
