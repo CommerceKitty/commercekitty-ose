@@ -511,3 +511,12 @@ warehouse_show:
     requirements:
         _format: html|json
 # --> Warehouse
+
+settings_edit:
+    methods:    GET|POST
+    path:       /settings.{_format}
+    controller: CommerceKitty\Controller\SettingController::edit
+    defaults:
+        _format: html
+    requirements:
+        _format: html|json
