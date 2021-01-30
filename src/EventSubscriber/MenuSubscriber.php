@@ -46,7 +46,7 @@ class MenuSubscriber implements EventSubscriberInterface
             ],
         ]);
         $menu['more']->addChild('app settings', [
-            //'route'  => 'app_setting_index',
+            'route'  => 'settings_edit',
             'extras' => [
                 'icon' => 'fas fa-cogs fa-fw',
             ],
